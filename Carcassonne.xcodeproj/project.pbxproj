@@ -14,7 +14,18 @@
 		5D36B93A29EAE35800448219 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5D36B93929EAE35800448219 /* Assets.xcassets */; };
 		5D36B93D29EAE35800448219 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5D36B93B29EAE35800448219 /* LaunchScreen.storyboard */; };
 		5D36B94529EAE3BA00448219 /* LandTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D36B94429EAE3BA00448219 /* LandTile.swift */; };
+		5D4946D729EEBA0100AEA11E /* CarcassonneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4946D629EEBA0100AEA11E /* CarcassonneTests.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		5D4946D829EEBA0100AEA11E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5D36B92529EAE35400448219 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5D36B92C29EAE35400448219;
+			remoteInfo = Carcassonne;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		5D36B92D29EAE35400448219 /* Carcassonne.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Carcassonne.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -26,10 +37,20 @@
 		5D36B93C29EAE35800448219 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5D36B93E29EAE35800448219 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5D36B94429EAE3BA00448219 /* LandTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandTile.swift; sourceTree = "<group>"; };
+		5D4946CF29EEB96E00AEA11E /* Playground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = Playground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		5D4946D429EEBA0100AEA11E /* CarcassonneTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CarcassonneTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5D4946D629EEBA0100AEA11E /* CarcassonneTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarcassonneTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		5D36B92A29EAE35400448219 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5D4946D129EEBA0100AEA11E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -43,6 +64,7 @@
 			isa = PBXGroup;
 			children = (
 				5D36B92F29EAE35400448219 /* Carcassonne */,
+				5D4946D529EEBA0100AEA11E /* CarcassonneTests */,
 				5D36B92E29EAE35400448219 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -51,6 +73,7 @@
 			isa = PBXGroup;
 			children = (
 				5D36B92D29EAE35400448219 /* Carcassonne.app */,
+				5D4946D429EEBA0100AEA11E /* CarcassonneTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -62,12 +85,21 @@
 				5D36B93229EAE35400448219 /* SceneDelegate.swift */,
 				5D36B93429EAE35400448219 /* ViewController.swift */,
 				5D36B94429EAE3BA00448219 /* LandTile.swift */,
+				5D4946CF29EEB96E00AEA11E /* Playground.playground */,
 				5D36B93629EAE35400448219 /* Main.storyboard */,
 				5D36B93929EAE35800448219 /* Assets.xcassets */,
 				5D36B93B29EAE35800448219 /* LaunchScreen.storyboard */,
 				5D36B93E29EAE35800448219 /* Info.plist */,
 			);
 			path = Carcassonne;
+			sourceTree = "<group>";
+		};
+		5D4946D529EEBA0100AEA11E /* CarcassonneTests */ = {
+			isa = PBXGroup;
+			children = (
+				5D4946D629EEBA0100AEA11E /* CarcassonneTests.swift */,
+			);
+			path = CarcassonneTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -90,6 +122,24 @@
 			productReference = 5D36B92D29EAE35400448219 /* Carcassonne.app */;
 			productType = "com.apple.product-type.application";
 		};
+		5D4946D329EEBA0100AEA11E /* CarcassonneTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5D4946DA29EEBA0100AEA11E /* Build configuration list for PBXNativeTarget "CarcassonneTests" */;
+			buildPhases = (
+				5D4946D029EEBA0100AEA11E /* Sources */,
+				5D4946D129EEBA0100AEA11E /* Frameworks */,
+				5D4946D229EEBA0100AEA11E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5D4946D929EEBA0100AEA11E /* PBXTargetDependency */,
+			);
+			name = CarcassonneTests;
+			productName = CarcassonneTests;
+			productReference = 5D4946D429EEBA0100AEA11E /* CarcassonneTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -102,6 +152,10 @@
 				TargetAttributes = {
 					5D36B92C29EAE35400448219 = {
 						CreatedOnToolsVersion = 14.2;
+					};
+					5D4946D329EEBA0100AEA11E = {
+						CreatedOnToolsVersion = 14.2;
+						TestTargetID = 5D36B92C29EAE35400448219;
 					};
 				};
 			};
@@ -119,6 +173,7 @@
 			projectRoot = "";
 			targets = (
 				5D36B92C29EAE35400448219 /* Carcassonne */,
+				5D4946D329EEBA0100AEA11E /* CarcassonneTests */,
 			);
 		};
 /* End PBXProject section */
@@ -131,6 +186,13 @@
 				5D36B93D29EAE35800448219 /* LaunchScreen.storyboard in Resources */,
 				5D36B93A29EAE35800448219 /* Assets.xcassets in Resources */,
 				5D36B93829EAE35400448219 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5D4946D229EEBA0100AEA11E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -148,7 +210,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		5D4946D029EEBA0100AEA11E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5D4946D729EEBA0100AEA11E /* CarcassonneTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		5D4946D929EEBA0100AEA11E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5D36B92C29EAE35400448219 /* Carcassonne */;
+			targetProxy = 5D4946D829EEBA0100AEA11E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		5D36B93629EAE35400448219 /* Main.storyboard */ = {
@@ -336,6 +414,48 @@
 			};
 			name = Release;
 		};
+		5D4946DB29EEBA0100AEA11E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				MACOSX_DEPLOYMENT_TARGET = 12.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = MyCompany.CarcassonneTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Carcassonne.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Carcassonne";
+			};
+			name = Debug;
+		};
+		5D4946DC29EEBA0100AEA11E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				MACOSX_DEPLOYMENT_TARGET = 12.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = MyCompany.CarcassonneTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Carcassonne.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Carcassonne";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -353,6 +473,15 @@
 			buildConfigurations = (
 				5D36B94229EAE35800448219 /* Debug */,
 				5D36B94329EAE35800448219 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5D4946DA29EEBA0100AEA11E /* Build configuration list for PBXNativeTarget "CarcassonneTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5D4946DB29EEBA0100AEA11E /* Debug */,
+				5D4946DC29EEBA0100AEA11E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

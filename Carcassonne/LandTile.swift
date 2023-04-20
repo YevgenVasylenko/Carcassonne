@@ -20,7 +20,8 @@ struct Tile {
     var downSide: LandType
     var leftSide: LandType
     var center: LandType
-    var coordinates: (Int, Int)
+    var coordinates: (Int, Int) = (0, 0)
+    var tilePictureName: String
     var isPosibleToPlace = false
 
     mutating func rotateClockwise() {

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		5D20304929F156BA00F0720B /* TilesToPlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D20304829F156BA00F0720B /* TilesToPlay.swift */; };
+		5D20304F29F2E00300F0720B /* TilePicture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D20304E29F2E00300F0720B /* TilePicture.swift */; };
 		5D36B93129EAE35400448219 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D36B93029EAE35400448219 /* AppDelegate.swift */; };
 		5D36B93329EAE35400448219 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D36B93229EAE35400448219 /* SceneDelegate.swift */; };
 		5D36B93529EAE35400448219 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D36B93429EAE35400448219 /* ViewController.swift */; };
@@ -30,6 +31,7 @@
 
 /* Begin PBXFileReference section */
 		5D20304829F156BA00F0720B /* TilesToPlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TilesToPlay.swift; sourceTree = "<group>"; };
+		5D20304E29F2E00300F0720B /* TilePicture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TilePicture.swift; sourceTree = "<group>"; };
 		5D36B92D29EAE35400448219 /* Carcassonne.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Carcassonne.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D36B93029EAE35400448219 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5D36B93229EAE35400448219 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -62,11 +64,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5D20304D29F2DF4000F0720B /* Module */ = {
+			isa = PBXGroup;
+			children = (
+				5D36B94429EAE3BA00448219 /* LandTile.swift */,
+				5D20304829F156BA00F0720B /* TilesToPlay.swift */,
+			);
+			path = Module;
+			sourceTree = "<group>";
+		};
 		5D36B92429EAE35400448219 = {
 			isa = PBXGroup;
 			children = (
 				5D36B92F29EAE35400448219 /* Carcassonne */,
-				5D4946D529EEBA0100AEA11E /* CarcassonneTests */,
 				5D36B92E29EAE35400448219 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -86,13 +96,14 @@
 				5D36B93029EAE35400448219 /* AppDelegate.swift */,
 				5D36B93229EAE35400448219 /* SceneDelegate.swift */,
 				5D36B93429EAE35400448219 /* ViewController.swift */,
-				5D36B94429EAE3BA00448219 /* LandTile.swift */,
-				5D20304829F156BA00F0720B /* TilesToPlay.swift */,
+				5D20304E29F2E00300F0720B /* TilePicture.swift */,
+				5D20304D29F2DF4000F0720B /* Module */,
 				5D4946CF29EEB96E00AEA11E /* Playground.playground */,
 				5D36B93629EAE35400448219 /* Main.storyboard */,
 				5D36B93929EAE35800448219 /* Assets.xcassets */,
 				5D36B93B29EAE35800448219 /* LaunchScreen.storyboard */,
 				5D36B93E29EAE35800448219 /* Info.plist */,
+				5D4946D529EEBA0100AEA11E /* CarcassonneTests */,
 			);
 			path = Carcassonne;
 			sourceTree = "<group>";
@@ -207,6 +218,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5D36B93529EAE35400448219 /* ViewController.swift in Sources */,
+				5D20304F29F2E00300F0720B /* TilePicture.swift in Sources */,
 				5D36B93129EAE35400448219 /* AppDelegate.swift in Sources */,
 				5D36B94529EAE3BA00448219 /* LandTile.swift in Sources */,
 				5D20304929F156BA00F0720B /* TilesToPlay.swift in Sources */,

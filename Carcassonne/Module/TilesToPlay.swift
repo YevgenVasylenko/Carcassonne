@@ -56,3 +56,5 @@ let tunnelCityTile = Tile(upSide: .city, rightSide: .field, downSide: .city, lef
 let twoSidesCitySeparatedTile = Tile(upSide: .field, rightSide: .city, downSide: .field, leftSide: .city, center: .field, tilePictureName: "twoSidesCitySeparated")
 
 let twoSideConerCityCity = Tile(upSide: .field, rightSide: .road, downSide: .city, leftSide: .field, center: .field, tilePictureName: "twoSideConerCity")
+
+let startTile = Tile(upSide: .road, rightSide: .city, downSide: .road, leftSide: .field, center: .road, tilePictureName: "straightRoadCitySide")

@@ -61,8 +61,9 @@ struct LandScape {
     var tilesStack = [Tile]()
     var tilesOnMap = [Tile]()
     var currentTile: Tile? = nil
-    var isCoordinareOkToPlace: Bool = false
-    var isSidesOKToPlace: Bool = false
+    var isTileOkToPlace: Bool {
+        coordinateToPlaceCheck() && sidesToPlaceCheck() == true
+    }
     
     mutating func tileFromStack() {
         currentTile =
@@ -70,9 +71,7 @@ struct LandScape {
     }
     
     mutating func placeTileOnMap() {
-        coordinateToPlaceCheck()
-        sidesToPlaceCheck()
-        if isCoordinareOkToPlace && isSidesOKToPlace == true {
+        if isTileOkToPlace {
             tilesOnMap.append(currentTile!)
         } else {
             print("Not Possible to place")
@@ -103,7 +102,8 @@ struct LandScape {
         currentTile!.coordinates.1 == tile.coordinates.1
     }
     
-    mutating func coordinateToPlaceCheck() {
+    func coordinateToPlaceCheck() -> Bool {
+        var isCoordinareOkToPlace: Bool = false
         var isXOk = false
         var isYOk = false
         
@@ -143,9 +143,11 @@ struct LandScape {
                 isCoordinareOkToPlace = true
             }
         }
+        return isCoordinareOkToPlace
     }
     
-    mutating func sidesToPlaceCheck() {
+    func sidesToPlaceCheck() -> Bool {
+        var isSidesOKToPlace: Bool = false
         var isUpSideOk = true
         var isRightSideOk = true
         var isDownSideOk = true
@@ -186,5 +188,6 @@ struct LandScape {
         if isUpSideOk && isRightSideOk && isDownSideOk && isLeftSideOk {
             isSidesOKToPlace = true
         } else { isSidesOKToPlace = false }
+        return isSidesOKToPlace
     }
 }

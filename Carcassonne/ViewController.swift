@@ -14,16 +14,18 @@ class ViewController: UIViewController {
     var mapView = UIScrollView()
     
     @IBOutlet var buttonsView: UIView!
+    @IBOutlet var endTurnAndTakeNewTile: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         game = LandScape(tilesStack: TilesToPlay, tilesOnMap: [startTile], currentTile: startTile)
         mapView = UIScrollView(frame: self.view.bounds)
-        mapView.backgroundColor = .cyan
+        mapView.backgroundColor = .white
         mapView.contentSize = CGSize(width: 2000, height: 2000)
         self.view.addSubview(mapView)
-        picture = TilePicture(tilePictureName: game.currentTile!.tilePictureName, view: mapView)
+        picture = TilePicture(tilePictureName:
+                                game.currentTile!.tilePictureName, view: mapView)
         mapView.addSubview(picture!)
         self.view.bringSubviewToFront(buttonsView)
     }
@@ -34,10 +36,16 @@ class ViewController: UIViewController {
         picture = TilePicture(tilePictureName: game.currentTile!.tilePictureName, view: mapView)
         mapView.addSubview(picture!)
         picture?.makeRedSignal(shadowColor: .systemRed)
+        endTurnAndTakeNewTile.isEnabled = false
     }
     
     @IBAction func placeTile() {
-        game.placeTileOnMap()
+        if game.isTileOkToPlace {
+            game.placeTileOnMap()
+            picture?.makeRedSignal(shadowColor: .clear)
+            picture?.placed()
+            endTurnAndTakeNewTile.isEnabled = true
+        }
     }
     
     @IBAction func moveTileUP() {
@@ -81,7 +89,6 @@ class ViewController: UIViewController {
             picture?.makeRedSignal(shadowColor: .systemBlue)
         } else {
             picture?.makeRedSignal(shadowColor: .systemRed)
-
         }
     }
 }

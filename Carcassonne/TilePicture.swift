@@ -10,32 +10,37 @@ import UIKit
 class TilePicture: UIImageView {
     
     init(tilePictureName: String, view: UIView) {
-        super.init(frame: CGRect(x: view.center.x, y: view.center.y, width: 185, height: 185))
-        self.image = UIImage(named: tilePictureName)
+        super.init(frame: .zero)
+        
+        image = UIImage(named: tilePictureName)
+        frame = CGRect(
+            origin: view.center,
+            size: .init(width: imageSideSize, height: imageSideSize)
+        )
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func initPicture(tilePictureName: String) {
-        self.image = UIImage(named: tilePictureName)
+    var imageSideSize: CGFloat {
+        image?.size.height ?? 0
     }
     
     func moveUp() {
-        self.transform = self.transform.translatedBy(x: 0, y: -185)
+        frame.origin.y -= imageSideSize
     }
     
     func moveRight() {
-        self.transform = self.transform.translatedBy(x: +185, y: 0)
+        frame.origin.x += imageSideSize
     }
     
     func moveDown() {
-        self.transform = self.transform.translatedBy(x: 0, y: +185)
+        frame.origin.y += imageSideSize
     }
     
     func moveLeft() {
-        self.transform = self.transform.translatedBy(x: -185, y: 0)
+        frame.origin.x -= imageSideSize
     }
     
     func rotateClockwise() {
@@ -47,9 +52,15 @@ class TilePicture: UIImageView {
     }
     
     func makeRedSignal(shadowColor: UIColor) {
-        self.layer.shadowColor = shadowColor.cgColor
-        self.layer.shadowOffset = CGSize(width: 5, height: 5)
-        self.layer.shadowOpacity = 1
-        self.clipsToBounds = false
+        layer.shadowColor = shadowColor.cgColor
+        layer.shadowOffset = .zero
+        layer.shadowRadius = 10
+        layer.shadowOpacity = 1
+        clipsToBounds = false
+        alpha = 0.5
+    }
+    
+    func placed() {
+        alpha = 1
     }
 }

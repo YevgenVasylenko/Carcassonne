@@ -7,9 +7,9 @@
 
 import Foundation
 
-var TilesToPlay: [Tile] = [conerRoadToLeftCitySideTile, conerRoadToLeftCitySideTile, conerRoadToLeftCitySideTile, conerRoadToRightCitySideTile, conerRoadToRightCitySideTile, conerRoadToRightCitySideTile, tTypeCrossRoadCitySideTile, tTypeCrossRoadCitySideTile, tTypeCrossRoadCitySideTile, twoSidesCityWithShieldTile, twoSidesCityWithShieldTile, twoSidesCityTile, twoSidesCityTile, twoSideCityWithConerRoadWithShieldTile, twoSideCityWithConerRoadWithShieldTile, twoSideCityWithConerRoadTile, twoSideCityWithConerRoadTile, twoSideCityWithConerRoadTile, threeSideCityWithShieldTile, threeSideCityTile, threeSideCityTile, threeSideCityTile, threeSideCityWithRoadWithShieldTile, threeSideCityWithRoadWithShieldTile, threeSidesCityWithRoadTile, straightRoadTile, straightRoadTile, straightRoadTile, straightRoadTile, straightRoadTile, straightRoadTile, straightRoadTile, straightRoadTile, conerRoadTile, conerRoadTile, conerRoadTile, conerRoadTile, conerRoadTile, conerRoadTile, conerRoadTile, conerRoadTile, conerRoadTile, tTypeConerRoadTile, tTypeConerRoadTile, tTypeConerRoadTile, fourSideCrossRoadTile, cloisterWithRoadTile, cloisterWithRoadTile, cloisterTile, cloisterTile, cloisterTile, cloisterTile, fourSidesCityTile, straightRoadCitySideTile, straightRoadCitySideTile, straightRoadCitySideTile, straightRoadCitySideTile, citySideTile, citySideTile, citySideTile, citySideTile, citySideTile, tunnelCItyWithShieldTile, tunnelCItyWithShieldTile, tunnelCityTile, twoSidesCitySeparatedTile, twoSidesCitySeparatedTile, twoSidesCitySeparatedTile, twoSideConerCityCity, twoSideConerCityCity]
+var TilesToPlay: [Tile] = [conerRoadToLeftCitySideTile, conerRoadToLeftCitySideTile, conerRoadToLeftCitySideTile, conerRoadToRightCitySideTile, conerRoadToRightCitySideTile, conerRoadToRightCitySideTile, tTypeCrossRoadCitySideTile, tTypeCrossRoadCitySideTile, tTypeCrossRoadCitySideTile, twoSidesCityWithShieldTile, twoSidesCityWithShieldTile, twoSidesCityTile, twoSidesCityTile, twoSideCityWithConerRoadWithShieldTile, twoSideCityWithConerRoadWithShieldTile, twoSideCityWithConerRoadTile, twoSideCityWithConerRoadTile, twoSideCityWithConerRoadTile, threeSideCityWithShieldTile, threeSideCityTile, threeSideCityTile, threeSideCityTile, threeSideCityWithRoadWithShieldTile, threeSideCityWithRoadWithShieldTile, threeSidesCityWithRoadTile, straightRoadTile, straightRoadTile, straightRoadTile, straightRoadTile, straightRoadTile, straightRoadTile, straightRoadTile, straightRoadTile, conerRoadTile, conerRoadTile, conerRoadTile, conerRoadTile, conerRoadTile, conerRoadTile, conerRoadTile, conerRoadTile, conerRoadTile, tTypeConerRoadTile, tTypeConerRoadTile, tTypeConerRoadTile, fourSideCrossRoadTile, cloisterWithRoadTile, cloisterWithRoadTile, cloisterTile, cloisterTile, cloisterTile, cloisterTile, fourSidesCityTile, straightRoadCitySideTile, straightRoadCitySideTile, straightRoadCitySideTile, straightRoadCitySideTile, citySideTile, citySideTile, citySideTile, citySideTile, citySideTile, tunnelCItyWithShieldTile, tunnelCItyWithShieldTile, tunnelCityTile, twoSidesCitySeparatedTile, twoSidesCitySeparatedTile, twoSidesCitySeparatedTile, twoSideConerCity, twoSideConerCity]
 
-let conerRoadToLeftCitySideTile = Tile(upSide: .road, rightSide: .city, downSide: .road, leftSide: .road, center: .road, tilePictureName: "conerRoadToLeftCitySide")
+let conerRoadToLeftCitySideTile = Tile(upSide: .road, rightSide: .city, downSide: .field, leftSide: .road, center: .road, tilePictureName: "conerRoadToLeftCitySide")
 
 let conerRoadToRightCitySideTile = Tile(upSide: .city, rightSide: .road, downSide: .road, leftSide: .field, center: .road, tilePictureName: "conerRoadToRightCitySide")
 
@@ -33,7 +33,7 @@ let threeSidesCityWithRoadTile = Tile(upSide: .city, rightSide: .city, downSide:
 
 let citySideTile = Tile(upSide: .city, rightSide: .field, downSide: .field, leftSide: .field, center: .field, tilePictureName: "citySide")
 
-let cloisterTile = Tile(upSide: .field, rightSide: .field, downSide: .field, leftSide: .field, center: .cloister, tilePictureName: "citySide")
+let cloisterTile = Tile(upSide: .field, rightSide: .field, downSide: .field, leftSide: .field, center: .cloister, tilePictureName: "cloister")
 
 let cloisterWithRoadTile = Tile(upSide: .field, rightSide: .field, downSide: .road, leftSide: .field, center: .cloister, tilePictureName: "cloisterWithRoad")
 
@@ -55,6 +55,6 @@ let tunnelCityTile = Tile(upSide: .city, rightSide: .field, downSide: .city, lef
 
 let twoSidesCitySeparatedTile = Tile(upSide: .field, rightSide: .city, downSide: .field, leftSide: .city, center: .field, tilePictureName: "twoSidesCitySeparated")
 
-let twoSideConerCityCity = Tile(upSide: .field, rightSide: .road, downSide: .city, leftSide: .field, center: .field, tilePictureName: "twoSideConerCity")
+let twoSideConerCity = Tile(upSide: .field, rightSide: .city, downSide: .city, leftSide: .field, center: .field, tilePictureName: "twoSideConerCity")
 
 let startTile = Tile(upSide: .road, rightSide: .city, downSide: .road, leftSide: .field, center: .road, tilePictureName: "straightRoadCitySide")

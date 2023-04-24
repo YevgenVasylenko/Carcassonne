@@ -116,6 +116,7 @@
                     </view>
                     <connections>
                         <outlet property="buttonsView" destination="1w4-IL-el2" id="sFN-3q-J94"/>
+                        <outlet property="endTurnAndTakeNewTile" destination="qVj-rf-iR1" id="TQa-4C-2kI"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

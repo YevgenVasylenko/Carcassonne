@@ -62,7 +62,8 @@ struct LandScape {
     var tilesOnMap = [Tile]()
     var currentTile: Tile? = nil
     var isTileOkToPlace: Bool {
-        coordinateToPlaceCheck() && sidesToPlaceCheck() == true
+        return coordinateToPlaceCheck() && sidesToPlaceCheck() == true
+        
     }
     
     mutating func tileFromStack() {
@@ -109,15 +110,17 @@ struct LandScape {
         
         for tile in tilesOnMap {
             
-            if isHaveNeighbourOnUp(tile: tile) ||
-                isHaveNeighbourOnDown(tile: tile) {
+            if (isHaveNeighbourOnUp(tile: tile) ||
+                isHaveNeighbourOnDown(tile: tile)) &&
+                isHaveSameXcoordinate(tile: tile) {
                 isYOk = true
             } else {
                 isYOk = false
             }
             
-            if isHaveNeighbourOnRight(tile: tile) ||
-                isHaveNeighbourOnLeft(tile: tile) {
+            if (isHaveNeighbourOnRight(tile: tile) ||
+                isHaveNeighbourOnLeft(tile: tile)) &&
+                isHaveSameYcoordinate(tile: tile) {
                 isXOk = true
             } else {
                 isXOk = false
@@ -138,10 +141,12 @@ struct LandScape {
         
         if isXOk == isYOk {
             isCoordinareOkToPlace = false
+            print("Coordinates is Not OK")
         } else {
-            if isXOk || isYOk == true {
+//            if isXOk || isYOk == true {
                 isCoordinareOkToPlace = true
-            }
+                print("Coordinates is OK")
+//            }
         }
         return isCoordinareOkToPlace
     }
@@ -187,7 +192,11 @@ struct LandScape {
         
         if isUpSideOk && isRightSideOk && isDownSideOk && isLeftSideOk {
             isSidesOKToPlace = true
-        } else { isSidesOKToPlace = false }
+            print("Sides is OK")
+        } else {
+        isSidesOKToPlace = false
+            print("Sides is not OK")
+        }
         return isSidesOKToPlace
     }
 }

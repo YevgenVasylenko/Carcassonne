@@ -18,5 +18,8 @@ var game = LandScape(tilesStack: [citySideTile, cloister, cloisterWithRoad, cone
 
 game.tilesOnMap.append(startTile)
 game.tileFromStack()
-game.currentTile?.moveLeft()
+game.currentTile?.moveRight()
+game.currentTile?.moveUp()
 game.placeTileOnMap()
+
+

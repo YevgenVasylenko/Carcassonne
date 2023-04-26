@@ -22,22 +22,54 @@ struct Tile {
     var center: LandType
     var coordinates: (Int, Int) = (0, 0)
     var tilePictureName: String
-    var isPosibleToPlace = false
+    var rotationCalculation: Int = 0
 
+    func isUpNeighbour(_ other: Tile) -> Bool {
+        coordinates.1 - other.coordinates.1 == -1
+    }
+    
+    func isRightNeighbour(_ other: Tile) -> Bool {
+        coordinates.0 - other.coordinates.0 == -1
+    }
+    
+    func isDownNeighbour(_ other: Tile) -> Bool {
+        coordinates.1 - other.coordinates.1 == 1
+    }
+    
+    func isLeftNeighbour(_ other: Tile) -> Bool {
+        coordinates.0 - other.coordinates.0 == 1
+    }
+    
+    func isXNeighbour(_ other: Tile) -> Bool {
+        coordinates.0 == other.coordinates.0
+    }
+    
+    func isYNeighbour(_ other: Tile) -> Bool {
+        coordinates.1 == other.coordinates.1
+    }
+    
     mutating func rotateClockwise() {
         let temp = upSide
         upSide = leftSide
         leftSide = downSide
         downSide = rightSide
         rightSide = temp
+        rotationCalculation += 1
+        if rotationCalculation == 4 {
+            rotationCalculation = 0
+        }
     }
     
-    mutating func rotateAnticlockwise() {
+    mutating func rotateСounterclockwise() {
         let temp = upSide
         upSide = rightSide
         rightSide = downSide
         downSide = leftSide
         leftSide = temp
+        if rotationCalculation == 0 {
+            rotationCalculation = 4
+        }
+        rotationCalculation -= 1
     }
     
     mutating func moveUp() {
@@ -57,70 +89,48 @@ struct Tile {
     }
 }
 
-struct LandScape {
+struct GameCore {
     var tilesStack = [Tile]()
     var tilesOnMap = [Tile]()
-    var currentTile: Tile? = nil
+    var currentTile: Tile?
     var isTileOkToPlace: Bool {
         return coordinateToPlaceCheck() && sidesToPlaceCheck() == true
-        
     }
     
     mutating func tileFromStack() {
-        currentTile =
-        tilesStack.remove(at: Int.random(in: 0...tilesStack.count-1))
+        currentTile = tilesStack.removeLast()
     }
     
     mutating func placeTileOnMap() {
         if isTileOkToPlace {
             tilesOnMap.append(currentTile!)
+            currentTile = nil
         } else {
             print("Not Possible to place")
         }
     }
     
-    func isHaveNeighbourOnUp(tile: Tile) -> Bool {
-        currentTile!.coordinates.1 - tile.coordinates.1 == -1
-    }
-    
-    func isHaveNeighbourOnRight(tile: Tile) -> Bool {
-        currentTile!.coordinates.0 - tile.coordinates.0 == -1
-    }
-    
-    func isHaveNeighbourOnDown(tile: Tile) -> Bool {
-        currentTile!.coordinates.1 - tile.coordinates.1 == 1
-    }
-    
-    func isHaveNeighbourOnLeft(tile: Tile) -> Bool {
-        currentTile!.coordinates.0 - tile.coordinates.0 == 1
-    }
-    
-    func isHaveSameXcoordinate(tile: Tile) -> Bool {
-        currentTile!.coordinates.0 == tile.coordinates.0
-    }
-    
-    func isHaveSameYcoordinate(tile: Tile) -> Bool {
-        currentTile!.coordinates.1 == tile.coordinates.1
-    }
-    
     func coordinateToPlaceCheck() -> Bool {
+        guard let currentTile = currentTile else {
+            return false
+        }
         var isCoordinareOkToPlace: Bool = false
         var isXOk = false
         var isYOk = false
         
         for tile in tilesOnMap {
             
-            if (isHaveNeighbourOnUp(tile: tile) ||
-                isHaveNeighbourOnDown(tile: tile)) &&
-                isHaveSameXcoordinate(tile: tile) {
+            if (currentTile.isUpNeighbour(tile) ||
+                currentTile.isDownNeighbour(tile)) &&
+                currentTile.isXNeighbour(tile) {
                 isYOk = true
             } else {
                 isYOk = false
             }
             
-            if (isHaveNeighbourOnRight(tile: tile) ||
-                isHaveNeighbourOnLeft(tile: tile)) &&
-                isHaveSameYcoordinate(tile: tile) {
+            if (currentTile.isRightNeighbour(tile) ||
+                currentTile.isLeftNeighbour(tile)) &&
+                currentTile.isYNeighbour(tile) {
                 isXOk = true
             } else {
                 isXOk = false
@@ -132,8 +142,8 @@ struct LandScape {
         }
         
         for tile in tilesOnMap {
-            if isHaveSameXcoordinate(tile: tile) &&
-                isHaveSameYcoordinate(tile: tile) {
+            if currentTile.isXNeighbour(tile) &&
+                currentTile.isYNeighbour(tile) {
                 isXOk = false
                 isYOk = false
             }
@@ -143,10 +153,8 @@ struct LandScape {
             isCoordinareOkToPlace = false
             print("Coordinates is Not OK")
         } else {
-//            if isXOk || isYOk == true {
                 isCoordinareOkToPlace = true
                 print("Coordinates is OK")
-//            }
         }
         return isCoordinareOkToPlace
     }
@@ -157,34 +165,38 @@ struct LandScape {
         var isRightSideOk = true
         var isDownSideOk = true
         var isLeftSideOk = true
+        
+        guard let currentTile = currentTile else {
+            return false
+        }
 
         for tile in tilesOnMap {
-            if isHaveNeighbourOnUp(tile: tile) &&
-                isHaveSameXcoordinate(tile: tile) {
-                if tile.downSide == currentTile?.upSide {
+            if currentTile.isUpNeighbour(tile) &&
+                currentTile.isXNeighbour(tile) {
+                if tile.downSide == currentTile.upSide {
                     isUpSideOk = true
                 } else { isUpSideOk = false }
             }
             
-            if isHaveNeighbourOnRight(tile: tile) &&
-                isHaveSameYcoordinate(tile: tile) {
-                if tile.leftSide == currentTile?.rightSide {
+            if currentTile.isRightNeighbour(tile) &&
+                currentTile.isYNeighbour(tile) {
+                if tile.leftSide == currentTile.rightSide {
                     isRightSideOk = true
                 } else { isRightSideOk  = false }
             }
                 
             
-            if isHaveNeighbourOnDown(tile: tile) &&
-                isHaveSameXcoordinate(tile: tile) {
-                if tile.upSide == currentTile?.downSide {
+            if currentTile.isDownNeighbour(tile) &&
+                currentTile.isXNeighbour(tile) {
+                if tile.upSide == currentTile.downSide {
                     isDownSideOk = true
                 } else { isDownSideOk  = false }
             }
             
             
-            if isHaveNeighbourOnLeft(tile: tile) &&
-                isHaveSameYcoordinate(tile: tile) {
-                if tile.rightSide == currentTile?.leftSide {
+            if currentTile.isLeftNeighbour(tile) &&
+                currentTile.isYNeighbour(tile) {
+                if tile.rightSide == currentTile.leftSide {
                     isLeftSideOk = true
                 } else { isLeftSideOk  = false }
             }

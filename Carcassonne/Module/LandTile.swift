@@ -14,6 +14,20 @@ enum LandType {
     case city
 }
 
+enum TileState {
+    case placed
+    case moving(isOkToPlace: Bool)
+    
+    var isMoving: Bool {
+        switch self {
+        case .placed:
+            return false
+        case .moving:
+          return true
+        }
+    }
+}
+
 struct Tile {
     var upSide: LandType
     var rightSide: LandType
@@ -23,6 +37,7 @@ struct Tile {
     var coordinates: (Int, Int) = (0, 0)
     var tilePictureName: String
     var rotationCalculation: Int = 0
+    var tileState: TileState = .moving(isOkToPlace: false)
 
     func isUpNeighbour(_ other: Tile) -> Bool {
         coordinates.1 - other.coordinates.1 == -1
@@ -92,33 +107,48 @@ struct Tile {
 struct GameCore {
     var tilesStack = [Tile]()
     var tilesOnMap = [Tile]()
-    var currentTile: Tile?
-    var isTileOkToPlace: Bool {
-        return coordinateToPlaceCheck() && sidesToPlaceCheck() == true
+    var lastMovingTile: Tile? {
+        guard
+            let tile = tilesOnMap.last,
+            tile.tileState.isMoving
+        else {
+            return nil
+        }
+        return tile
+    }
+        
+    var isLastMovingTileCanBePlace: Bool {
+        var isLastMovingTileCanBePlace = false
+        guard lastMovingTile != nil else { return false }
+        isLastMovingTileCanBePlace =  areCoordinatesOkToPlace(currentTile: lastMovingTile!) && areSidesOkToPlace(currentTile: lastMovingTile!)
+        return isLastMovingTileCanBePlace
     }
     
+    mutating func getMovingTile(action: (inout Tile) -> Void) {
+        guard lastMovingTile != nil else { return }
+        action(&tilesOnMap[tilesOnMap.count - 1])
+    }
+        
     mutating func tileFromStack() {
-        currentTile = tilesStack.removeLast()
+        tilesOnMap.append(tilesStack.removeLast())
     }
     
     mutating func placeTileOnMap() {
-        if isTileOkToPlace {
-            tilesOnMap.append(currentTile!)
-            currentTile = nil
-        } else {
+        guard isLastMovingTileCanBePlace else {
             print("Not Possible to place")
+            return
+        }
+        getMovingTile { tile in
+            tile.tileState = .placed
         }
     }
     
-    func coordinateToPlaceCheck() -> Bool {
-        guard let currentTile = currentTile else {
-            return false
-        }
+    func areCoordinatesOkToPlace(currentTile: Tile) -> Bool {
         var isCoordinareOkToPlace: Bool = false
         var isXOk = false
         var isYOk = false
         
-        for tile in tilesOnMap {
+        for tile in tilesOnMap.dropLast(1) {
             
             if (currentTile.isUpNeighbour(tile) ||
                 currentTile.isDownNeighbour(tile)) &&
@@ -141,7 +171,7 @@ struct GameCore {
             }
         }
         
-        for tile in tilesOnMap {
+        for tile in tilesOnMap.dropLast(1) {
             if currentTile.isXNeighbour(tile) &&
                 currentTile.isYNeighbour(tile) {
                 isXOk = false
@@ -159,18 +189,14 @@ struct GameCore {
         return isCoordinareOkToPlace
     }
     
-    func sidesToPlaceCheck() -> Bool {
+    func areSidesOkToPlace(currentTile: Tile) -> Bool {
         var isSidesOKToPlace: Bool = false
         var isUpSideOk = true
         var isRightSideOk = true
         var isDownSideOk = true
         var isLeftSideOk = true
-        
-        guard let currentTile = currentTile else {
-            return false
-        }
 
-        for tile in tilesOnMap {
+        for tile in tilesOnMap.dropLast(1) {
             if currentTile.isUpNeighbour(tile) &&
                 currentTile.isXNeighbour(tile) {
                 if tile.downSide == currentTile.upSide {

@@ -28,23 +28,7 @@ class TilePicture: UIImageView {
     var imageSideSize: CGFloat {
         image?.size.height ?? 0
     }
-    
-//    func moveUp() {
-//        frame.origin.y -= imageSideSize
-//    }
-//
-//    func moveRight() {
-//        frame.origin.x += imageSideSize
-//    }
-//
-//    func moveDown() {
-//        frame.origin.y += imageSideSize
-//    }
-//
-//    func moveLeft() {
-//        frame.origin.x -= imageSideSize
-//    }
-//
+
     func possitionInX(coordinatesOfTilesX: Int) {
         frame.origin.x =  view.center.x + CGFloat(coordinatesOfTilesX) * imageSideSize
     }
@@ -53,36 +37,29 @@ class TilePicture: UIImageView {
         frame.origin.y =  view.center.y - CGFloat(coordinateOfTilesY) * imageSideSize
     }
     
-//    func rotateClockwise() {
-//        self.transform = self.transform.rotated(by: CGFloat.pi / 2)
-//    }
-//
-//    func rotateAnticlockwise() {
-//        self.transform = self.transform.rotated(by: -CGFloat.pi / 2)
-//    }
-    
     func imageRotationPossition(rotationCalculation: Int) {
         for num in 0...rotationCalculation {
             if num != 0 {
                 self.transform = self.transform.rotated(by: CGFloat.pi / 2)
             }
         }
-        
-//        if rotationCalculation != 0 {
-//            self.transform = self.transform.rotated(by: CGFloat(Float.pi / Float(2 * rotationCalculation)))
-//        }
     }
     
-    func makeRedSignal(shadowColor: UIColor) {
-        layer.shadowColor = shadowColor.cgColor
+    func makeShadow(state: TileState) {
         layer.shadowOffset = .zero
         layer.shadowRadius = 10
         layer.shadowOpacity = 1
         clipsToBounds = false
-        alpha = 0.5
-    }
-    
-    func placed() {
-        alpha = 1
+        switch state {
+        case .moving(let isOkToPlace):
+            if isOkToPlace {
+                layer.shadowColor = .init(red: 0, green: 1, blue: 0, alpha: 1)
+            } else {
+                layer.shadowColor = .init(red: 1, green: 0, blue: 0, alpha: 1)
+            }
+        case .placed:
+            layer.shadowColor = .init(red: 0, green: 0, blue: 0, alpha: 0)
+        }
+        
     }
 }

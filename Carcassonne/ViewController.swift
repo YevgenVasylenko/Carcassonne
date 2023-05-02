@@ -14,10 +14,12 @@ class ViewController: UIViewController {
             if game.isLastMovingTileCanBePlace {
                 game.getMovingTile { tile in
                     tile.tileState = .moving(isOkToPlace: true)
+                    placeTileButton.isEnabled = true
                 }
             } else {
                 game.getMovingTile { tile in
                     tile.tileState = .moving(isOkToPlace: false)
+                    placeTileButton.isEnabled = false
                 }
             }
             let rendering = Rendering(game: self.game, view: mapView)
@@ -27,7 +29,9 @@ class ViewController: UIViewController {
     var mapView = UIScrollView()
     
     @IBOutlet var buttonsView: UIView!
-    @IBOutlet var endTurnAndTakeNewTile: UIButton!
+    @IBOutlet var endTurnAndTakeNewTileButton: UIButton!
+    @IBOutlet var placeTileButton: UIButton!
+    @IBOutlet var takeTileBackButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,19 +43,29 @@ class ViewController: UIViewController {
         self.view.addSubview(mapView)
         self.view.bringSubviewToFront(buttonsView)
         game.tilesOnMap.append(TileStorage.startTile)
+        takeTileBackButton.isEnabled = false
     }
     
     
     @IBAction func takeNewTile() {
         game.tileFromStack()
-        endTurnAndTakeNewTile.isEnabled = false
+        endTurnAndTakeNewTileButton.isEnabled = false
+        takeTileBackButton.isEnabled = false
     }
     
     @IBAction func placeTile() {
         if game.isLastMovingTileCanBePlace {
             game.placeTileOnMap()
-            endTurnAndTakeNewTile.isEnabled = true
+            endTurnAndTakeNewTileButton.isEnabled = true
+            takeTileBackButton.isEnabled = true
+            placeTileButton.isEnabled = false
         }
+    }
+    
+    @IBAction func takeTileBack() {
+        game.takeTileBack()
+        takeTileBackButton.isEnabled = false
+        endTurnAndTakeNewTileButton.isEnabled = false
     }
     
     @IBAction func moveTileUP() {
@@ -115,16 +129,5 @@ struct Rendering {
             picture.makeShadow(state: tile.tileState)
             view.addSubview(picture)
         }
-        
-//        guard let currentTile = game.currentTile else {
-//            return
-//        }
-//
-//        let picture = TilePicture(tilePictureName: currentTile.tilePictureName, view: view)
-//        picture.possitionInX(coordinatesOfTilesX: currentTile.coordinates.0)
-//        picture.possitionInY(coordinateOfTilesY: currentTile.coordinates.1)
-//        picture.imageRotationPossition(rotationCalculation: currentTile.rotationCalculation)
-//        picture.makeShadow(state: currentTile.tileState)
-//        view.addSubview(picture)
     }
 }

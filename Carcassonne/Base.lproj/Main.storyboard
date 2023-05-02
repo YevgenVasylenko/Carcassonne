@@ -96,6 +96,9 @@
                                         <color key="backgroundColor" systemColor="systemOrangeColor"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" image="square.and.arrow.up.on.square" catalog="system" title=""/>
+                                        <connections>
+                                            <action selector="takeTileBack" destination="BYZ-38-t0r" eventType="touchUpInside" id="PAe-xC-oxc"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M77-4k-zBm">
                                         <rect key="frame" x="105" y="81" width="53.5" height="34"/>
@@ -116,7 +119,9 @@
                     </view>
                     <connections>
                         <outlet property="buttonsView" destination="1w4-IL-el2" id="sFN-3q-J94"/>
-                        <outlet property="endTurnAndTakeNewTile" destination="qVj-rf-iR1" id="TQa-4C-2kI"/>
+                        <outlet property="endTurnAndTakeNewTileButton" destination="qVj-rf-iR1" id="YeK-PW-TW6"/>
+                        <outlet property="placeTileButton" destination="M77-4k-zBm" id="Kc4-aR-K6F"/>
+                        <outlet property="takeTileBackButton" destination="fIj-ZN-tWy" id="SiB-z3-RCx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

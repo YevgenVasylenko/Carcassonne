@@ -14,6 +14,14 @@ enum LandType {
     case city
 }
 
+enum TileSide {
+    case upSide
+    case rightSide
+    case downSide
+    case leftSide
+    case center
+}
+
 enum TileState {
     case placed
     case moving(isOkToPlace: Bool)
@@ -141,6 +149,10 @@ struct GameCore {
         getMovingTile { tile in
             tile.tileState = .placed
         }
+    }
+    
+    mutating func takeTileBack() {
+        tilesOnMap[tilesOnMap.count - 1].tileState = .moving(isOkToPlace: true)
     }
     
     func areCoordinatesOkToPlace(currentTile: Tile) -> Bool {

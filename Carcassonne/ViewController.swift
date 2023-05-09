@@ -8,30 +8,26 @@
 import UIKit
 
 class ViewController: UIViewController {
+    
+    enum TargetControl {
+        case tile
+        case meeple
+    }
 
     var game = GameCore() {
         didSet {
-            if game.isLastMovingTileCanBePlace {
-                game.getMovingTile { tile in
-                    tile.tileState = .moving(isOkToPlace: true)
-                    placeTileButton.isEnabled = true
-                }
-            } else {
-                game.getMovingTile { tile in
-                    tile.tileState = .moving(isOkToPlace: false)
-                    placeTileButton.isEnabled = false
-                }
-            }
             let rendering = Rendering(game: self.game, view: mapView)
             rendering.render()
         }
     }
     var mapView = UIScrollView()
+    var target = TargetControl.tile
     
     @IBOutlet var buttonsView: UIView!
     @IBOutlet var endTurnAndTakeNewTileButton: UIButton!
     @IBOutlet var placeTileButton: UIButton!
     @IBOutlet var takeTileBackButton: UIButton!
+    @IBOutlet var changeControl: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,6 +40,20 @@ class ViewController: UIViewController {
         self.view.bringSubviewToFront(buttonsView)
         game.tilesOnMap.append(TileStorage.startTile)
         takeTileBackButton.isEnabled = false
+        changeControl.setImage(UIImage(systemName: "figure.mind.and.body" ), for: .normal)
+    }
+    
+    
+    @IBAction func changeControlButton() {
+        switch target {
+        case .tile:
+            game.placeMeeple()
+            target = .meeple
+            changeControl.setImage(UIImage(systemName: "square"), for: .normal)
+        case .meeple:
+            target = .tile
+            changeControl.setImage(UIImage(systemName: "figure.mind.and.body"), for: .normal)
+        }
     }
     
     
@@ -54,54 +64,71 @@ class ViewController: UIViewController {
     }
     
     @IBAction func placeTile() {
-        if game.isLastMovingTileCanBePlace {
-            game.placeTileOnMap()
-            endTurnAndTakeNewTileButton.isEnabled = true
-            takeTileBackButton.isEnabled = true
-            placeTileButton.isEnabled = false
+        switch target {
+        case .tile:
+            if game.isTileCanBePlace {
+                game.placeTileOnMap()
+                endTurnAndTakeNewTileButton.isEnabled = true
+                takeTileBackButton.isEnabled = true
+            }
+        case .meeple:
+            target = .tile
         }
     }
     
     @IBAction func takeTileBack() {
-        game.takeTileBack()
-        takeTileBackButton.isEnabled = false
-        endTurnAndTakeNewTileButton.isEnabled = false
+        switch target {
+        case .tile:
+            game.takeTileBack()
+            takeTileBackButton.isEnabled = false
+            endTurnAndTakeNewTileButton.isEnabled = false
+        case .meeple:
+            game.currentTile?.removeMeeple()
+        }
     }
     
     @IBAction func moveTileUP() {
-        game.getMovingTile { tile in
-            tile.moveUp()
+        switch target {
+        case .tile:
+            game.currentTile?.moveUp()
+        case .meeple:
+            game.tilesOnMap[game.tilesOnMap.count-1].meeple.moveMeepleUp()
         }
     }
     
     @IBAction func moveTileRight() {
-        game.getMovingTile { tile in
-            tile.moveRight()
+        switch target {
+        case .tile:
+            game.currentTile?.moveRight()
+        case .meeple:
+            game.tilesOnMap[game.tilesOnMap.count-1].meeple.moveMeepleRight()
         }
     }
     
     @IBAction func moveTileDown() {
-        game.getMovingTile { tile in
-            tile.moveDown()
+        switch target {
+        case .tile:
+            game.currentTile?.moveDown()
+        case .meeple:
+            game.tilesOnMap[game.tilesOnMap.count-1].meeple.moveMeepleDown()
         }
     }
     
     @IBAction func moveTileLeft() {
-        game.getMovingTile { tile in
-            tile.moveLeft()
+        switch target {
+        case .tile:
+            game.currentTile?.moveLeft()
+        case .meeple:
+            game.tilesOnMap[game.tilesOnMap.count-1].meeple.moveMeepleLeft()
         }
     }
     
     @IBAction func rotateTileClockwise() {
-        game.getMovingTile { tile in
-            tile.rotateClockwise()
-        }
+        game.currentTile?.rotateClockwise()
     }
     
     @IBAction func rotateTileAnticlockwise() {
-        game.getMovingTile { tile in
-            tile.rotateСounterclockwise()
-        }
+        game.currentTile?.rotateСounterclockwise()
     }
 }
 
@@ -122,12 +149,13 @@ struct Rendering {
         }
         
         for tile in game.tilesOnMap {
-            let picture = TilePicture(tilePictureName: tile.tilePictureName, view: view)
-            picture.possitionInX(coordinatesOfTilesX: tile.coordinates.0)
-            picture.possitionInY(coordinateOfTilesY: tile.coordinates.1)
-            picture.imageRotationPossition(rotationCalculation: tile.rotationCalculation)
-            picture.makeShadow(state: tile.tileState)
-            view.addSubview(picture)
+            
+            let picture = TilePicture(tile: tile, view: view)
         }
+        
+        guard let tile = game.currentTile else { return }
+        
+        let picture = TilePicture(tile: tile, view: view)
+        picture.makeShadow(isTileCanBePlace: game.isTileCanBePlace)
     }
 }

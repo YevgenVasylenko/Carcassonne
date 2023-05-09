@@ -18,6 +18,7 @@
 		5D36B94529EAE3BA00448219 /* LandTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D36B94429EAE3BA00448219 /* LandTile.swift */; };
 		5D4946D729EEBA0100AEA11E /* CarcassonneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4946D629EEBA0100AEA11E /* CarcassonneTests.swift */; };
 		5D7A0A692A0107A200C1C609 /* Meeple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7A0A682A0107A200C1C609 /* Meeple.swift */; };
+		5D9320032A078E260001FAAB /* GameCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9320022A078E260001FAAB /* GameCore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +47,7 @@
 		5D4946D429EEBA0100AEA11E /* CarcassonneTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CarcassonneTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D4946D629EEBA0100AEA11E /* CarcassonneTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarcassonneTests.swift; sourceTree = "<group>"; };
 		5D7A0A682A0107A200C1C609 /* Meeple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Meeple.swift; sourceTree = "<group>"; };
+		5D9320022A078E260001FAAB /* GameCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCore.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,8 +71,9 @@
 		5D20304D29F2DF4000F0720B /* Module */ = {
 			isa = PBXGroup;
 			children = (
-				5D7A0A682A0107A200C1C609 /* Meeple.swift */,
+				5D9320022A078E260001FAAB /* GameCore.swift */,
 				5D36B94429EAE3BA00448219 /* LandTile.swift */,
+				5D7A0A682A0107A200C1C609 /* Meeple.swift */,
 				5D20304829F156BA00F0720B /* TilesToPlay.swift */,
 			);
 			path = Module;
@@ -223,6 +226,7 @@
 				5D36B93529EAE35400448219 /* ViewController.swift in Sources */,
 				5D20304F29F2E00300F0720B /* TilePicture.swift in Sources */,
 				5D36B93129EAE35400448219 /* AppDelegate.swift in Sources */,
+				5D9320032A078E260001FAAB /* GameCore.swift in Sources */,
 				5D7A0A692A0107A200C1C609 /* Meeple.swift in Sources */,
 				5D36B94529EAE3BA00448219 /* LandTile.swift in Sources */,
 				5D20304929F156BA00F0720B /* TilesToPlay.swift in Sources */,

@@ -8,7 +8,7 @@
 import Foundation
 
 enum TileStorage {
-    static let startTile = Tile(upSide: .road, rightSide: .city, downSide: .road, leftSide: .field, center: .road, tilePictureName: "straightRoadCitySide", tileState: .placed)
+    static let startTile = Tile(upSide: .road, rightSide: .city, downSide: .road, leftSide: .field, center: .road, tilePictureName: "straightRoadCitySide")
     
     static let tilePool = makeTilePool()
 }

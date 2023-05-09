@@ -24,6 +24,8 @@ class ViewController: UIViewController {
     var target = TargetControl.tile
     
     @IBOutlet var buttonsView: UIView!
+
+    @IBOutlet weak var rotateTileCounterclockwise: UIButton!
     @IBOutlet var endTurnAndTakeNewTileButton: UIButton!
     @IBOutlet var placeTileButton: UIButton!
     @IBOutlet var takeTileBackButton: UIButton!
@@ -56,6 +58,26 @@ class ViewController: UIViewController {
         }
     }
     
+    func changeButtonAvailability(gameState: GameState) {
+        switch gameState {
+            
+        case .gameStart:
+            break
+        case .currentTileOperrate(let isCanBePlace):
+            <#code#>
+        case .currentTileNotOperrrate(let meepleOperrate):
+            switch meepleOperrate {
+            case .meepleOperrate(isCanBePlace: let isCanBePlace):
+                <#code#>
+            case .meepleNotOperrate:
+                <#code#>
+            }
+        }
+    }
+    
+    func makeAllButtonAvailable() {
+        
+    }
     
     @IBAction func takeNewTile() {
         game.tileFromStack()

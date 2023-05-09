@@ -10,9 +10,12 @@ import Foundation
 enum GameState {
     case gameStart
     case currentTileOperrate(isCanBePlace: Bool)
-    case currentTileNotOperrrate
-    case meepleOperrate(isCanBePlace: Bool)
-    case meepleNotOperrate
+    case currentTileNotOperrrate(meepleOperrate: MeepleOperrate)
+    
+    enum MeepleOperrate {
+        case meepleOperrate(isCanBePlace: Bool)
+        case meepleNotOperrate
+    }
 }
 
 struct GameCore {
@@ -28,11 +31,21 @@ struct GameCore {
         return isLastMovingTileCanBePlace
     }
     
-//    var gameState: GameState {
-//        
-//    }
-//    
-//    func gameState
+    var gameState: GameState {
+        gameStateChange()
+    }
+    
+    func gameStateChange() -> GameState {
+        if currentTile != nil {
+            return .currentTileOperrate(isCanBePlace: isTileCanBePlace)
+        } else {
+            if ((tilesOnMap.last?.meeple.isMeeplePlaced) ?? false) {
+                return .currentTileNotOperrrate(meepleOperrate: .meepleOperrate(isCanBePlace: true))
+            } else {
+                return .currentTileNotOperrrate(meepleOperrate: .meepleNotOperrate)
+            }
+        }
+    }
     
     mutating func tileFromStack() {
         currentTile = tilesStack.removeLast()

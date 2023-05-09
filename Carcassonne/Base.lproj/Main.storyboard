@@ -132,6 +132,7 @@
                         <outlet property="changeControl" destination="VFW-Cd-AjH" id="NhD-CL-zh5"/>
                         <outlet property="endTurnAndTakeNewTileButton" destination="qVj-rf-iR1" id="YeK-PW-TW6"/>
                         <outlet property="placeTileButton" destination="M77-4k-zBm" id="Kc4-aR-K6F"/>
+                        <outlet property="rotateTileCounterclockwise" destination="wGs-Gd-uFm" id="pxL-vg-oZM"/>
                         <outlet property="takeTileBackButton" destination="fIj-ZN-tWy" id="SiB-z3-RCx"/>
                     </connections>
                 </viewController>

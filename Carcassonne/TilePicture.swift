@@ -37,7 +37,7 @@ class TilePicture: UIView {
         imageRotationPossition(rotationCalculation: tile.rotationCalculation)
         self.addSubview(imageView)
         
-        DrawOrEraseMeeple(coordinatesOfMeepleXY: tile.meeple.coordinates, isTileHaveMeeple: tile.meeple.isMeeplePlaced, imageSideSize: imageSideSize)
+        DrawOrEraseMeeple(coordinatesOfMeepleXY: tile.meeple?.coordinates,   imageSideSize: imageSideSize)
         
     }
 
@@ -65,23 +65,23 @@ class TilePicture: UIView {
     }
     
 
-    func DrawOrEraseMeeple(coordinatesOfMeepleXY: (Int, Int), isTileHaveMeeple: Bool, imageSideSize: CGFloat) {
+    func DrawOrEraseMeeple(coordinatesOfMeepleXY: (Int, Int)?, imageSideSize: CGFloat) {
         
         let meeplePicture = UIImageView()
         
         var meepleImageSideSize: CGFloat {
             imageSideSize / 3
         }
-        
-        if isTileHaveMeeple {
+        guard  let coordinatesOfMeepleXY = coordinatesOfMeepleXY else {
+            meeplePicture.removeFromSuperview()
+            return
+        }
             meeplePicture.image = UIImage(named: "meeple")
             meeplePicture.frame = CGRect(
                 origin: meeplePossitionInXY(coordinatesOfMeepleXY: coordinatesOfMeepleXY, meepleImageSideSize: meepleImageSideSize),
                 size: .init(width: meepleImageSideSize, height: meepleImageSideSize))
             self.addSubview(meeplePicture)
-        } else {
-            meeplePicture.removeFromSuperview()
-        }
+       
     }
     
     func meeplePossitionInXY(coordinatesOfMeepleXY: (Int, Int), meepleImageSideSize: CGFloat) -> CGPoint {

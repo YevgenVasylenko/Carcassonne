@@ -9,12 +9,12 @@ import Foundation
 
 enum GameState {
     case gameStart
-    case currentTileOperrate(isCanBePlace: Bool)
-    case currentTileNotOperrrate(meepleOperrate: MeepleOperrate)
+    case currentTileOperate(isCanBePlace: Bool)
+    case currentTileNotOperate(meepleOperate: MeepleOperate)
     
-    enum MeepleOperrate {
-        case meepleOperrate(isCanBePlace: Bool)
-        case meepleNotOperrate
+    enum MeepleOperate {
+        case meepleOperate(Bool, Bool)
+        case meepleNotOperate
     }
 }
 
@@ -22,27 +22,40 @@ struct GameCore {
     var tilesStack = [Tile]()
     var tilesOnMap = [Tile]()
     var currentTile: Tile? = nil
+    var unsafeLastTile: Tile {
+        get {
+            return tilesOnMap[tilesOnMap.count - 1]
+        }
+        set {
+            tilesOnMap[tilesOnMap.count - 1] = newValue
+        }
+    }
     
     var isTileCanBePlace: Bool {
-        var isLastMovingTileCanBePlace = false
         guard let currentTile = currentTile else { return false }
-        isLastMovingTileCanBePlace = areCoordinatesOkToPlace(currentTile: currentTile) &&
+        return areCoordinatesOkToPlace(currentTile: currentTile) &&
         areSidesOkToPlace(currentTile: currentTile)
-        return isLastMovingTileCanBePlace
     }
     
     var gameState: GameState {
         gameStateChange()
     }
     
+    init(tilesStack: [Tile], firstTile: Tile) {
+        self.tilesStack = tilesStack
+        
+        tilesOnMap.reserveCapacity(tilesStack.count)
+        tilesOnMap.append(firstTile)
+    }
+    
     func gameStateChange() -> GameState {
         if currentTile != nil {
-            return .currentTileOperrate(isCanBePlace: isTileCanBePlace)
+            return .currentTileOperate(isCanBePlace: isTileCanBePlace)
         } else {
-            if ((tilesOnMap.last?.meeple.isMeeplePlaced) ?? false) {
-                return .currentTileNotOperrrate(meepleOperrate: .meepleOperrate(isCanBePlace: true))
+            if tilesOnMap.last?.meeple != nil {
+                return .currentTileNotOperate(meepleOperate: .meepleOperate(true,  unsafeLastTile.meeple?.isMeeplePlaced ?? false))
             } else {
-                return .currentTileNotOperrrate(meepleOperrate: .meepleNotOperrate)
+                return .currentTileNotOperate(meepleOperate: .meepleNotOperate)
             }
         }
     }
@@ -64,8 +77,20 @@ struct GameCore {
         currentTile = tilesOnMap.removeLast()
     }
     
+    mutating func createMeeple() {
+        unsafeLastTile.meeple = Meeple()
+    }
+    
     mutating func placeMeeple() {
-        tilesOnMap[tilesOnMap.count-1].placeMeeple()
+        unsafeLastTile.meeple?.isMeeplePlaced = true
+    }
+    
+    mutating func pickUpMeeple() {
+        unsafeLastTile.meeple?.isMeeplePlaced = false
+    }
+    
+    mutating func removeMeeple() {
+        unsafeLastTile.meeple = nil
     }
     
     func areCoordinatesOkToPlace(currentTile: Tile) -> Bool {

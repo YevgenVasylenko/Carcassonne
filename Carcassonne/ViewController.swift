@@ -14,8 +14,9 @@ class ViewController: UIViewController {
         case meeple
     }
 
-    var game = GameCore() {
+    var game = GameCore(tilesStack: TileStorage.tilePool, firstTile: TileStorage.startTile) {
         didSet {
+            changeButtonAvailability(gameState: game.gameState)
             let rendering = Rendering(game: self.game, view: mapView)
             rendering.render()
         }
@@ -25,7 +26,12 @@ class ViewController: UIViewController {
     
     @IBOutlet var buttonsView: UIView!
 
-    @IBOutlet weak var rotateTileCounterclockwise: UIButton!
+    @IBOutlet weak var rotateTileCounterclockwiseButton: UIButton!
+    @IBOutlet weak var moveUpButton: UIButton!
+    @IBOutlet weak var rotateClockwiseButton: UIButton!
+    @IBOutlet weak var moveLeftButton: UIButton!
+    @IBOutlet weak var moveDownButton: UIButton!
+    @IBOutlet weak var moveRightButton: UIButton!
     @IBOutlet var endTurnAndTakeNewTileButton: UIButton!
     @IBOutlet var placeTileButton: UIButton!
     @IBOutlet var takeTileBackButton: UIButton!
@@ -34,55 +40,49 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        game.tilesStack = TileStorage.tilePool
         mapView = UIScrollView(frame: self.view.bounds)
         mapView.backgroundColor = .white
         mapView.contentSize = CGSize(width: 1000, height: 1000)
         self.view.addSubview(mapView)
         self.view.bringSubviewToFront(buttonsView)
-        game.tilesOnMap.append(TileStorage.startTile)
-        takeTileBackButton.isEnabled = false
-        changeControl.setImage(UIImage(systemName: "figure.mind.and.body" ), for: .normal)
     }
     
     
     @IBAction func changeControlButton() {
         switch target {
         case .tile:
-            game.placeMeeple()
+            game.createMeeple()
             target = .meeple
-            changeControl.setImage(UIImage(systemName: "square"), for: .normal)
+            changeChangeControlButtonImage()
         case .meeple:
             target = .tile
-            changeControl.setImage(UIImage(systemName: "figure.mind.and.body"), for: .normal)
+            game.removeMeeple()
+            changeChangeControlButtonImage()
         }
     }
     
     func changeButtonAvailability(gameState: GameState) {
-        switch gameState {
-            
-        case .gameStart:
-            break
-        case .currentTileOperrate(let isCanBePlace):
-            <#code#>
-        case .currentTileNotOperrrate(let meepleOperrate):
-            switch meepleOperrate {
-            case .meepleOperrate(isCanBePlace: let isCanBePlace):
-                <#code#>
-            case .meepleNotOperrate:
-                <#code#>
-            }
-        }
-    }
-    
-    func makeAllButtonAvailable() {
-        
+        rotateTileCounterclockwiseButton.isEnabled = game.gameState.isRotateEnabled()
+        moveUpButton.isEnabled = game.gameState.isMovingEnabled()
+        rotateClockwiseButton.isEnabled = game.gameState.isRotateEnabled()
+        moveLeftButton.isEnabled = game.gameState.isMovingEnabled()
+        moveDownButton.isEnabled = game.gameState.isMovingEnabled()
+        moveRightButton.isEnabled = game.gameState.isMovingEnabled()
+        endTurnAndTakeNewTileButton.isEnabled = game.gameState.isNextTurnEnabled()
+        placeTileButton.isEnabled = game.gameState.isPlaceEnabled()
+        takeTileBackButton.isEnabled = game.gameState.isPickupEnabled()
+        changeControl.isEnabled = game.gameState.isMeepleTileControlEnabled()
     }
     
     @IBAction func takeNewTile() {
-        game.tileFromStack()
-        endTurnAndTakeNewTileButton.isEnabled = false
-        takeTileBackButton.isEnabled = false
+        switch target {
+        case .tile:
+            game.tileFromStack()
+        case .meeple:
+            game.tileFromStack()
+            target = .tile
+            changeChangeControlButtonImage()
+        }
     }
     
     @IBAction func placeTile() {
@@ -90,11 +90,9 @@ class ViewController: UIViewController {
         case .tile:
             if game.isTileCanBePlace {
                 game.placeTileOnMap()
-                endTurnAndTakeNewTileButton.isEnabled = true
-                takeTileBackButton.isEnabled = true
             }
         case .meeple:
-            target = .tile
+            game.placeMeeple()
         }
     }
     
@@ -102,10 +100,9 @@ class ViewController: UIViewController {
         switch target {
         case .tile:
             game.takeTileBack()
-            takeTileBackButton.isEnabled = false
-            endTurnAndTakeNewTileButton.isEnabled = false
         case .meeple:
-            game.currentTile?.removeMeeple()
+            game.pickUpMeeple()
+            return
         }
     }
     
@@ -114,7 +111,7 @@ class ViewController: UIViewController {
         case .tile:
             game.currentTile?.moveUp()
         case .meeple:
-            game.tilesOnMap[game.tilesOnMap.count-1].meeple.moveMeepleUp()
+            game.unsafeLastTile.meeple?.moveMeepleUp()
         }
     }
     
@@ -123,7 +120,7 @@ class ViewController: UIViewController {
         case .tile:
             game.currentTile?.moveRight()
         case .meeple:
-            game.tilesOnMap[game.tilesOnMap.count-1].meeple.moveMeepleRight()
+            game.unsafeLastTile.meeple?.moveMeepleRight()
         }
     }
     
@@ -132,7 +129,7 @@ class ViewController: UIViewController {
         case .tile:
             game.currentTile?.moveDown()
         case .meeple:
-            game.tilesOnMap[game.tilesOnMap.count-1].meeple.moveMeepleDown()
+            game.unsafeLastTile.meeple?.moveMeepleDown()
         }
     }
     
@@ -141,7 +138,7 @@ class ViewController: UIViewController {
         case .tile:
             game.currentTile?.moveLeft()
         case .meeple:
-            game.tilesOnMap[game.tilesOnMap.count-1].meeple.moveMeepleLeft()
+            game.unsafeLastTile.meeple?.moveMeepleLeft()
         }
     }
     
@@ -149,16 +146,25 @@ class ViewController: UIViewController {
         game.currentTile?.rotateClockwise()
     }
     
-    @IBAction func rotateTileAnticlockwise() {
-        game.currentTile?.rotateСounterclockwise()
+    @IBAction func rotateTileCounterclockwise() {
+        game.currentTile?.rotateCounterclockwise()
+    }
+    
+    func changeChangeControlButtonImage() {
+        switch target {
+        case .tile:
+            changeControl.setImage(UIImage(systemName: "figure.mind.and.body"), for: .normal)
+        case .meeple:
+            changeControl.setImage(UIImage(systemName: "square"), for: .normal)
+        }
     }
 }
 
 struct Rendering {
     
-    var game: GameCore
-    var view: UIView
-    
+    let game: GameCore
+    let view: UIView
+
     init(game: GameCore, view: UIView) {
         self.game = game
         self.view = view

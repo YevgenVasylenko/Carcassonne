@@ -37,7 +37,7 @@
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" image="arrow.uturn.backward" catalog="system" title=""/>
                                         <connections>
-                                            <action selector="rotateTileAnticlockwise" destination="BYZ-38-t0r" eventType="touchUpInside" id="IpT-J5-eeQ"/>
+                                            <action selector="rotateTileCounterclockwise" destination="BYZ-38-t0r" eventType="touchUpInside" id="eaS-Tc-lw7"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PLx-iV-fZi">
@@ -115,7 +115,7 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" systemColor="systemOrangeColor"/>
                                         <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain"/>
+                                        <buttonConfiguration key="configuration" style="plain" image="figure.mind.and.body" catalog="system" imagePadding="0.0"/>
                                         <connections>
                                             <action selector="changeControlButton" destination="BYZ-38-t0r" eventType="touchUpInside" id="KhG-CL-2We"/>
                                         </connections>
@@ -131,8 +131,13 @@
                         <outlet property="buttonsView" destination="1w4-IL-el2" id="sFN-3q-J94"/>
                         <outlet property="changeControl" destination="VFW-Cd-AjH" id="NhD-CL-zh5"/>
                         <outlet property="endTurnAndTakeNewTileButton" destination="qVj-rf-iR1" id="YeK-PW-TW6"/>
+                        <outlet property="moveDownButton" destination="MiU-B0-7td" id="deH-E2-0hk"/>
+                        <outlet property="moveLeftButton" destination="Brg-VL-qXL" id="YNx-3C-PK1"/>
+                        <outlet property="moveRightButton" destination="zD4-Zv-OBb" id="MS1-os-TeI"/>
+                        <outlet property="moveUpButton" destination="fCh-tx-FqL" id="GIb-ga-YiK"/>
                         <outlet property="placeTileButton" destination="M77-4k-zBm" id="Kc4-aR-K6F"/>
-                        <outlet property="rotateTileCounterclockwise" destination="wGs-Gd-uFm" id="pxL-vg-oZM"/>
+                        <outlet property="rotateClockwiseButton" destination="PLx-iV-fZi" id="Ds7-KX-gCC"/>
+                        <outlet property="rotateTileCounterclockwiseButton" destination="wGs-Gd-uFm" id="NyG-9Y-XEP"/>
                         <outlet property="takeTileBackButton" destination="fIj-ZN-tWy" id="SiB-z3-RCx"/>
                     </connections>
                 </viewController>
@@ -149,6 +154,7 @@
         <image name="arrowtriangle.down" catalog="system" width="128" height="120"/>
         <image name="arrowtriangle.right" catalog="system" width="128" height="113"/>
         <image name="arrowtriangle.up" catalog="system" width="128" height="120"/>
+        <image name="figure.mind.and.body" catalog="system" width="128" height="102"/>
         <image name="square.and.arrow.down.on.square" catalog="system" width="122" height="128"/>
         <image name="square.and.arrow.up.on.square" catalog="system" width="119" height="128"/>
         <systemColor name="systemBackgroundColor">

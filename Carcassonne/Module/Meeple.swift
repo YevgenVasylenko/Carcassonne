@@ -21,12 +21,15 @@ struct Meeple {
             updateTileSide()
         }
     }
-    var possition: LandType? = nil
+    var position: LandType? = nil
     var meepleType: MeepleType {
-        possition!.meepleTypeChoose()
+        position!.meepleTypeChoose()
     }
     var tileSide: TileSides = .center
     var isMeeplePlaced = false
+    var isMeepleAvailableToStay: Bool {
+        isStaymentAvailable()
+    }
     
     mutating func updateTileSide() {
         switch coordinates {
@@ -46,26 +49,34 @@ struct Meeple {
     }
     
     mutating func moveMeepleUp() {
-        if coordinates.1 != 1 {
-            coordinates.1 += 1
-        }
-    }
-    
-    mutating func moveMeepleRight() {
-        if coordinates.0 != 1 {
-            coordinates.0 += 1
-        }
-    }
-    
-    mutating func moveMeepleDown() {
-        if coordinates.1 != -1 {
+        coordinates.1 += 1
+        if !isMeepleAvailableToStay {
             coordinates.1 -= 1
         }
     }
     
-    mutating func moveMeepleLeft() {
-        if coordinates.0 != -1 {
+    mutating func moveMeepleRight() {
+        coordinates.0 += 1
+        if !isMeepleAvailableToStay {
             coordinates.0 -= 1
         }
+    }
+    
+    mutating func moveMeepleDown() {
+        coordinates.1 -= 1
+        if !isMeepleAvailableToStay {
+            coordinates.1 += 1
+        }
+    }
+    
+    mutating func moveMeepleLeft() {
+        coordinates.0 -= 1
+        if !isMeepleAvailableToStay {
+            coordinates.0 += 1
+        }
+    }
+    
+    func isStaymentAvailable() -> Bool {
+        return coordinates != (0, 2) && coordinates != ( 2, 0) && coordinates != (0, -2) && coordinates != (-2, 0) && coordinates != (1, 1) && coordinates != (-1, -1) && coordinates != (-1, 1) && coordinates != (1, -1)
     }
 }

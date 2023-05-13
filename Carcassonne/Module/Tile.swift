@@ -1,5 +1,5 @@
 //
-//  LandTile.swift
+//  Tile.swift
 //  Carcassonne
 //
 //  Created by Yevgen Vasylenko on 15.04.2023.
@@ -46,11 +46,7 @@ struct Tile {
     var coordinates: (Int, Int) = (0, 0)
     var tilePictureName: String
     var rotationCalculation: Int = 0
-    var meeple = Meeple() /* {
-        didSet {
-            updateMeeplePosition()
-        }
-    } */
+    var meeple: Meeple? = nil
     
     func isUpNeighbour(_ other: Tile) -> Bool {
         coordinates.1 - other.coordinates.1 == -1
@@ -88,7 +84,7 @@ struct Tile {
         }
     }
     
-    mutating func rotateСounterclockwise() {
+    mutating func rotateCounterclockwise() {
         let temp = upSide
         upSide = rightSide
         rightSide = downSide
@@ -116,28 +112,28 @@ struct Tile {
         coordinates.0 += 1
     }
     
-    mutating func placeMeeple() {
-        meeple.isMeeplePlaced = true
-    }
-    
-    mutating func removeMeeple() {
-        meeple.isMeeplePlaced = false
-    }
-    
-    mutating func updateMeeplePosition() {
-        switch meeple.tileSide {
-        case .upSide:
-            meeple.possition = upSide
-        case .rightSide:
-            meeple.possition = rightSide
-        case .downSide:
-            meeple.possition = downSide
-        case .leftSide:
-            meeple.possition = leftSide
-        case .center:
-            meeple.possition = center
-        }
-    }
+//    mutating func placeMeeple() {
+//        meeple.isMeeplePlaced = true
+//    }
+//
+//    mutating func removeMeeple() {
+//        meeple.isMeeplePlaced = false
+//    }
+//
+//    mutating func updateMeeplePosition() {
+//        switch meeple.tileSide {
+//        case .upSide:
+//            meeple.possition = upSide
+//        case .rightSide:
+//            meeple.possition = rightSide
+//        case .downSide:
+//            meeple.possition = downSide
+//        case .leftSide:
+//            meeple.possition = leftSide
+//        case .center:
+//            meeple.possition = center
+//        }
+//    }
 }
 
 

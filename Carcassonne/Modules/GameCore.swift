@@ -22,6 +22,11 @@ struct GameCore {
     var tilesStack = [Tile]()
     var tilesOnMap = [Tile]()
     var currentTile: Tile? = nil
+    var players = [Player]()
+    private var playerIndex = 0
+    var currentPlayer: Player? {
+        players[playerIndex]
+    }
     var unsafeLastTile: Tile {
         get {
             return tilesOnMap[tilesOnMap.count - 1]
@@ -48,27 +53,17 @@ struct GameCore {
         tilesOnMap.append(firstTile)
     }
     
-    func gameStateChange() -> GameState {
-        if currentTile != nil {
-            return .currentTileOperate(isCanBePlace: isTileCanBePlace)
-        } else {
-            if tilesOnMap.last?.meeple != nil {
-                return .currentTileNotOperate(meepleOperate: .meepleOperate(true,  unsafeLastTile.meeple?.isMeeplePlaced ?? false))
-            } else {
-                return .currentTileNotOperate(meepleOperate: .meepleNotOperate)
-            }
-        }
-    }
-    
     mutating func tileFromStack() {
         currentTile = tilesStack.removeLast()
+        changePlayerIndex()
     }
     
     mutating func placeTileOnMap() {
-        guard let currentTile = currentTile else {
+        guard var currentTile = currentTile else {
             print("Not Possible to place")
             return
         }
+        currentTile.belongToPlayer = currentPlayer
         tilesOnMap.append(currentTile)
         self.currentTile = nil
     }
@@ -78,11 +73,13 @@ struct GameCore {
     }
     
     mutating func createMeeple() {
-        unsafeLastTile.meeple = Meeple()
+        unsafeLastTile.meeple = Meeple(upSide: unsafeLastTile.upSide, rightSide: unsafeLastTile.rightSide, downSide: unsafeLastTile.downSide, leftSide: unsafeLastTile.leftSide, centre: unsafeLastTile.centre)
     }
     
     mutating func placeMeeple() {
-        unsafeLastTile.meeple?.isMeeplePlaced = true
+        if unsafeLastTile.meeple?.isMeepleOnField ?? false {
+            unsafeLastTile.meeple?.isMeeplePlaced = true
+        }
     }
     
     mutating func pickUpMeeple() {
@@ -92,9 +89,32 @@ struct GameCore {
     mutating func removeMeeple() {
         unsafeLastTile.meeple = nil
     }
+}
+
+private extension GameCore {
+    
+    func gameStateChange() -> GameState {
+        if currentTile != nil {
+            return .currentTileOperate(isCanBePlace: isTileCanBePlace)
+        } else {
+            if tilesOnMap.last?.meeple != nil {
+                return .currentTileNotOperate(meepleOperate: .meepleOperate(unsafeLastTile.meeple?.isMeepleOnField ?? false,  unsafeLastTile.meeple?.isMeeplePlaced ?? false))
+            } else {
+                return .currentTileNotOperate(meepleOperate: .meepleNotOperate)
+            }
+        }
+    }
+    
+    mutating func changePlayerIndex() {
+        if playerIndex == players.count - 1 {
+            playerIndex = 0
+        } else if playerIndex < players.count - 1 {
+            playerIndex += 1
+        }
+    }
     
     func areCoordinatesOkToPlace(currentTile: Tile) -> Bool {
-        var isCoordinareOkToPlace: Bool = false
+        var isCoordinateOkToPlace: Bool = false
         var isXOk = false
         var isYOk = false
         
@@ -115,7 +135,7 @@ struct GameCore {
             } else {
                 isXOk = false
             }
-
+            
             if isYOk != isXOk {
                 break
             }
@@ -130,13 +150,13 @@ struct GameCore {
         }
         
         if isXOk == isYOk {
-            isCoordinareOkToPlace = false
+            isCoordinateOkToPlace = false
             print("Coordinates is Not OK")
         } else {
-                isCoordinareOkToPlace = true
-                print("Coordinates is OK")
+            isCoordinateOkToPlace = true
+            print("Coordinates is OK")
         }
-        return isCoordinareOkToPlace
+        return isCoordinateOkToPlace
     }
     
     func areSidesOkToPlace(currentTile: Tile) -> Bool {
@@ -145,7 +165,7 @@ struct GameCore {
         var isRightSideOk = true
         var isDownSideOk = true
         var isLeftSideOk = true
-
+        
         for tile in tilesOnMap {
             if currentTile.isUpNeighbour(tile) &&
                 currentTile.isXNeighbour(tile) {
@@ -160,7 +180,7 @@ struct GameCore {
                     isRightSideOk = true
                 } else { isRightSideOk  = false }
             }
-                
+            
             
             if currentTile.isDownNeighbour(tile) &&
                 currentTile.isXNeighbour(tile) {
@@ -182,7 +202,7 @@ struct GameCore {
             isSidesOKToPlace = true
             print("Sides is OK")
         } else {
-        isSidesOKToPlace = false
+            isSidesOKToPlace = false
             print("Sides is not OK")
         }
         return isSidesOKToPlace

@@ -34,7 +34,7 @@ enum TileSides {
     case rightSide
     case downSide
     case leftSide
-    case center
+    case centre
 }
 
 struct Tile {
@@ -42,11 +42,12 @@ struct Tile {
     var rightSide: LandType
     var downSide: LandType
     var leftSide: LandType
-    var center: LandType
+    var centre: LandType
     var coordinates: (Int, Int) = (0, 0)
     var tilePictureName: String
     var rotationCalculation: Int = 0
     var meeple: Meeple? = nil
+    var belongToPlayer: Player? = nil
     
     func isUpNeighbour(_ other: Tile) -> Bool {
         coordinates.1 - other.coordinates.1 == -1
@@ -111,29 +112,5 @@ struct Tile {
     mutating func moveRight() {
         coordinates.0 += 1
     }
-    
-//    mutating func placeMeeple() {
-//        meeple.isMeeplePlaced = true
-//    }
-//
-//    mutating func removeMeeple() {
-//        meeple.isMeeplePlaced = false
-//    }
-//
-//    mutating func updateMeeplePosition() {
-//        switch meeple.tileSide {
-//        case .upSide:
-//            meeple.possition = upSide
-//        case .rightSide:
-//            meeple.possition = rightSide
-//        case .downSide:
-//            meeple.possition = downSide
-//        case .leftSide:
-//            meeple.possition = leftSide
-//        case .center:
-//            meeple.possition = center
-//        }
-//    }
 }
-
 

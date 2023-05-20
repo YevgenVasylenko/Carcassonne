@@ -50,8 +50,8 @@ extension GameState {
             switch meepleOperate {
             case .meepleNotOperate:
                 return false
-            case .meepleOperate(_, let isPlaced):
-                return !isPlaced
+            case .meepleOperate(let isCanBePlaced, let isPlaced):
+                return isCanBePlaced && !isPlaced
             }
         }
     }

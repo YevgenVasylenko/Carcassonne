@@ -16,67 +16,76 @@ enum MeepleType {
 
 struct Meeple {
     
-    var coordinates: (Int, Int) = (0, 0) {
-        didSet {
-            updateTileSide()
-        }
+    var upSide: LandType
+    var rightSide: LandType
+    var downSide: LandType
+    var leftSide: LandType
+    var centre: LandType
+    
+    var coordinates: (Int, Int) = (0, 0)
+    
+    var position: LandType {
+        updateTileSide()
     }
-    var position: LandType? = nil
+    
     var meepleType: MeepleType {
-        position!.meepleTypeChoose()
+        position.meepleTypeChoose()
     }
-    var tileSide: TileSides = .center
     var isMeeplePlaced = false
     var isMeepleAvailableToStay: Bool {
         isStaymentAvailable()
     }
+    var isMeepleOnField: Bool {
+        position != .field
+    }
     
-    mutating func updateTileSide() {
+    func updateTileSide() -> LandType {
         switch coordinates {
         case (0, 1):
-            tileSide = .upSide
+            return upSide
         case (1, 0):
-            tileSide = .rightSide
+            return rightSide
         case (0, -1):
-            tileSide = .downSide
+            return downSide
         case (-1, 0):
-            tileSide = .leftSide
+            return leftSide
         case (0, 0):
-            tileSide = .center
+            return centre
         case (_, _):
-            return
+            return centre
         }
     }
     
     mutating func moveMeepleUp() {
         coordinates.1 += 1
-        if !isMeepleAvailableToStay {
+        if isMeepleAvailableToStay {
             coordinates.1 -= 1
         }
     }
     
     mutating func moveMeepleRight() {
         coordinates.0 += 1
-        if !isMeepleAvailableToStay {
+        if isMeepleAvailableToStay {
             coordinates.0 -= 1
         }
     }
     
     mutating func moveMeepleDown() {
         coordinates.1 -= 1
-        if !isMeepleAvailableToStay {
+        if isMeepleAvailableToStay {
             coordinates.1 += 1
         }
     }
     
     mutating func moveMeepleLeft() {
+        var oldCoordinates = coordinates
         coordinates.0 -= 1
-        if !isMeepleAvailableToStay {
-            coordinates.0 += 1
+        if isMeepleAvailableToStay {
+            coordinates = oldCoordinates
         }
     }
     
     func isStaymentAvailable() -> Bool {
-        return coordinates != (0, 2) && coordinates != ( 2, 0) && coordinates != (0, -2) && coordinates != (-2, 0) && coordinates != (1, 1) && coordinates != (-1, -1) && coordinates != (-1, 1) && coordinates != (1, -1)
+        return abs(coordinates.0) + abs(coordinates.1) == 2
     }
 }

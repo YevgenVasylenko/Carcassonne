@@ -63,11 +63,11 @@ class GameViewController: UIViewController {
     
     func changeButtonAvailability(gameState: GameState) {
         rotateTileCounterclockwiseButton?.isEnabled = game.gameState.isRotateEnabled()
-        moveUpButton?.isEnabled = game.gameState.isMovingEnabled()
+        moveUpButton?.isEnabled = game.gameState.isMovingEnabled() && game.isMovementAvailable({$0.up()})
         rotateClockwiseButton?.isEnabled = game.gameState.isRotateEnabled()
-        moveLeftButton?.isEnabled = game.gameState.isMovingEnabled()
-        moveDownButton?.isEnabled = game.gameState.isMovingEnabled()
-        moveRightButton?.isEnabled = game.gameState.isMovingEnabled()
+        moveLeftButton?.isEnabled = game.gameState.isMovingEnabled() && game.isMovementAvailable({$0.left()})
+        moveDownButton?.isEnabled = game.gameState.isMovingEnabled() && game.isMovementAvailable({$0.down()})
+        moveRightButton?.isEnabled = game.gameState.isMovingEnabled() && game.isMovementAvailable({$0.right()})
         endTurnAndTakeNewTileButton?.isEnabled = game.gameState.isNextTurnEnabled()
         placeTileButton?.isEnabled = game.gameState.isPlaceEnabled()
         takeTileBackButton?.isEnabled = game.gameState.isPickupEnabled()
@@ -109,7 +109,9 @@ class GameViewController: UIViewController {
     @IBAction func moveTileUP() {
         switch target {
         case .tile:
-            game.currentTile?.moveUp()
+            if game.isMovementAvailable({ $0.up() }) {
+                game.currentTile?.coordinates.moveUp()
+            }
         case .meeple:
             game.unsafeLastTile.meeple?.moveMeepleUp()
         }
@@ -118,7 +120,9 @@ class GameViewController: UIViewController {
     @IBAction func moveTileRight() {
         switch target {
         case .tile:
-            game.currentTile?.moveRight()
+            if game.isMovementAvailable({ $0.right() }) {
+                game.currentTile?.coordinates.moveRight()
+            }
         case .meeple:
             game.unsafeLastTile.meeple?.moveMeepleRight()
         }
@@ -127,7 +131,9 @@ class GameViewController: UIViewController {
     @IBAction func moveTileDown() {
         switch target {
         case .tile:
-            game.currentTile?.moveDown()
+            if game.isMovementAvailable({ $0.down() }) {
+                game.currentTile?.coordinates.moveDown()
+            }
         case .meeple:
             game.unsafeLastTile.meeple?.moveMeepleDown()
         }
@@ -136,7 +142,9 @@ class GameViewController: UIViewController {
     @IBAction func moveTileLeft() {
         switch target {
         case .tile:
-            game.currentTile?.moveLeft()
+            if game.isMovementAvailable({ $0.left() }) {
+                game.currentTile?.coordinates.moveLeft()
+            }
         case .meeple:
             game.unsafeLastTile.meeple?.moveMeepleLeft()
         }

@@ -64,18 +64,18 @@ struct Rendering {
                 height: Int(superView.frame.height) + Int(picture.imageView.frame.width) * absoluteSumY)
         }
         
-        func maxMinCoordinateSetUp(coordinates: (Int, Int)) {
-            if coordinates.0 > maxCoordinateX {
-                maxCoordinateX = coordinates.0
+        func maxMinCoordinateSetUp(coordinates: Coordinates) {
+            if coordinates.x > maxCoordinateX {
+                maxCoordinateX = coordinates.x
             }
-            if coordinates.0 < minCoordinateX {
-                minCoordinateX = coordinates.0
+            if coordinates.x < minCoordinateX {
+                minCoordinateX = coordinates.x
             }
-            if coordinates.1 > maxCoordinateY {
-                maxCoordinateY = coordinates.1
+            if coordinates.y > maxCoordinateY {
+                maxCoordinateY = coordinates.y
             }
-            if coordinates.1 < minCoordinateY {
-                minCoordinateY = coordinates.1
+            if coordinates.y < minCoordinateY {
+                minCoordinateY = coordinates.y
             }
         }
 

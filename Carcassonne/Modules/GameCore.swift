@@ -23,29 +23,9 @@ struct GameCore {
     var tilesOnMap = [Tile]()
     var currentTile: Tile? = nil {
         didSet {
-            if isMovementUpAvailable() {
-                print("Movement up available")
-            } else {
-                print("Movement up not available")
-            }
-            
-            if isMovementRightAvailable() {
-                print("Movement right available")
-            } else {
-                print("Movement right not available")
-            }
-            
-            if isMovementDownAvailable() {
-                print("Movement down available")
-            } else {
-                print("Movement down not available")
-            }
-            
-          if isMovementLeftAvailable() {
-                print("Movement left available")
-            } else {
-                print("Movement left not available")
-            }
+            guard let currentTile = currentTile else { return }
+            isTileCanBePlace = areCoordinatesOkToPlace(currentTileCoordinates: currentTile.coordinates) &&
+            areSidesOkToPlace(currentTile: currentTile)
         }
     }
     var players = [Player]()
@@ -65,11 +45,8 @@ struct GameCore {
         }
     }
     
-    var isTileCanBePlace: Bool {
-        guard let currentTile = currentTile else { return false }
-        return areCoordinatesOkToPlace(currentTile: currentTile) &&
-        areSidesOkToPlace(currentTile: currentTile)
-    }
+    var isTileCanBePlace: Bool = false
+        
     
     var gameState: GameState {
         gameStateChange()
@@ -118,59 +95,17 @@ struct GameCore {
         unsafeLastTile.meeple = nil
     }
     
-    func isMovementUpAvailable() -> Bool {
-        guard let currentTile = currentTile else { return false }
-        
-        func isHaveNeigboreOnSides() -> Bool {
-            for tile in tilesOnMap {
-                if  (tile.coordinates.0 == currentTile.coordinates.0 - 1 || tile.coordinates.0 == currentTile.coordinates.0 + 1) {
-                    return true
-                }
-            }
-            return false
+    func isMovementAvailable(_ mapCoordinates: (Coordinates) -> Coordinates) -> Bool {
+        guard var coordinates = currentTile?.coordinates else {
+            return true
         }
-        
-            return isHaveNeigboreOnSides()
-    }
-    
-    func isMovementRightAvailable() -> Bool {
-        guard let currentTile = currentTile else { return false }
-        var isMovementRightAvailable = false
-        
-        return isMovementRightAvailable
-    }
-        
-
-//    func isMovementDownAvailable() -> Bool {
-//        guard let currentTile = currentTile else { return false }
-//        for tile in tilesOnMap {
-//            if currentTile.isOnSamePlace(tile) {
-//                return true
-//            }
-//            if currentTile.isOnSameXAxis(tile) && currentTile.isDownNeighbour(tile) {
-//                return true
-//            }
-//            if currentTile.isXAxisNeighbour(tile)
-//                && (currentTile.isOnSameYAxis(tile) || currentTile.isDownNeighbour(tile)) {
-//                return true
-//            }
-//        }
-//        return false
-//    }
-    
-    func isMovementDownAvailable() -> Bool {
-        guard var currentTile = currentTile else { return false }
-        currentTile.coordinates = (currentTile.coordinates.0, currentTile.coordinates.1 - 1)
-        for tile in tilesOnMap {
-            if currentTile.coordinatesAroundTile.contains(where: { $0 == tile.coordinates} ) {
-                return true
-            }
-        }
-        return false
-    }
-    
-    func isMovementLeftAvailable() -> Bool {
-        return true
+        coordinates = mapCoordinates(coordinates)
+        return tilesOnMap
+            .contains(where: { tile in
+                coordinates
+                    .coordinatesAroundTile()
+                    .contains(tile.coordinates)
+            })
     }
 }
 
@@ -196,28 +131,16 @@ private extension GameCore {
         }
     }
     
-    func areCoordinatesOkToPlace(currentTile: Tile) -> Bool {
+    func areCoordinatesOkToPlace(currentTileCoordinates: Coordinates) -> Bool {
         var isCoordinateOkToPlace: Bool = false
         var isXOk = false
         var isYOk = false
         
         for tile in tilesOnMap {
-            
-            if (currentTile.isUpNeighbour(tile) ||
-                currentTile.isDownNeighbour(tile)) &&
-                currentTile.isOnSameXAxis(tile) {
-                isYOk = true
-            } else {
-                isYOk = false
-            }
-            
-            if (currentTile.isRightNeighbour(tile) ||
-                currentTile.isLeftNeighbour(tile)) &&
-                currentTile.isOnSameYAxis(tile) {
-                isXOk = true
-            } else {
-                isXOk = false
-            }
+
+            isYOk = currentTileCoordinates.isYAxisNeighbour(tile.coordinates)
+
+            isXOk = currentTileCoordinates.isXAxisNeighbour(tile.coordinates)
             
             if isYOk != isXOk {
                 break
@@ -225,8 +148,8 @@ private extension GameCore {
         }
         
         for tile in tilesOnMap {
-            if currentTile.isOnSameXAxis(tile) &&
-                currentTile.isOnSameYAxis(tile) {
+            if currentTileCoordinates.isOnSameXAxis(tile.coordinates) &&
+                currentTileCoordinates.isOnSameYAxis(tile.coordinates) {
                 isXOk = false
                 isYOk = false
             }
@@ -234,57 +157,43 @@ private extension GameCore {
         
         if isXOk == isYOk {
             isCoordinateOkToPlace = false
+            print("coordinates no Ok")
         } else {
             isCoordinateOkToPlace = true
+            print("coordinates Ok")
         }
         return isCoordinateOkToPlace
     }
     
     func areSidesOkToPlace(currentTile: Tile) -> Bool {
-        var isSidesOKToPlace: Bool = false
         var isUpSideOk = true
         var isRightSideOk = true
         var isDownSideOk = true
         var isLeftSideOk = true
         
         for tile in tilesOnMap {
-            if currentTile.isUpNeighbour(tile) &&
-                currentTile.isOnSameXAxis(tile) {
-                if tile.downSide == currentTile.upSide {
-                    isUpSideOk = true
-                } else { isUpSideOk = false }
+            if currentTile.coordinates.isUpNeighbour(tile.coordinates) &&
+                currentTile.coordinates.isOnSameXAxis(tile.coordinates) {
+                isUpSideOk = tile.downSide == currentTile.upSide
             }
             
-            if currentTile.isRightNeighbour(tile) &&
-                currentTile.isOnSameYAxis(tile) {
-                if tile.leftSide == currentTile.rightSide {
-                    isRightSideOk = true
-                } else { isRightSideOk  = false }
+            if currentTile.coordinates.isRightNeighbour(tile.coordinates) &&
+                currentTile.coordinates.isOnSameYAxis(tile.coordinates) {
+                isRightSideOk = tile.leftSide == currentTile.rightSide
             }
             
-            if currentTile.isDownNeighbour(tile) &&
-                currentTile.isOnSameXAxis(tile) {
-                if tile.upSide == currentTile.downSide {
-                    isDownSideOk = true
-                } else { isDownSideOk  = false }
+            if currentTile.coordinates.isDownNeighbour(tile.coordinates) &&
+                currentTile.coordinates.isOnSameXAxis(tile.coordinates) {
+                isDownSideOk = tile.upSide == currentTile.downSide
             }
             
-            if currentTile.isLeftNeighbour(tile) &&
-                currentTile.isOnSameYAxis(tile) {
-                if tile.rightSide == currentTile.leftSide {
-                    isLeftSideOk = true
-                } else { isLeftSideOk  = false }
+            if currentTile.coordinates.isLeftNeighbour(tile.coordinates) &&
+                currentTile.coordinates.isOnSameYAxis(tile.coordinates) {
+                isLeftSideOk = tile.rightSide == currentTile.leftSide
             }
         }
-        
-        if isUpSideOk && isRightSideOk && isDownSideOk && isLeftSideOk {
-            isSidesOKToPlace = true
-        } else {
-            isSidesOKToPlace = false
-        }
-        return isSidesOKToPlace
+        return isUpSideOk && isRightSideOk && isDownSideOk && isLeftSideOk
     }
-    
 
 
 }

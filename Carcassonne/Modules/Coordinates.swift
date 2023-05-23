@@ -27,6 +27,30 @@ struct Coordinates: Equatable {
         x += 1
     }
     
+    func up() -> Self {
+        var copy = self
+        copy.moveUp()
+        return copy
+    }
+    
+    func right() -> Self {
+        var copy = self
+        copy.moveRight()
+        return copy
+    }
+    
+    func down() -> Self {
+        var copy = self
+        copy.moveDown()
+        return copy
+    }
+    
+    func left() -> Self {
+        var copy = self
+        copy.moveLeft()
+        return copy
+    }
+    
     func isUpNeighbour(_ other: Coordinates) -> Bool {
         y - other.y == -1
     }
@@ -43,11 +67,27 @@ struct Coordinates: Equatable {
         x - other.x == -1
     }
     
-    func fillUpCoordinatesAroundTile() -> [Coordinates] {
+    func isOnSameXAxis(_ other: Coordinates) -> Bool {
+         x == other.x
+     }
+ 
+     func isOnSameYAxis(_ other: Coordinates) -> Bool {
+         y == other.y
+     }
+    
+    func isXAxisNeighbour(_ other: Coordinates) -> Bool {
+          (isLeftNeighbour(other) || isRightNeighbour(other)) && isOnSameYAxis(other)
+      }
+  
+    func isYAxisNeighbour(_ other: Coordinates) -> Bool {
+          (isUpNeighbour(other) || isDownNeighbour(other)) && isOnSameXAxis(other)
+      }
+    
+    func coordinatesAroundTile() -> [Coordinates] {
         [
-            Coordinates(x: x-1, y: y-1), Coordinates(x: x, y: y+1), Coordinates(x: x+1, y: y+1),
-            Coordinates(x: x-1, y: y), Coordinates(x: x, y: y), Coordinates(x: x+1, y: y),
-            Coordinates(x: x-1, y: y-1), Coordinates(x: x, y: y-1), Coordinates(x: x+1, y: y-1)
+         up().left(), up(), up().right(),
+         left(), self, right(),
+         down().left(), down(), down().right()
         ]
     }
 }

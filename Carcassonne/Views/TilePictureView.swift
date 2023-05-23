@@ -41,10 +41,10 @@ class TilePicture: UIView {
         
     }
     
-    func positionInXY(coordinatesOfTilesXY: (Int, Int), imageSideSize: CGFloat) -> CGPoint {
+    func positionInXY(coordinatesOfTilesXY: Coordinates, imageSideSize: CGFloat) -> CGPoint {
         return CGPoint(
-            x: (view.center.x - imageSideSize / 2) + CGFloat(coordinatesOfTilesXY.0) * imageSideSize,
-            y: (view.center.y - imageSideSize / 2) - CGFloat(coordinatesOfTilesXY.1) * imageSideSize)
+            x: (view.center.x - imageSideSize / 2) + CGFloat(coordinatesOfTilesXY.x) * imageSideSize,
+            y: (view.center.y - imageSideSize / 2) - CGFloat(coordinatesOfTilesXY.y) * imageSideSize)
     }
     
     func imageRotationPosition(rotationCalculation: Int) {

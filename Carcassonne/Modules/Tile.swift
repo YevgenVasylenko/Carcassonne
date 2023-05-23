@@ -43,63 +43,60 @@ struct Tile {
     var downSide: LandType
     var leftSide: LandType
     var centre: LandType
-    var coordinates: (Int, Int) = (0, 0)
+//    var coordinates: (Int, Int) = (0, 0)
+    var coordinates = Coordinates(x: 0, y: 0)
     var tilePictureName: String
     var rotationCalculation: Int = 0
     var meeple: Meeple? = nil
     var belongToPlayer: Player? = nil
-    var coordinatesAroundTile: [(Int, Int)] {
-        fillUpCoordinatesAroundTile()
-    }
-    
-    func isUpNeighbour(_ other: Tile) -> Bool {
-        coordinates.1 - other.coordinates.1 == -1
-    }
-    
-    func isDownNeighbour(_ other: Tile) -> Bool {
-        coordinates.1 - other.coordinates.1 == 1
-    }
-    
-    func isLeftNeighbour(_ other: Tile) -> Bool {
-        coordinates.0 - other.coordinates.0 == 1
-    }
-    
-    func isRightNeighbour(_ other: Tile) -> Bool {
-        coordinates.0 - other.coordinates.0 == -1
-    }
-    
-    func isXAxisNeighbour(_ other: Tile) -> Bool {
-        (isLeftNeighbour(other) || isRightNeighbour(other)) && isOnSameXAxis(other)
-    }
-    
-    func isYAxisNeighbour(_ other: Tile) -> Bool {
-        (isUpNeighbour(other) || isDownNeighbour(other)) && isOnSameYAxis(other)
-    }
-    
-    func isOnSameXAxis(_ other: Tile) -> Bool {
-        coordinates.0 == other.coordinates.0
-    }
-    
-    func isOnSameYAxis(_ other: Tile) -> Bool {
-        coordinates.1 == other.coordinates.1
-    }
-    
-    func isHasNeighbourAround(_ other: Tile) -> Bool {
-        isXAxisNeighbour(other) || isYAxisNeighbour(other)
-    }
-    
-    func isOnSamePlace(_ other: Tile) -> Bool {
-        coordinates == other.coordinates
-    }
-    
-    func fillUpCoordinatesAroundTile() -> [(Int, Int)] {
-        [
-            (coordinates.0-1, coordinates.1+1), (coordinates.0, coordinates.1+1), (coordinates.0+1, coordinates.1+1),
-            (coordinates.0-1, coordinates.1), (coordinates.0, coordinates.1), (coordinates.0+1, coordinates.1),
-            (coordinates.0-1, coordinates.1-1), (coordinates.0, coordinates.1-1), (coordinates.0+1, coordinates.1-1)
-        ]
-    }
-    
+//    var coordinatesAroundTile: [(Int, Int)] {
+//        fillUpCoordinatesAroundTile()
+//    }
+//
+//    func isUpNeighbour(_ other: Tile) -> Bool {
+//        coordinates.1 - other.coordinates.1 == -1
+//    }
+//
+//    func isDownNeighbour(_ other: Tile) -> Bool {
+//        coordinates.1 - other.coordinates.1 == 1
+//    }
+//
+//    func isLeftNeighbour(_ other: Tile) -> Bool {
+//        coordinates.0 - other.coordinates.0 == 1
+//    }
+//
+//    func isRightNeighbour(_ other: Tile) -> Bool {
+//        coordinates.0 - other.coordinates.0 == -1
+//    }
+//
+//    func isXAxisNeighbour(_ other: Tile) -> Bool {
+//        (isLeftNeighbour(other) || isRightNeighbour(other)) && isOnSameXAxis(other)
+//    }
+//
+//    func isYAxisNeighbour(_ other: Tile) -> Bool {
+//        (isUpNeighbour(other) || isDownNeighbour(other)) && isOnSameYAxis(other)
+//    }
+//
+//    func isOnSameXAxis(_ other: Tile) -> Bool {
+//        coordinates.0 == other.coordinates.0
+//    }
+//
+//    func isOnSameYAxis(_ other: Tile) -> Bool {
+//        coordinates.1 == other.coordinates.1
+//    }
+//
+//    func isOnSamePlace(_ other: Tile) -> Bool {
+//        coordinates == other.coordinates
+//    }
+//
+//    func fillUpCoordinatesAroundTile() -> [(Int, Int)] {
+//        [
+//            (coordinates.0-1, coordinates.1+1), (coordinates.0, coordinates.1+1), (coordinates.0+1, coordinates.1+1),
+//            (coordinates.0-1, coordinates.1), (coordinates.0, coordinates.1), (coordinates.0+1, coordinates.1),
+//            (coordinates.0-1, coordinates.1-1), (coordinates.0, coordinates.1-1), (coordinates.0+1, coordinates.1-1)
+//        ]
+//    }
+//
     mutating func rotateClockwise() {
         let temp = upSide
         upSide = leftSide
@@ -124,20 +121,20 @@ struct Tile {
         rotationCalculation -= 1
     }
     
-    mutating func moveUp() {
-        coordinates.1 += 1
-    }
-    
-    mutating func moveLeft() {
-        coordinates.0 -= 1
-    }
-    
-    mutating func moveDown() {
-        coordinates.1 -= 1
-    }
-    
-    mutating func moveRight() {
-        coordinates.0 += 1
-    }
+//    mutating func moveUp() {
+//        coordinates.1 += 1
+//    }
+//
+//    mutating func moveLeft() {
+//        coordinates.0 -= 1
+//    }
+//
+//    mutating func moveDown() {
+//        coordinates.1 -= 1
+//    }
+//
+//    mutating func moveRight() {
+//        coordinates.0 += 1
+//    }
 }
 

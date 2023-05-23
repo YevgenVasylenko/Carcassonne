@@ -10,6 +10,7 @@
 		5D17D7642A0E405C007B2265 /* GameState+ButtonsAvailability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D17D7632A0E405C007B2265 /* GameState+ButtonsAvailability.swift */; };
 		5D20304929F156BA00F0720B /* TilesToPlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D20304829F156BA00F0720B /* TilesToPlay.swift */; };
 		5D20304F29F2E00300F0720B /* TilePictureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D20304E29F2E00300F0720B /* TilePictureView.swift */; };
+		5D29D1F92A196302009D90D4 /* GameViewRendering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D29D1F82A196302009D90D4 /* GameViewRendering.swift */; };
 		5D36B93129EAE35400448219 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D36B93029EAE35400448219 /* AppDelegate.swift */; };
 		5D36B93329EAE35400448219 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D36B93229EAE35400448219 /* SceneDelegate.swift */; };
 		5D36B93529EAE35400448219 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D36B93429EAE35400448219 /* GameViewController.swift */; };
@@ -24,6 +25,7 @@
 		5DC2A5772A12587A007A2715 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC2A5762A12587A007A2715 /* Player.swift */; };
 		5DC2A5792A125BEB007A2715 /* StartMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC2A5782A125BEB007A2715 /* StartMenuViewController.swift */; };
 		5DC2A57B2A125CA0007A2715 /* StartNewGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC2A57A2A125CA0007A2715 /* StartNewGameViewController.swift */; };
+		5DD0B3642A1D0800006BD8F6 /* Coordinates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD0B3632A1D0800006BD8F6 /* Coordinates.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +42,7 @@
 		5D17D7632A0E405C007B2265 /* GameState+ButtonsAvailability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameState+ButtonsAvailability.swift"; sourceTree = "<group>"; };
 		5D20304829F156BA00F0720B /* TilesToPlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TilesToPlay.swift; sourceTree = "<group>"; };
 		5D20304E29F2E00300F0720B /* TilePictureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TilePictureView.swift; sourceTree = "<group>"; };
+		5D29D1F82A196302009D90D4 /* GameViewRendering.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewRendering.swift; sourceTree = "<group>"; };
 		5D36B92D29EAE35400448219 /* Carcassonne.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Carcassonne.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D36B93029EAE35400448219 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5D36B93229EAE35400448219 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -58,6 +61,7 @@
 		5DC2A5762A12587A007A2715 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		5DC2A5782A125BEB007A2715 /* StartMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartMenuViewController.swift; sourceTree = "<group>"; };
 		5DC2A57A2A125CA0007A2715 /* StartNewGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartNewGameViewController.swift; sourceTree = "<group>"; };
+		5DD0B3632A1D0800006BD8F6 /* Coordinates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinates.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +94,7 @@
 			isa = PBXGroup;
 			children = (
 				5D9320022A078E260001FAAB /* GameCore.swift */,
+				5DD0B3632A1D0800006BD8F6 /* Coordinates.swift */,
 				5D36B94429EAE3BA00448219 /* Tile.swift */,
 				5D7A0A682A0107A200C1C609 /* Meeple.swift */,
 				5DC2A5762A12587A007A2715 /* Player.swift */,
@@ -139,6 +144,7 @@
 			children = (
 				5D20304E29F2E00300F0720B /* TilePictureView.swift */,
 				5D423C552A176A8800C5773E /* PlayerLabelGameView.swift */,
+				5D29D1F82A196302009D90D4 /* GameViewRendering.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -269,7 +275,9 @@
 				5DC2A57B2A125CA0007A2715 /* StartNewGameViewController.swift in Sources */,
 				5D7A0A692A0107A200C1C609 /* Meeple.swift in Sources */,
 				5DC2A5792A125BEB007A2715 /* StartMenuViewController.swift in Sources */,
+				5D29D1F92A196302009D90D4 /* GameViewRendering.swift in Sources */,
 				5D17D7642A0E405C007B2265 /* GameState+ButtonsAvailability.swift in Sources */,
+				5DD0B3642A1D0800006BD8F6 /* Coordinates.swift in Sources */,
 				5D36B94529EAE3BA00448219 /* Tile.swift in Sources */,
 				5D20304929F156BA00F0720B /* TilesToPlay.swift in Sources */,
 				5DC2A5772A12587A007A2715 /* Player.swift in Sources */,

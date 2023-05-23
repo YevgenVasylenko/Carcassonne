@@ -83,15 +83,6 @@ class TilePicture: UIView {
             size: .init(width: meepleImageSideSize, height: meepleImageSideSize))
         makeShadow(isMeeplePlaced: isMeeplePlaced, isMeepleCanBePlace: isMeepleCanBePlace)
         
-        let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap))
-        tap.numberOfTapsRequired = 3
-        tap.delegate = self
-        meeplePicture.addGestureRecognizer(tap)
-
-        meeplePicture.isUserInteractionEnabled = true
-        
-//        meeplePicture.addTarget(self, action: #selector(pressed), for: .touchUpInside)
-        
         self.addSubview(meeplePicture)
         
         func makeShadow(isMeeplePlaced: Bool, isMeepleCanBePlace: Bool) {
@@ -117,23 +108,4 @@ class TilePicture: UIView {
             x: (imageView.center.x - meepleImageSideSize / 2) + CGFloat(coordinatesOfMeepleXY.0) * meepleImageSideSize,
             y: (imageView.center.y - meepleImageSideSize / 2) - CGFloat(coordinatesOfMeepleXY.1) * meepleImageSideSize)
     }
-    
-    @objc
-    private func handleTap() {
-        print("Hello World")
-    }
-}
-
-extension TilePicture: UIGestureRecognizerDelegate {
-    override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        true
-    }
-
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        true
-    }
-    
-//    @objc func pressed() {
-//        print("pressed")
-//    }
 }

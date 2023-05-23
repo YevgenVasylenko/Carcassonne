@@ -21,12 +21,41 @@ enum GameState {
 struct GameCore {
     var tilesStack = [Tile]()
     var tilesOnMap = [Tile]()
-    var currentTile: Tile? = nil
+    var currentTile: Tile? = nil {
+        didSet {
+            if isMovementUpAvailable() {
+                print("Movement up available")
+            } else {
+                print("Movement up not available")
+            }
+            
+            if isMovementRightAvailable() {
+                print("Movement right available")
+            } else {
+                print("Movement right not available")
+            }
+            
+            if isMovementDownAvailable() {
+                print("Movement down available")
+            } else {
+                print("Movement down not available")
+            }
+            
+          if isMovementLeftAvailable() {
+                print("Movement left available")
+            } else {
+                print("Movement left not available")
+            }
+        }
+    }
     var players = [Player]()
     private var playerIndex = 0
+    
+    
     var currentPlayer: Player? {
         players[playerIndex]
     }
+    
     var unsafeLastTile: Tile {
         get {
             return tilesOnMap[tilesOnMap.count - 1]
@@ -60,7 +89,6 @@ struct GameCore {
     
     mutating func placeTileOnMap() {
         guard var currentTile = currentTile else {
-            print("Not Possible to place")
             return
         }
         currentTile.belongToPlayer = currentPlayer
@@ -88,6 +116,61 @@ struct GameCore {
     
     mutating func removeMeeple() {
         unsafeLastTile.meeple = nil
+    }
+    
+    func isMovementUpAvailable() -> Bool {
+        guard let currentTile = currentTile else { return false }
+        
+        func isHaveNeigboreOnSides() -> Bool {
+            for tile in tilesOnMap {
+                if  (tile.coordinates.0 == currentTile.coordinates.0 - 1 || tile.coordinates.0 == currentTile.coordinates.0 + 1) {
+                    return true
+                }
+            }
+            return false
+        }
+        
+            return isHaveNeigboreOnSides()
+    }
+    
+    func isMovementRightAvailable() -> Bool {
+        guard let currentTile = currentTile else { return false }
+        var isMovementRightAvailable = false
+        
+        return isMovementRightAvailable
+    }
+        
+
+//    func isMovementDownAvailable() -> Bool {
+//        guard let currentTile = currentTile else { return false }
+//        for tile in tilesOnMap {
+//            if currentTile.isOnSamePlace(tile) {
+//                return true
+//            }
+//            if currentTile.isOnSameXAxis(tile) && currentTile.isDownNeighbour(tile) {
+//                return true
+//            }
+//            if currentTile.isXAxisNeighbour(tile)
+//                && (currentTile.isOnSameYAxis(tile) || currentTile.isDownNeighbour(tile)) {
+//                return true
+//            }
+//        }
+//        return false
+//    }
+    
+    func isMovementDownAvailable() -> Bool {
+        guard var currentTile = currentTile else { return false }
+        currentTile.coordinates = (currentTile.coordinates.0, currentTile.coordinates.1 - 1)
+        for tile in tilesOnMap {
+            if currentTile.coordinatesAroundTile.contains(where: { $0 == tile.coordinates} ) {
+                return true
+            }
+        }
+        return false
+    }
+    
+    func isMovementLeftAvailable() -> Bool {
+        return true
     }
 }
 
@@ -122,7 +205,7 @@ private extension GameCore {
             
             if (currentTile.isUpNeighbour(tile) ||
                 currentTile.isDownNeighbour(tile)) &&
-                currentTile.isXNeighbour(tile) {
+                currentTile.isOnSameXAxis(tile) {
                 isYOk = true
             } else {
                 isYOk = false
@@ -130,7 +213,7 @@ private extension GameCore {
             
             if (currentTile.isRightNeighbour(tile) ||
                 currentTile.isLeftNeighbour(tile)) &&
-                currentTile.isYNeighbour(tile) {
+                currentTile.isOnSameYAxis(tile) {
                 isXOk = true
             } else {
                 isXOk = false
@@ -142,8 +225,8 @@ private extension GameCore {
         }
         
         for tile in tilesOnMap {
-            if currentTile.isXNeighbour(tile) &&
-                currentTile.isYNeighbour(tile) {
+            if currentTile.isOnSameXAxis(tile) &&
+                currentTile.isOnSameYAxis(tile) {
                 isXOk = false
                 isYOk = false
             }
@@ -151,10 +234,8 @@ private extension GameCore {
         
         if isXOk == isYOk {
             isCoordinateOkToPlace = false
-            print("Coordinates is Not OK")
         } else {
             isCoordinateOkToPlace = true
-            print("Coordinates is OK")
         }
         return isCoordinateOkToPlace
     }
@@ -168,30 +249,28 @@ private extension GameCore {
         
         for tile in tilesOnMap {
             if currentTile.isUpNeighbour(tile) &&
-                currentTile.isXNeighbour(tile) {
+                currentTile.isOnSameXAxis(tile) {
                 if tile.downSide == currentTile.upSide {
                     isUpSideOk = true
                 } else { isUpSideOk = false }
             }
             
             if currentTile.isRightNeighbour(tile) &&
-                currentTile.isYNeighbour(tile) {
+                currentTile.isOnSameYAxis(tile) {
                 if tile.leftSide == currentTile.rightSide {
                     isRightSideOk = true
                 } else { isRightSideOk  = false }
             }
             
-            
             if currentTile.isDownNeighbour(tile) &&
-                currentTile.isXNeighbour(tile) {
+                currentTile.isOnSameXAxis(tile) {
                 if tile.upSide == currentTile.downSide {
                     isDownSideOk = true
                 } else { isDownSideOk  = false }
             }
             
-            
             if currentTile.isLeftNeighbour(tile) &&
-                currentTile.isYNeighbour(tile) {
+                currentTile.isOnSameYAxis(tile) {
                 if tile.rightSide == currentTile.leftSide {
                     isLeftSideOk = true
                 } else { isLeftSideOk  = false }
@@ -200,11 +279,12 @@ private extension GameCore {
         
         if isUpSideOk && isRightSideOk && isDownSideOk && isLeftSideOk {
             isSidesOKToPlace = true
-            print("Sides is OK")
         } else {
             isSidesOKToPlace = false
-            print("Sides is not OK")
         }
         return isSidesOKToPlace
     }
+    
+
+
 }

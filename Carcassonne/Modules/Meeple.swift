@@ -78,7 +78,7 @@ struct Meeple {
     }
     
     mutating func moveMeepleLeft() {
-        var oldCoordinates = coordinates
+        let oldCoordinates = coordinates
         coordinates.0 -= 1
         if isMeepleAvailableToStay {
             coordinates = oldCoordinates

@@ -1,5 +1,5 @@
 //
-//  GameViewRendering.swift
+//  GameViewRender.swift
 //  Carcassonne
 //
 //  Created by Yevgen Vasylenko on 20.05.2023.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-struct Rendering {
+struct GameViewRender {
     
     let game: GameCore
     let view: UIScrollView

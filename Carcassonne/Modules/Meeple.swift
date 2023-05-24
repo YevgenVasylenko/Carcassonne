@@ -21,9 +21,8 @@ struct Meeple {
     var downSide: LandType
     var leftSide: LandType
     var centre: LandType
-    
-    var coordinates: (Int, Int) = (0, 0)
-    
+//    var coordinates: (Int, Int) = (0, 0)
+    var coordinates = Coordinates(x: 0, y: 0)
     var position: LandType {
         updateTileSide()
     }
@@ -32,60 +31,66 @@ struct Meeple {
         position.meepleTypeChoose()
     }
     var isMeeplePlaced = false
-    var isMeepleAvailableToStay: Bool {
-        isStaymentAvailable()
-    }
+//    var isMeepleAvailableToStay: Bool {
+//        isStaymentAvailable()
+//    }
     var isMeepleOnField: Bool {
         position != .field
     }
     
     func updateTileSide() -> LandType {
         switch coordinates {
-        case (0, 1):
+        case Coordinates(x: 0, y: 1):
             return upSide
-        case (1, 0):
+        case Coordinates(x: 1, y: 0):
             return rightSide
-        case (0, -1):
+        case Coordinates(x: 0, y: -1):
             return downSide
-        case (-1, 0):
+        case Coordinates(x: -1, y: 0):
             return leftSide
-        case (0, 0):
+        case Coordinates(x: 0, y: 0):
             return centre
-        case (_, _):
+        default:
             return centre
         }
     }
     
-    mutating func moveMeepleUp() {
-        coordinates.1 += 1
-        if isMeepleAvailableToStay {
-            coordinates.1 -= 1
-        }
-    }
+//    mutating func moveMeepleUp() {
+//        coordinates.1 += 1
+//        if isMeepleAvailableToStay {
+//            coordinates.1 -= 1
+//        }
+//    }
+//
+//    mutating func moveMeepleRight() {
+//        coordinates.0 += 1
+//        if isMeepleAvailableToStay {
+//            coordinates.0 -= 1
+//        }
+//    }
+//
+//    mutating func moveMeepleDown() {
+//        coordinates.1 -= 1
+//        if isMeepleAvailableToStay {
+//            coordinates.1 += 1
+//        }
+//    }
+//
+//    mutating func moveMeepleLeft() {
+//        let oldCoordinates = coordinates
+//        coordinates.0 -= 1
+//        if isMeepleAvailableToStay {
+//            coordinates = oldCoordinates
+//        }
+//    }
     
-    mutating func moveMeepleRight() {
-        coordinates.0 += 1
-        if isMeepleAvailableToStay {
-            coordinates.0 -= 1
-        }
-    }
+//    func isStaymentAvailable() -> Bool {
+//        return abs(coordinates.0) + abs(coordinates.1) == 2
+//    }
     
-    mutating func moveMeepleDown() {
-        coordinates.1 -= 1
-        if isMeepleAvailableToStay {
-            coordinates.1 += 1
-        }
-    }
-    
-    mutating func moveMeepleLeft() {
-        let oldCoordinates = coordinates
-        coordinates.0 -= 1
-        if isMeepleAvailableToStay {
-            coordinates = oldCoordinates
-        }
-    }
-    
-    func isStaymentAvailable() -> Bool {
-        return abs(coordinates.0) + abs(coordinates.1) == 2
+    func isMovementAvailable(_ mapCoordinates: (Coordinates) -> Coordinates) -> Bool {
+        let coordinates = mapCoordinates(coordinates)
+        
+        return self.coordinates.coordinatesAvailableForMeeple().contains(coordinates)
     }
 }

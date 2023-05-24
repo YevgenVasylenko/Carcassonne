@@ -64,7 +64,7 @@ class TilePicture: UIView {
         }
     }
     
-    func DrawOrEraseMeeple(coordinatesOfMeepleXY: (Int, Int)?, imageSideSize: CGFloat, isMeepleCanBePlace: Bool, isMeeplePlaced: Bool, meepleColor: UIColor) {
+    func DrawOrEraseMeeple(coordinatesOfMeepleXY: Coordinates?, imageSideSize: CGFloat, isMeepleCanBePlace: Bool, isMeeplePlaced: Bool, meepleColor: UIColor) {
         
         let meeplePicture = UIImageView()
         
@@ -103,9 +103,9 @@ class TilePicture: UIView {
         }
     }
     
-    func meeplePositionInXY(coordinatesOfMeepleXY: (Int, Int), meepleImageSideSize: CGFloat) -> CGPoint {
+    func meeplePositionInXY(coordinatesOfMeepleXY: Coordinates, meepleImageSideSize: CGFloat) -> CGPoint {
         return CGPoint(
-            x: (imageView.center.x - meepleImageSideSize / 2) + CGFloat(coordinatesOfMeepleXY.0) * meepleImageSideSize,
-            y: (imageView.center.y - meepleImageSideSize / 2) - CGFloat(coordinatesOfMeepleXY.1) * meepleImageSideSize)
+            x: (imageView.center.x - meepleImageSideSize / 2) + CGFloat(coordinatesOfMeepleXY.x) * meepleImageSideSize,
+            y: (imageView.center.y - meepleImageSideSize / 2) - CGFloat(coordinatesOfMeepleXY.y) * meepleImageSideSize)
     }
 }

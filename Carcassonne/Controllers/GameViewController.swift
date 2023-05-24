@@ -13,11 +13,11 @@ class GameViewController: UIViewController {
         case tile
         case meeple
     }
-
+    
     var game = GameCore(tilesStack: TileStorage.tilePool, firstTile: TileStorage.startTile) {
         didSet {
             changeButtonAvailability(gameState: game.gameState)
-            let rendering = Rendering(game: self.game, view: gameMapView, superView: self.view)
+            let rendering = GameViewRender(game: self.game, view: gameMapView, superView: self.view)
             rendering.render()
         }
     }
@@ -26,7 +26,7 @@ class GameViewController: UIViewController {
     
     @IBOutlet var gameMapView: UIScrollView!
     @IBOutlet var playerList: UIStackView!
-
+    
     @IBOutlet weak var rotateTileCounterclockwiseButton: UIButton!
     @IBOutlet weak var moveUpButton: UIButton!
     @IBOutlet weak var rotateClockwiseButton: UIButton!
@@ -113,7 +113,10 @@ class GameViewController: UIViewController {
                 game.currentTile?.coordinates.moveUp()
             }
         case .meeple:
-            game.unsafeLastTile.meeple?.moveMeepleUp()
+            guard let meeple = game.unsafeLastTile.meeple else { return }
+            if meeple.isMovementAvailable({ $0.up() }) {
+                game.unsafeLastTile.meeple?.coordinates.moveUp()
+            }
         }
     }
     
@@ -124,7 +127,10 @@ class GameViewController: UIViewController {
                 game.currentTile?.coordinates.moveRight()
             }
         case .meeple:
-            game.unsafeLastTile.meeple?.moveMeepleRight()
+            guard let meeple = game.unsafeLastTile.meeple else { return }
+            if meeple.isMovementAvailable({ $0.right() }) {
+                game.unsafeLastTile.meeple?.coordinates.moveRight()
+            }
         }
     }
     
@@ -135,7 +141,10 @@ class GameViewController: UIViewController {
                 game.currentTile?.coordinates.moveDown()
             }
         case .meeple:
-            game.unsafeLastTile.meeple?.moveMeepleDown()
+            guard let meeple = game.unsafeLastTile.meeple else { return }
+            if meeple.isMovementAvailable({ $0.down() }) {
+                game.unsafeLastTile.meeple?.coordinates.moveDown()
+            }
         }
     }
     
@@ -146,7 +155,10 @@ class GameViewController: UIViewController {
                 game.currentTile?.coordinates.moveLeft()
             }
         case .meeple:
-            game.unsafeLastTile.meeple?.moveMeepleLeft()
+            guard let meeple = game.unsafeLastTile.meeple else { return }
+            if meeple.isMovementAvailable({ $0.left() }) {
+                game.unsafeLastTile.meeple?.coordinates.moveLeft()
+            }
         }
     }
     

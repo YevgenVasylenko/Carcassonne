@@ -85,9 +85,16 @@ struct Coordinates: Equatable {
     
     func coordinatesAroundTile() -> [Coordinates] {
         [
-         up().left(), up(), up().right(),
-         left(), self, right(),
-         down().left(), down(), down().right()
+            up().left(),   up(),   up().right(),
+            left(),        self,   right(),
+            down().left(), down(), down().right()
+        ]
+    }
+    
+    func coordinatesAvailableForMeeple() -> [Coordinates] {
+        [                             Coordinates(x: 0, y: 1),
+         Coordinates(x: -1, y: 0),    Coordinates(x: 0, y: 0),   Coordinates(x: 1, y: 0),
+                                      Coordinates(x: 0, y: -1)
         ]
     }
 }

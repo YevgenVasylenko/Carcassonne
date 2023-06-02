@@ -7,6 +7,28 @@
 
 import Foundation
 
+enum MovingDirection: Equatable {
+    case up(_ availableToMove: Bool)
+    case right(_ availableToMove: Bool)
+    case down(_ availableToMove: Bool)
+    case left(_ availableToMove: Bool)
+}
+
+extension MovingDirection {
+    func moveCoordinatesInDirection(coordinates: inout Coordinates) {
+        switch self {
+        case .up:
+            coordinates.moveUp()
+        case .right:
+            coordinates.moveRight()
+        case .down:
+            coordinates.moveDown()
+        case .left:
+            coordinates.moveLeft()
+        }
+    }
+}
+
 enum GameState {
     case gameStart
     case currentTileOperate(isCanBePlace: Bool)
@@ -31,7 +53,13 @@ struct GameCore {
     var players = [Player]()
     private var playerIndex = 0
     
-    
+    var movementDirectionsAvailability: [MovingDirection] = [
+        .up(true),
+        .right(true),
+        .down(true),
+        .left(true)
+    ]
+        
     var currentPlayer: Player? {
         players[playerIndex]
     }
@@ -51,7 +79,7 @@ struct GameCore {
     var gameState: GameState {
         gameStateChange()
     }
-    
+
     init(tilesStack: [Tile], firstTile: Tile) {
         self.tilesStack = tilesStack
         
@@ -78,7 +106,12 @@ struct GameCore {
     }
     
     mutating func createMeeple() {
-        unsafeLastTile.meeple = Meeple(upSide: unsafeLastTile.upSide, rightSide: unsafeLastTile.rightSide, downSide: unsafeLastTile.downSide, leftSide: unsafeLastTile.leftSide, centre: unsafeLastTile.centre)
+        unsafeLastTile.meeple = Meeple(
+            upSide: unsafeLastTile.upSide,
+            rightSide: unsafeLastTile.rightSide,
+            downSide: unsafeLastTile.downSide,
+            leftSide: unsafeLastTile.leftSide,
+            centre: unsafeLastTile.centre)
     }
     
     mutating func placeMeeple() {
@@ -95,11 +128,7 @@ struct GameCore {
         unsafeLastTile.meeple = nil
     }
     
-    func isMovementAvailable(_ mapCoordinates: (Coordinates) -> Coordinates) -> Bool {
-        guard var coordinates = currentTile?.coordinates else {
-            return true
-        }
-        coordinates = mapCoordinates(coordinates)
+    func isTileCoordinatesOkToPlace(_ coordinates: Coordinates) -> Bool {
         return tilesOnMap
             .contains(where: { tile in
                 coordinates
@@ -107,6 +136,53 @@ struct GameCore {
                     .contains(tile.coordinates)
             })
     }
+    
+    func isMoveTileOrMeepleCoordinatesOkToPlace(target: TargetControl, mapCoordinates: (Coordinates) -> Coordinates) -> Bool {
+        switch target {
+        case .tile:
+            guard var tileCoordinates = currentTile?.coordinates else {
+                return true
+            }
+            tileCoordinates = mapCoordinates(tileCoordinates)
+            return isTileCoordinatesOkToPlace(tileCoordinates)
+        case .meeple:
+            guard let meeple = unsafeLastTile.meeple else {
+                return false
+            }
+            let meepleCoordinates = mapCoordinates(meeple.coordinates)
+            return meeple.isMeepleCoordinatesOkToPlace(meepleCoordinates)
+        }
+    }
+    
+    mutating func updateMovementDirectionsAvailability(target: TargetControl) {
+        for index in movementDirectionsAvailability.indices {
+            switch movementDirectionsAvailability[index] {
+            case .up:
+                movementDirectionsAvailability[index] = .up(isMoveTileOrMeepleCoordinatesOkToPlace(target: target, mapCoordinates: { $0.up() }))
+            case .right:
+                movementDirectionsAvailability[index] =
+                    .right( isMoveTileOrMeepleCoordinatesOkToPlace(target: target, mapCoordinates: { $0.right() }))
+            case .down:
+                movementDirectionsAvailability[index] = .down(isMoveTileOrMeepleCoordinatesOkToPlace(target: target, mapCoordinates: { $0.down() }))
+            case .left:
+                movementDirectionsAvailability[index] = .left(isMoveTileOrMeepleCoordinatesOkToPlace(target: target, mapCoordinates: { $0.left() }))
+            }
+        }
+    }
+    
+    func isMoveTileOrMeepleIsPossible(givenDirection: MovingDirection) -> Bool {
+        for direction in movementDirectionsAvailability {
+            if direction == givenDirection {
+                switch direction {
+                case .up, .right, .down, .left:
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
+    
 }
 
 private extension GameCore {
@@ -157,10 +233,8 @@ private extension GameCore {
         
         if isXOk == isYOk {
             isCoordinateOkToPlace = false
-            print("coordinates no Ok")
         } else {
             isCoordinateOkToPlace = true
-            print("coordinates Ok")
         }
         return isCoordinateOkToPlace
     }

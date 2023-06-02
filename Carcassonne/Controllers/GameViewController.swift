@@ -7,17 +7,18 @@
 
 import UIKit
 
+enum TargetControl {
+    case tile
+    case meeple
+}
+
 class GameViewController: UIViewController {
-    
-    enum TargetControl {
-        case tile
-        case meeple
-    }
-    
+
     var game = GameCore(tilesStack: TileStorage.tilePool, firstTile: TileStorage.startTile) {
         didSet {
+            game.updateMovementDirectionsAvailability(target: target)
             changeButtonAvailability(gameState: game.gameState)
-            let rendering = GameViewRender(game: self.game, view: gameMapView, superView: self.view)
+            var rendering = GameViewRender(game: self.game, view: gameMapView, superView: self.view)
             rendering.render()
         }
     }
@@ -63,11 +64,11 @@ class GameViewController: UIViewController {
     
     func changeButtonAvailability(gameState: GameState) {
         rotateTileCounterclockwiseButton?.isEnabled = game.gameState.isRotateEnabled()
-        moveUpButton?.isEnabled = game.gameState.isMovingEnabled() && game.isMovementAvailable({$0.up()})
+        moveUpButton?.isEnabled = game.gameState.isMovingEnabled() && game.isMoveTileOrMeepleIsPossible(givenDirection: .up(true))
         rotateClockwiseButton?.isEnabled = game.gameState.isRotateEnabled()
-        moveLeftButton?.isEnabled = game.gameState.isMovingEnabled() && game.isMovementAvailable({$0.left()})
-        moveDownButton?.isEnabled = game.gameState.isMovingEnabled() && game.isMovementAvailable({$0.down()})
-        moveRightButton?.isEnabled = game.gameState.isMovingEnabled() && game.isMovementAvailable({$0.right()})
+        moveLeftButton?.isEnabled = game.gameState.isMovingEnabled() && game.isMoveTileOrMeepleIsPossible(givenDirection: .left(true))
+        moveDownButton?.isEnabled = game.gameState.isMovingEnabled() && game.isMoveTileOrMeepleIsPossible(givenDirection: .down(true))
+        moveRightButton?.isEnabled = game.gameState.isMovingEnabled() && game.isMoveTileOrMeepleIsPossible(givenDirection: .right(true))
         endTurnAndTakeNewTileButton?.isEnabled = game.gameState.isNextTurnEnabled()
         placeTileButton?.isEnabled = game.gameState.isPlaceEnabled()
         takeTileBackButton?.isEnabled = game.gameState.isPickupEnabled()
@@ -79,8 +80,8 @@ class GameViewController: UIViewController {
         case .tile:
             game.tileFromStack()
         case .meeple:
-            game.tileFromStack()
             target = .tile
+            game.tileFromStack()
             changeChangeControlButtonImage()
         }
     }
@@ -107,58 +108,44 @@ class GameViewController: UIViewController {
     }
     
     @IBAction func moveTileUP() {
-        switch target {
-        case .tile:
-            if game.isMovementAvailable({ $0.up() }) {
-                game.currentTile?.coordinates.moveUp()
-            }
-        case .meeple:
-            guard let meeple = game.unsafeLastTile.meeple else { return }
-            if meeple.isMovementAvailable({ $0.up() }) {
-                game.unsafeLastTile.meeple?.coordinates.moveUp()
-            }
-        }
+        moveTileOrMeepleIfPossible(givenDirection: .up(true))
     }
     
     @IBAction func moveTileRight() {
-        switch target {
-        case .tile:
-            if game.isMovementAvailable({ $0.right() }) {
-                game.currentTile?.coordinates.moveRight()
-            }
-        case .meeple:
-            guard let meeple = game.unsafeLastTile.meeple else { return }
-            if meeple.isMovementAvailable({ $0.right() }) {
-                game.unsafeLastTile.meeple?.coordinates.moveRight()
-            }
-        }
+        moveTileOrMeepleIfPossible(givenDirection: .right(true))
     }
     
     @IBAction func moveTileDown() {
-        switch target {
-        case .tile:
-            if game.isMovementAvailable({ $0.down() }) {
-                game.currentTile?.coordinates.moveDown()
-            }
-        case .meeple:
-            guard let meeple = game.unsafeLastTile.meeple else { return }
-            if meeple.isMovementAvailable({ $0.down() }) {
-                game.unsafeLastTile.meeple?.coordinates.moveDown()
+        moveTileOrMeepleIfPossible(givenDirection: .down(true))
+    }
+    
+    @IBAction func moveTileLeft() {
+        moveTileOrMeepleIfPossible(givenDirection: .left(true))
+    }
+    
+    func moveTileOrMeepleIfPossible(givenDirection: MovingDirection) {
+        for direction in game.movementDirectionsAvailability {
+            if direction == givenDirection {
+                switch direction {
+                case .up:
+                    moveTileOrMeeple(inDirection: givenDirection)
+                case .right:
+                    moveTileOrMeeple(inDirection: givenDirection)
+                case .down:
+                    moveTileOrMeeple(inDirection: givenDirection)
+                case .left:
+                    moveTileOrMeeple(inDirection: givenDirection)
+                }
             }
         }
     }
     
-    @IBAction func moveTileLeft() {
+    func moveTileOrMeeple(inDirection: MovingDirection) {
         switch target {
         case .tile:
-            if game.isMovementAvailable({ $0.left() }) {
-                game.currentTile?.coordinates.moveLeft()
-            }
+            inDirection.moveCoordinatesInDirection(coordinates: &game.currentTile!.coordinates)
         case .meeple:
-            guard let meeple = game.unsafeLastTile.meeple else { return }
-            if meeple.isMovementAvailable({ $0.left() }) {
-                game.unsafeLastTile.meeple?.coordinates.moveLeft()
-            }
+            inDirection.moveCoordinatesInDirection(coordinates: &game.unsafeLastTile.meeple!.coordinates)
         }
     }
     

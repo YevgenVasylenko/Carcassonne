@@ -9,9 +9,14 @@ import UIKit
 
 struct GameViewRender {
     
-    let game: GameCore
-    let view: UIScrollView
-    let superView: UIView
+    private let game: GameCore
+    private let view: UIScrollView
+    private let superView: UIView
+    
+    private var maxCoordinateX = 0
+    private var minCoordinateX = 0
+    private var maxCoordinateY = 0
+    private var minCoordinateY = 0
 
     init(game: GameCore, view: UIScrollView, superView: UIView) {
         self.game = game
@@ -19,20 +24,9 @@ struct GameViewRender {
         self.superView = superView
     }
     
-    func render() {
-        
-        var maxCoordinateX = 0
-        var minCoordinateX = 0
-        var maxCoordinateY = 0
-        var minCoordinateY = 0
-        
-        var absoluteSumX: Int {
-            maxCoordinateX + abs(minCoordinateX)
-        }
-        
-        var absoluteSumY: Int {
-            maxCoordinateY + abs(minCoordinateY)
-        }
+#warning("why mutating")
+    
+    mutating func render() {
         
         for picture in view.subviews {
             picture.removeFromSuperview()
@@ -48,37 +42,62 @@ struct GameViewRender {
         
         for tile in game.tilesOnMap {
             let picture = TilePicture(tile: tile, view: view)
-            picture.frame.origin = CGPoint(
-                x: picture.imageView.frame.width * CGFloat(abs(minCoordinateX)),
-                y: picture.imageView.frame.width * CGFloat(maxCoordinateY))
+            shiftPicturesDueToMapExpansion(picture: picture)
+            
+            picture.makeShadowForObject(
+                object: picture.meepleImageView,
+                isObjectPlaced: tile.meeple?.isMeeplePlaced,
+                isObjectCanBePlaced: tile.meeple?.isMeepleOnField)
+            
+            expandMap(picture: picture)
         }
         
         if let tile = game.currentTile {
             let picture = TilePicture(tile: tile, view: view)
-            picture.frame.origin = CGPoint(
-                x: picture.imageView.frame.width * CGFloat(abs(minCoordinateX)),
-                y: picture.imageView.frame.width * CGFloat(maxCoordinateY))
-            picture.makeShadow(isTileCanBePlace: game.isTileCanBePlace)
-            view.contentSize = CGSize(
-                width: Int(superView.frame.width) + Int(picture.imageView.frame.width) * absoluteSumX,
-                height: Int(superView.frame.height) + Int(picture.imageView.frame.width) * absoluteSumY)
+            shiftPicturesDueToMapExpansion(picture: picture)
+            
+            picture.makeShadowForObject(
+                object: picture.tileImageView,
+                isObjectPlaced: false,
+                isObjectCanBePlaced: game.isTileCanBePlace)
         }
-        
-        func maxMinCoordinateSetUp(coordinates: Coordinates) {
-            if coordinates.x > maxCoordinateX {
-                maxCoordinateX = coordinates.x
-            }
-            if coordinates.x < minCoordinateX {
-                minCoordinateX = coordinates.x
-            }
-            if coordinates.y > maxCoordinateY {
-                maxCoordinateY = coordinates.y
-            }
-            if coordinates.y < minCoordinateY {
-                minCoordinateY = coordinates.y
-            }
-        }
-
     }
 }
 
+private extension GameViewRender {
+    
+    var absoluteSumX: Int {
+        maxCoordinateX + abs(minCoordinateX)
+    }
+    
+    var absoluteSumY: Int {
+        maxCoordinateY + abs(minCoordinateY)
+    }
+    
+    mutating func maxMinCoordinateSetUp(coordinates: Coordinates) {
+        if coordinates.x > maxCoordinateX {
+            maxCoordinateX = coordinates.x
+        }
+        if coordinates.x < minCoordinateX {
+            minCoordinateX = coordinates.x
+        }
+        if coordinates.y > maxCoordinateY {
+            maxCoordinateY = coordinates.y
+        }
+        if coordinates.y < minCoordinateY {
+            minCoordinateY = coordinates.y
+        }
+    }
+    
+    func shiftPicturesDueToMapExpansion(picture: TilePicture) {
+        picture.frame.origin = CGPoint(
+            x: picture.imageSideSize * CGFloat(abs(minCoordinateX)),
+            y: picture.imageSideSize * CGFloat(maxCoordinateY))
+    }
+    
+    func expandMap(picture: TilePicture) {
+        view.contentSize = CGSize(
+            width: Int(superView.frame.width) + Int(picture.imageSideSize) * absoluteSumX,
+            height: Int(superView.frame.height) + Int(picture.imageSideSize) * absoluteSumY)
+    }
+}

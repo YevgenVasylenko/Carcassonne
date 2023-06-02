@@ -21,7 +21,6 @@ struct Meeple {
     var downSide: LandType
     var leftSide: LandType
     var centre: LandType
-//    var coordinates: (Int, Int) = (0, 0)
     var coordinates = Coordinates(x: 0, y: 0)
     var position: LandType {
         updateTileSide()
@@ -31,9 +30,6 @@ struct Meeple {
         position.meepleTypeChoose()
     }
     var isMeeplePlaced = false
-//    var isMeepleAvailableToStay: Bool {
-//        isStaymentAvailable()
-//    }
     var isMeepleOnField: Bool {
         position != .field
     }
@@ -55,42 +51,7 @@ struct Meeple {
         }
     }
     
-//    mutating func moveMeepleUp() {
-//        coordinates.1 += 1
-//        if isMeepleAvailableToStay {
-//            coordinates.1 -= 1
-//        }
-//    }
-//
-//    mutating func moveMeepleRight() {
-//        coordinates.0 += 1
-//        if isMeepleAvailableToStay {
-//            coordinates.0 -= 1
-//        }
-//    }
-//
-//    mutating func moveMeepleDown() {
-//        coordinates.1 -= 1
-//        if isMeepleAvailableToStay {
-//            coordinates.1 += 1
-//        }
-//    }
-//
-//    mutating func moveMeepleLeft() {
-//        let oldCoordinates = coordinates
-//        coordinates.0 -= 1
-//        if isMeepleAvailableToStay {
-//            coordinates = oldCoordinates
-//        }
-//    }
-    
-//    func isStaymentAvailable() -> Bool {
-//        return abs(coordinates.0) + abs(coordinates.1) == 2
-//    }
-    
-    func isMovementAvailable(_ mapCoordinates: (Coordinates) -> Coordinates) -> Bool {
-        let coordinates = mapCoordinates(coordinates)
-        
-        return self.coordinates.coordinatesAvailableForMeeple().contains(coordinates)
+    func isMeepleCoordinatesOkToPlace(_ coordinates: Coordinates) -> Bool {
+        return Coordinates.coordinatesAvailableForMeeple().contains(coordinates)
     }
 }

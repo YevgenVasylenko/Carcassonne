@@ -11,6 +11,10 @@ struct Coordinates: Equatable {
     var x: Int
     var y: Int
     
+    static var zero: Self {
+        Self(x: 0, y: 0)
+    }
+    
     mutating func moveUp() {
         y += 1
     }
@@ -91,10 +95,14 @@ struct Coordinates: Equatable {
         ]
     }
     
-    func coordinatesAvailableForMeeple() -> [Coordinates] {
-        [                             Coordinates(x: 0, y: 1),
-         Coordinates(x: -1, y: 0),    Coordinates(x: 0, y: 0),   Coordinates(x: 1, y: 0),
-                                      Coordinates(x: 0, y: -1)
+    static func coordinatesAvailableForMeeple() -> [Coordinates] {
+        let zero = Self.zero
+        return [
+            zero.up(),
+            zero.left(),
+            zero,
+            zero.right(),
+            zero.down(),
         ]
     }
 }

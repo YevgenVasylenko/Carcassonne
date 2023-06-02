@@ -9,103 +9,99 @@ import UIKit
 
 class TilePicture: UIView {
     
-    var view: UIView
-    let imageView = UIImageView()
+    private var view: UIView
+    private let tile: Tile
+    let tileImageView = UIImageView()
+    let meepleImageView = UIImageView()
+    var imageSideSize: CGFloat = 0
     
     init(tile: Tile, view: UIView) {
         self.view = view
+        self.tile = tile
         super.init(frame: .zero)
-        
         view.addSubview(self)
-        drawTilePicture(tile: tile)
+        drawTilePicture()
+        drawOrEraseMeeple()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    func drawTilePicture(tile: Tile) {
-        var imageSideSize: CGFloat {
-            imageView.image?.size.height ?? 0
+ 
+    func makeShadowForObject(object: UIImageView, isObjectPlaced: Bool?, isObjectCanBePlaced: Bool?) {
+        
+        if isObjectPlaced ?? false {
+            return
         }
         
-        imageView.image = UIImage(named: tile.tilePictureName)
-        imageView.frame = CGRect(
-            origin: positionInXY(coordinatesOfTilesXY: tile.coordinates, imageSideSize: imageSideSize),
+        object.layer.shadowOffset = .zero
+        object.layer.shadowRadius = 10
+        object.layer.shadowOpacity = 1
+        object.clipsToBounds = false
+        
+        if isObjectCanBePlaced ?? false {
+            object.layer.shadowColor = .init(red: 0, green: 1, blue: 0, alpha: 1)
+        } else {
+            object.layer.shadowColor = .init(red: 1, green: 0, blue: 0, alpha: 1)
+        }
+    }
+}
+
+private extension TilePicture {
+    
+    func drawTilePicture() {
+        
+        tileImageView.image = UIImage(named: tile.tilePictureName)
+        imageSideSize = tileImageView.image?.size.height ?? 0
+        tileImageView.frame = CGRect(
+            
+            origin: objectPositionInView(
+                coordinatesOfObjectXY: tile.coordinates,
+                sizeOfObject: imageSideSize,
+                viewOfCenter: view),
+            
             size: .init(width: imageSideSize, height: imageSideSize))
         
+        tileImageView.frame.origin.y -= imageSideSize
+        
         imageRotationPosition(rotationCalculation: tile.rotationCalculation)
-        self.addSubview(imageView)
         
-        DrawOrEraseMeeple(coordinatesOfMeepleXY: tile.meeple?.coordinates,   imageSideSize: imageSideSize, isMeepleCanBePlace: tile.meeple?.isMeepleOnField ?? false, isMeeplePlaced: tile.meeple?.isMeeplePlaced ?? false, meepleColor: tile.belongToPlayer?.color ?? .black)
-        
+        self.addSubview(tileImageView)
     }
     
-    func positionInXY(coordinatesOfTilesXY: Coordinates, imageSideSize: CGFloat) -> CGPoint {
-        return CGPoint(
-            x: (view.center.x - imageSideSize / 2) + CGFloat(coordinatesOfTilesXY.x) * imageSideSize,
-            y: (view.center.y - imageSideSize / 2) - CGFloat(coordinatesOfTilesXY.y) * imageSideSize)
-    }
-    
-    func imageRotationPosition(rotationCalculation: Int) {
-        imageView.transform = CGAffineTransform.identity.rotated(by: (CGFloat.pi / 2) *  CGFloat(rotationCalculation))
+    func drawOrEraseMeeple() {
         
-    }
-    
-    func makeShadow(isTileCanBePlace: Bool) {
-        layer.shadowOffset = .zero
-        layer.shadowRadius = 10
-        layer.shadowOpacity = 1
-        clipsToBounds = false
-        if isTileCanBePlace {
-            layer.shadowColor = .init(red: 0, green: 1, blue: 0, alpha: 1)
-        } else {
-            layer.shadowColor = .init(red: 1, green: 0, blue: 0, alpha: 1)
+        guard let coordinatesOfMeepleXY = tile.meeple?.coordinates
+        else {
+            meepleImageView.removeFromSuperview()
+            return
         }
-    }
-    
-    func DrawOrEraseMeeple(coordinatesOfMeepleXY: Coordinates?, imageSideSize: CGFloat, isMeepleCanBePlace: Bool, isMeeplePlaced: Bool, meepleColor: UIColor) {
-        
-        let meeplePicture = UIImageView()
         
         var meepleImageSideSize: CGFloat {
             imageSideSize / 3
         }
         
-        guard  let coordinatesOfMeepleXY = coordinatesOfMeepleXY else {
-            meeplePicture.removeFromSuperview()
-            return
-        }
-        
-        meeplePicture.image = (UIImage(named: "meeple")?.withTintColor(meepleColor))
-        meeplePicture.frame = CGRect(
-            origin: meeplePositionInXY(coordinatesOfMeepleXY: coordinatesOfMeepleXY, meepleImageSideSize: meepleImageSideSize),
+        meepleImageView.image = (UIImage(named: "meeple")?.withTintColor(tile.belongToPlayer?.color ?? .black))
+        meepleImageView.frame = CGRect(
+            origin: objectPositionInView(
+                coordinatesOfObjectXY: coordinatesOfMeepleXY,
+                sizeOfObject: meepleImageSideSize,
+                viewOfCenter: tileImageView),
             size: .init(width: meepleImageSideSize, height: meepleImageSideSize))
-        makeShadow(isMeeplePlaced: isMeeplePlaced, isMeepleCanBePlace: isMeepleCanBePlace)
         
-        self.addSubview(meeplePicture)
+        meepleImageView.frame.origin.x -= meepleImageSideSize / 2
+        meepleImageView.frame.origin.y -= meepleImageSideSize / 2
         
-        func makeShadow(isMeeplePlaced: Bool, isMeepleCanBePlace: Bool) {
-            if isMeeplePlaced {
-                return
-            }
-            
-            meeplePicture.layer.shadowOffset = .zero
-            meeplePicture.layer.shadowRadius = 10
-            meeplePicture.layer.shadowOpacity = 1
-            meeplePicture.clipsToBounds = false
-            
-            if isMeepleCanBePlace {
-                meeplePicture.layer.shadowColor = .init(red: 0, green: 1, blue: 0, alpha: 1)
-            } else {
-                meeplePicture.layer.shadowColor = .init(red: 1, green: 0, blue: 0, alpha: 1)
-            }
-        }
+        self.addSubview(meepleImageView)
     }
     
-    func meeplePositionInXY(coordinatesOfMeepleXY: Coordinates, meepleImageSideSize: CGFloat) -> CGPoint {
+    func imageRotationPosition(rotationCalculation: Int) {
+        tileImageView.transform = CGAffineTransform.identity.rotated(by: (CGFloat.pi / 2) *  CGFloat(rotationCalculation))
+    }
+    
+    func objectPositionInView(coordinatesOfObjectXY: Coordinates, sizeOfObject: CGFloat, viewOfCenter: UIView) -> CGPoint {
         return CGPoint(
-            x: (imageView.center.x - meepleImageSideSize / 2) + CGFloat(coordinatesOfMeepleXY.x) * meepleImageSideSize,
-            y: (imageView.center.y - meepleImageSideSize / 2) - CGFloat(coordinatesOfMeepleXY.y) * meepleImageSideSize)
+            x: viewOfCenter.center.x + CGFloat(coordinatesOfObjectXY.x) * sizeOfObject,
+            y: viewOfCenter.center.y - CGFloat(coordinatesOfObjectXY.y) * sizeOfObject)
     }
 }

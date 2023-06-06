@@ -7,11 +7,47 @@
 
 import Foundation
 
+protocol Matchable {
+  static func == (lhs: Self, rhs: Self) -> Bool
+}
+
+protocol NotMatchable {
+    static func != (lhs: Self, rhs: Self) -> Bool
+}
+
 enum LandType {
     case field
     case cloister
-    case road
+    case road(endOfRoad: Bool)
     case city
+    case crossroads
+}
+
+extension LandType: Matchable {
+    static func == (lhs: LandType, rhs: LandType) -> Bool {
+        switch (lhs, rhs) {
+        case (.field, .field): return true
+        case (.cloister, .cloister): return true
+        case (.road(_), .road(_)): return true
+        case (.city, .city): return true
+        case (.crossroads, .crossroads): return true
+        default: return false
+        }
+    }
+}
+
+extension LandType: NotMatchable {
+    static func != (lhs: LandType, rhs: LandType) -> Bool {
+        switch (lhs, rhs) {
+        case (.field, .field): return false
+        case (.cloister, .cloister): return false
+        case (.road(endOfRoad: true), .road(endOfRoad: true)): return false
+        case (.road(endOfRoad: false), .road(endOfRoad: false)): return false
+        case (.city, .city): return false
+        case (.crossroads, .crossroads): return false
+        default: return true
+        }
+    }
 }
 
 extension LandType {
@@ -25,6 +61,8 @@ extension LandType {
             return .thief
         case .city:
             return .knight
+        case .crossroads:
+            return .thief
         }
     }
 }

@@ -7,27 +7,6 @@
 
 import Foundation
 
-enum MovingDirection: Equatable {
-    case up(_ availableToMove: Bool)
-    case right(_ availableToMove: Bool)
-    case down(_ availableToMove: Bool)
-    case left(_ availableToMove: Bool)
-}
-
-extension MovingDirection {
-    func moveCoordinatesInDirection(coordinates: inout Coordinates) {
-        switch self {
-        case .up:
-            coordinates.moveUp()
-        case .right:
-            coordinates.moveRight()
-        case .down:
-            coordinates.moveDown()
-        case .left:
-            coordinates.moveLeft()
-        }
-    }
-}
 
 enum GameState {
     case gameStart
@@ -75,6 +54,12 @@ struct GameCore {
     
     var isTileCanBePlace: Bool = false
         
+    var controlledMeeple: Meeple? =  nil {
+        didSet {
+            let result = checkRouteInDirection(tileToCheck: unsafeLastTile, routeDirections: tilesRoadDirections(tile: (unsafeLastTile)))
+            print(isRoadRouteFreeForMeeple(resultOfSideCheck: result))
+        }
+    }
     
     var gameState: GameState {
         gameStateChange()
@@ -112,6 +97,8 @@ struct GameCore {
             downSide: unsafeLastTile.downSide,
             leftSide: unsafeLastTile.leftSide,
             centre: unsafeLastTile.centre)
+        
+        controlledMeeple = unsafeLastTile.meeple
     }
     
     mutating func placeMeeple() {
@@ -181,8 +168,6 @@ struct GameCore {
         }
         return false
     }
-
-    
 }
 
 private extension GameCore {
@@ -269,5 +254,187 @@ private extension GameCore {
         return isUpSideOk && isRightSideOk && isDownSideOk && isLeftSideOk
     }
 
-
+//    func roadRouteChek() -> Bool {
+//        var startTile: Tile? = unsafeLastTile
+//        for tileSide in tilesRoadDirections(tile: startTile) {
+//            if tileSide == .upSide {
+//                startTile = checkTileOnTop(startTile: startTile)
+//            }
+//        }
+//    }
+    
+    func isRoadRouteFreeForMeeple(resultOfSideCheck: (tile: Tile?, isOk: Bool, exceptedTileSide: TileSides)) -> Bool {
+        if resultOfSideCheck.tile == nil && resultOfSideCheck.isOk == true {
+            return true
+        } else if resultOfSideCheck.tile == nil && resultOfSideCheck.isOk == false {
+            return false
+        } else if resultOfSideCheck.tile != nil && resultOfSideCheck.isOk == true {
+            let routeDirections = tilesRoadDirectionsExceptLast(tile: resultOfSideCheck.tile, exceptedTileSide: resultOfSideCheck.exceptedTileSide)
+            let checkRouteInDirection = checkRouteInDirection(tileToCheck: resultOfSideCheck.tile, routeDirections: routeDirections)
+            return isRoadRouteFreeForMeeple(resultOfSideCheck: checkRouteInDirection)
+        }
+        return true
+    }
+    
+    func checkRouteInDirection(tileToCheck: Tile?, routeDirections: [TileSides]) -> (tile: Tile?, isOk: Bool, exceptedTileSide: TileSides) {
+        guard let tile = tileToCheck else { return (nil, false, .upSide)}
+        for index in routeDirections.indices {
+            switch routeDirections[index] {
+                
+            case .upSide:
+                return checkTileOnTop(checking: tile)
+            case .rightSide:
+                break
+            case .downSide:
+                break
+            case .leftSide:
+                break
+            case .centre:
+                break
+            }
+        }
+        return checkTileOnTop(checking: tile)
+    }
+    
+    func tilesRoadDirectionsExceptLast(tile: Tile?, exceptedTileSide: TileSides?) -> [TileSides] {
+        guard let tile = tile else { return [] }
+        var arrayOfSides = tilesRoadDirections(tile: tile)
+        
+        guard let tileSide = exceptedTileSide else { return arrayOfSides }
+        
+        for index in arrayOfSides.indices {
+            if arrayOfSides[index] == tileSide {
+                arrayOfSides.remove(at: index)
+                return arrayOfSides
+            }
+        }
+        return arrayOfSides
+    }
+    
+    func tilesRoadDirections(tile: Tile) -> [TileSides] {
+        var tilesRoadsDirections: [TileSides] = []
+        
+        if tile.upSide == .road(endOfRoad: true) || tile.upSide == .road(endOfRoad: false) {
+            tilesRoadsDirections.append(.upSide)
+        }
+        
+        if tile.rightSide == .road(endOfRoad: true) || tile.rightSide == .road(endOfRoad: false) {
+            tilesRoadsDirections.append(.rightSide)
+        }
+        
+        if tile.downSide == .road(endOfRoad: true) || tile.downSide == .road(endOfRoad: false) {
+            tilesRoadsDirections.append(.downSide)
+        }
+        
+        if tile.leftSide == .road(endOfRoad: true) || tile.leftSide == .road(endOfRoad: false) {
+            tilesRoadsDirections.append(.leftSide)
+        }
+        
+        return tilesRoadsDirections
+    }
+    
+    
+    func checkTileOnTop(checking: Tile) -> (tile: Tile?, isOk: Bool, exceptedTileSide: TileSides) {
+        let exceptedSide: TileSides = .downSide
+        for tile in tilesOnMap {
+            if checking.coordinates.isUpNeighbour(tile.coordinates) && checking.coordinates.isOnSameXAxis(tile.coordinates) {
+                if let tileMeeple = tile.meeple {
+                    if tileMeeple.positionLandType == .city || tileMeeple.positionLandType == .cloister {
+                        if tile.downSide != .road(endOfRoad: false) {
+                            return (nil, true, exceptedSide)
+                        } else {
+                            return (tile, true, exceptedSide)
+                        }
+                    } else if tileMeeple.positionLandType != .road(endOfRoad: false) {
+                        if tileMeeple.positionTileSide == .downSide {
+                            return (nil, false, exceptedSide)
+                        }
+                        return (nil, true, exceptedSide)
+                    }
+                    return (nil, false, exceptedSide)
+                }
+                return (tile, true, exceptedSide)
+            }
+            continue
+        }
+        return (nil, true, exceptedSide)
+    }
+    
+    func checkTileOnRight(checking: Tile) -> (tile: Tile?, isOk: Bool, exceptedTileSide: TileSides) {
+        let exceptedSide: TileSides = .leftSide
+        for tile in tilesOnMap {
+            if checking.coordinates.isRightNeighbour(tile.coordinates) && checking.coordinates.isOnSameYAxis(tile.coordinates) {
+                if let tileMeeple = tile.meeple {
+                    if tileMeeple.positionLandType == .city || tileMeeple.positionLandType == .cloister {
+                        if tile.leftSide != .road(endOfRoad: false) {
+                            return (nil, true, exceptedSide)
+                        } else {
+                            return (tile, true, exceptedSide)
+                        }
+                    } else if tileMeeple.positionLandType != .road(endOfRoad: false) {
+                        if tileMeeple.positionTileSide == .leftSide {
+                            return (nil, false, exceptedSide)
+                        }
+                        return (nil, true, exceptedSide)
+                    }
+                    return (nil, false, exceptedSide)
+                }
+                return (tile, true, exceptedSide)
+            }
+            continue
+        }
+        return (nil, true, exceptedSide)
+    }
+    
+    func checkTileOnDown(checking: Tile) -> (tile: Tile?, isOk: Bool, exceptedTileSide: TileSides) {
+        let exceptedSide: TileSides = .upSide
+        for tile in tilesOnMap {
+            if checking.coordinates.isRightNeighbour(tile.coordinates) && checking.coordinates.isOnSameYAxis(tile.coordinates) {
+                if let tileMeeple = tile.meeple {
+                    if tileMeeple.positionLandType == .city || tileMeeple.positionLandType == .cloister {
+                        if tile.upSide != .road(endOfRoad: false) {
+                            return (nil, true, exceptedSide)
+                        } else {
+                            return (tile, true, exceptedSide)
+                        }
+                    } else if tileMeeple.positionLandType != .road(endOfRoad: false) {
+                        if tileMeeple.positionTileSide == .upSide {
+                            return (nil, false, exceptedSide)
+                        }
+                        return (nil, true, exceptedSide)
+                    }
+                    return (nil, false, exceptedSide)
+                }
+                return (tile, true, exceptedSide)
+            }
+            continue
+        }
+        return (nil, true, exceptedSide)
+    }
+    
+    func checkTileOnLeft(checking: Tile) -> (tile: Tile?, isOk: Bool, exceptedTileSide: TileSides) {
+        let exceptedSide: TileSides = .rightSide
+        for tile in tilesOnMap {
+            if checking.coordinates.isRightNeighbour(tile.coordinates) && checking.coordinates.isOnSameYAxis(tile.coordinates) {
+                if let tileMeeple = tile.meeple {
+                    if tileMeeple.positionLandType == .city || tileMeeple.positionLandType == .cloister {
+                        if tile.rightSide != .road(endOfRoad: false) {
+                            return (nil, true, exceptedSide)
+                        } else {
+                            return (tile, true, exceptedSide)
+                        }
+                    } else if tileMeeple.positionLandType != .road(endOfRoad: false) {
+                        if tileMeeple.positionTileSide == .rightSide {
+                            return (nil, false, exceptedSide)
+                        }
+                        return (nil, true, exceptedSide)
+                    }
+                    return (nil, false, exceptedSide)
+                }
+                return (tile, true, exceptedSide)
+            }
+            continue
+        }
+        return (nil, true, exceptedSide)
+    }
 }

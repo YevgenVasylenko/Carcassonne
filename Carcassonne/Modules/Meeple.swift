@@ -22,19 +22,27 @@ struct Meeple {
     var leftSide: LandType
     var centre: LandType
     var coordinates = Coordinates(x: 0, y: 0)
-    var position: LandType {
+    var positionLandType: LandType {
+        updateLandType()
+    }
+    
+    var positionTileSide: TileSides {
         updateTileSide()
     }
     
     var meepleType: MeepleType {
-        position.meepleTypeChoose()
+        positionLandType.meepleTypeChoose()
     }
     var isMeeplePlaced = false
     var isMeepleOnField: Bool {
-        position != .field
+        if positionLandType == .field || positionLandType == .crossroads {
+            return false
+        } else {
+            return true
+        }
     }
     
-    func updateTileSide() -> LandType {
+    func updateLandType() -> LandType {
         switch coordinates {
         case Coordinates(x: 0, y: 1):
             return upSide
@@ -48,6 +56,23 @@ struct Meeple {
             return centre
         default:
             return centre
+        }
+    }
+    
+    func updateTileSide() -> TileSides {
+        switch coordinates {
+        case Coordinates(x: 0, y: 1):
+            return .upSide
+        case Coordinates(x: 1, y: 0):
+            return .rightSide
+        case Coordinates(x: 0, y: -1):
+            return .downSide
+        case Coordinates(x: -1, y: 0):
+            return .leftSide
+        case Coordinates(x: 0, y: 0):
+            return .centre
+        default:
+            return .centre
         }
     }
     

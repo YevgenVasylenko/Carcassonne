@@ -107,3 +107,24 @@ struct Coordinates: Equatable {
     }
 }
 
+enum MovingDirection: Equatable {
+    case up(_ availableToMove: Bool)
+    case right(_ availableToMove: Bool)
+    case down(_ availableToMove: Bool)
+    case left(_ availableToMove: Bool)
+}
+
+extension MovingDirection {
+    func moveCoordinatesInDirection(coordinates: inout Coordinates) {
+        switch self {
+        case .up:
+            coordinates.moveUp()
+        case .right:
+            coordinates.moveRight()
+        case .down:
+            coordinates.moveDown()
+        case .left:
+            coordinates.moveLeft()
+        }
+    }
+}

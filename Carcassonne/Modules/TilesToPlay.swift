@@ -8,7 +8,7 @@
 import Foundation
 
 enum TileStorage {
-    static let startTile = Tile(upSide: .road, rightSide: .city, downSide: .road, leftSide: .field, centre: .road, tilePictureName: "straightRoadCitySide")
+    static let startTile = Tile(upSide: .road(endOfRoad: false), rightSide: .city, downSide: .road(endOfRoad: false), leftSide: .field, centre: .road(endOfRoad: false), tilePictureName: "straightRoadCitySide")
     
     static let tilePool = makeTilePool()
 }
@@ -46,45 +46,45 @@ private extension TileStorage {
         return tiles
     }
     
-    static let conerRoadToLeftCitySideTile = Tile(upSide: .road, rightSide: .city, downSide: .field, leftSide: .road, centre: .road, tilePictureName: "conerRoadToLeftCitySide")
+    static let conerRoadToLeftCitySideTile = Tile(upSide: .road(endOfRoad: false), rightSide: .city, downSide: .field, leftSide: .road(endOfRoad: false), centre: .road(endOfRoad: false), tilePictureName: "conerRoadToLeftCitySide")
 
-    static let conerRoadToRightCitySideTile = Tile(upSide: .city, rightSide: .road, downSide: .road, leftSide: .field, centre: .road, tilePictureName: "conerRoadToRightCitySide")
+    static let conerRoadToRightCitySideTile = Tile(upSide: .city, rightSide: .road(endOfRoad: false), downSide: .road(endOfRoad: false), leftSide: .field, centre: .road(endOfRoad: false), tilePictureName: "conerRoadToRightCitySide")
 
-    static let tTypeCrossRoadCitySideTile = Tile(upSide: .road, rightSide: .city, downSide: .road, leftSide: .road, centre: .road, tilePictureName: "tTypeCrossRoadCitySide")
+    static let tTypeCrossRoadCitySideTile = Tile(upSide: .road(endOfRoad: true), rightSide: .city, downSide: .road(endOfRoad: true), leftSide: .road(endOfRoad: true), centre: .crossroads, tilePictureName: "tTypeCrossRoadCitySide")
 
-    static let twoSidesCityWithShieldTile = Tile(upSide: .city, rightSide: .field, downSide: .field, leftSide: .city, centre: .road, tilePictureName: "twoSidesCityWithShield")
+    static let twoSidesCityWithShieldTile = Tile(upSide: .city, rightSide: .field, downSide: .field, leftSide: .city, centre: .city, tilePictureName: "twoSidesCityWithShield")
 
-    static let twoSidesCityTile = Tile(upSide: .city, rightSide: .field, downSide: .field, leftSide: .city, centre: .road, tilePictureName: "twoSidesCity")
+    static let twoSidesCityTile = Tile(upSide: .city, rightSide: .field, downSide: .field, leftSide: .city, centre: .city, tilePictureName: "twoSidesCity")
 
-    static let twoSideCityWithConerRoadWithShieldTile = Tile(upSide: .city, rightSide: .road, downSide: .road, leftSide: .city, centre: .road, tilePictureName: "twoSideCityWithConerRoadWithShield")
+    static let twoSideCityWithConerRoadWithShieldTile = Tile(upSide: .city, rightSide: .road(endOfRoad: false), downSide: .road(endOfRoad: false), leftSide: .city, centre: .road(endOfRoad: false), tilePictureName: "twoSideCityWithConerRoadWithShield")
 
-    static let twoSideCityWithConerRoadTile = Tile(upSide: .city, rightSide: .road, downSide: .road, leftSide: .city, centre: .road, tilePictureName: "twoSideCityWithConerRoad")
+    static let twoSideCityWithConerRoadTile = Tile(upSide: .city, rightSide: .road(endOfRoad: false), downSide: .road(endOfRoad: false), leftSide: .city, centre: .road(endOfRoad: false), tilePictureName: "twoSideCityWithConerRoad")
 
     static let threeSideCityWithShieldTile = Tile(upSide: .city, rightSide: .city, downSide: .field, leftSide: .city, centre: .city, tilePictureName: "threeSideCityWithShield")
 
     static let threeSideCityTile = Tile(upSide: .city, rightSide: .city, downSide: .field, leftSide: .city, centre: .city, tilePictureName: "threeSideCity")
 
-    static let threeSideCityWithRoadWithShieldTile = Tile(upSide: .city, rightSide: .city, downSide: .road, leftSide: .city, centre: .city, tilePictureName: "threeSideCityWithRoadWithShield")
+    static let threeSideCityWithRoadWithShieldTile = Tile(upSide: .city, rightSide: .city, downSide: .road(endOfRoad: true), leftSide: .city, centre: .city, tilePictureName: "threeSideCityWithRoadWithShield")
 
-    static let threeSidesCityWithRoadTile = Tile(upSide: .city, rightSide: .city, downSide: .road, leftSide: .city, centre: .city, tilePictureName: "threeSidesCityWithRoad")
+    static let threeSidesCityWithRoadTile = Tile(upSide: .city, rightSide: .city, downSide: .road(endOfRoad: true), leftSide: .city, centre: .city, tilePictureName: "threeSidesCityWithRoad")
 
     static let citySideTile = Tile(upSide: .city, rightSide: .field, downSide: .field, leftSide: .field, centre: .field, tilePictureName: "citySide")
 
     static let cloisterTile = Tile(upSide: .field, rightSide: .field, downSide: .field, leftSide: .field, centre: .cloister, tilePictureName: "cloister")
 
-    static let cloisterWithRoadTile = Tile(upSide: .field, rightSide: .field, downSide: .road, leftSide: .field, centre: .cloister, tilePictureName: "cloisterWithRoad")
+    static let cloisterWithRoadTile = Tile(upSide: .field, rightSide: .field, downSide: .road(endOfRoad: true), leftSide: .field, centre: .cloister, tilePictureName: "cloisterWithRoad")
 
-    static let conerRoadTile = Tile(upSide: .field, rightSide: .field, downSide: .road, leftSide: .road, centre: .road, tilePictureName: "conerRoad")
+    static let conerRoadTile = Tile(upSide: .field, rightSide: .field, downSide: .road(endOfRoad: false), leftSide: .road(endOfRoad: false), centre: .road(endOfRoad: false), tilePictureName: "conerRoad")
 
-    static let fourSideCrossRoadTile = Tile(upSide: .road, rightSide: .road, downSide: .road, leftSide: .road, centre: .road, tilePictureName: "fourSideCrossRoad")
+    static let fourSideCrossRoadTile = Tile(upSide: .road(endOfRoad: true), rightSide: .road(endOfRoad: true), downSide: .road(endOfRoad: true), leftSide: .road(endOfRoad: true), centre: .crossroads, tilePictureName: "fourSideCrossRoad")
 
     static let fourSidesCityTile = Tile(upSide: .city, rightSide: .city, downSide: .city, leftSide: .city, centre: .city, tilePictureName: "fourSidesCity")
 
-    static let straightRoadTile = Tile(upSide: .road, rightSide: .field, downSide: .road, leftSide: .field, centre: .road, tilePictureName: "straightRoad")
+    static let straightRoadTile = Tile(upSide: .road(endOfRoad: false), rightSide: .field, downSide: .road(endOfRoad: false), leftSide: .field, centre: .road(endOfRoad: false), tilePictureName: "straightRoad")
 
-    static let straightRoadCitySideTile = Tile(upSide: .road, rightSide: .city, downSide: .road, leftSide: .field, centre: .road, tilePictureName: "straightRoadCitySide")
+    static let straightRoadCitySideTile = Tile(upSide: .road(endOfRoad: false), rightSide: .city, downSide: .road(endOfRoad: false), leftSide: .field, centre: .road(endOfRoad: false), tilePictureName: "straightRoadCitySide")
 
-    static let tTypeConerRoadTile = Tile(upSide: .field, rightSide: .road, downSide: .road, leftSide: .road, centre: .road, tilePictureName: "tTypeConerRoad")
+    static let tTypeConerRoadTile = Tile(upSide: .field, rightSide: .road(endOfRoad: true), downSide: .road(endOfRoad: true), leftSide: .road(endOfRoad: true), centre: .crossroads, tilePictureName: "tTypeConerRoad")
 
     static let tunnelCItyWithShieldTile = Tile(upSide: .field, rightSide: .city, downSide: .field, leftSide: .city, centre: .city, tilePictureName: "tunnelCItyWithShield")
 

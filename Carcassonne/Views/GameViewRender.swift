@@ -47,7 +47,7 @@ struct GameViewRender {
             picture.makeShadowForObject(
                 object: picture.meepleImageView,
                 isObjectPlaced: tile.meeple?.isMeeplePlaced,
-                isObjectCanBePlaced: tile.meeple?.isMeepleOnField)
+                isObjectCanBePlaced: game.isMeepleFreeToBePlaced())
             
             expandMap(picture: picture)
         }

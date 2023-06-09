@@ -21,7 +21,12 @@ struct Meeple {
     var downSide: LandType
     var leftSide: LandType
     var centre: LandType
-    var coordinates = Coordinates(x: 0, y: 0)
+    var delegate: CoordinateDelegate?
+    var coordinates = Coordinates(x: 0, y: 0) {
+       didSet {
+           delegate?.coordinatesChanged(coordinates)
+       }
+   }
     var positionLandType: LandType {
         updateLandType()
     }

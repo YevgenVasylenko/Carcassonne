@@ -18,6 +18,7 @@
 		5D36B93A29EAE35800448219 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5D36B93929EAE35800448219 /* Assets.xcassets */; };
 		5D36B93D29EAE35800448219 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5D36B93B29EAE35800448219 /* LaunchScreen.storyboard */; };
 		5D36B94529EAE3BA00448219 /* Tile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D36B94429EAE3BA00448219 /* Tile.swift */; };
+		5D3C1E852A334D4500CC080C /* ScoreCalculating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3C1E842A334D4500CC080C /* ScoreCalculating.swift */; };
 		5D423C562A176A8800C5773E /* PlayerLabelGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D423C552A176A8800C5773E /* PlayerLabelGameView.swift */; };
 		5D4946D729EEBA0100AEA11E /* CarcassonneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4946D629EEBA0100AEA11E /* CarcassonneTests.swift */; };
 		5D7A0A692A0107A200C1C609 /* Meeple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7A0A682A0107A200C1C609 /* Meeple.swift */; };
@@ -26,6 +27,7 @@
 		5DC2A5792A125BEB007A2715 /* StartMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC2A5782A125BEB007A2715 /* StartMenuViewController.swift */; };
 		5DC2A57B2A125CA0007A2715 /* StartNewGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC2A57A2A125CA0007A2715 /* StartNewGameViewController.swift */; };
 		5DD0B3642A1D0800006BD8F6 /* Coordinates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD0B3632A1D0800006BD8F6 /* Coordinates.swift */; };
+		5DFD58CC2A332F6600AD9CDC /* RoutesCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DFD58CB2A332F6600AD9CDC /* RoutesCheck.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +54,7 @@
 		5D36B93C29EAE35800448219 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5D36B93E29EAE35800448219 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5D36B94429EAE3BA00448219 /* Tile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tile.swift; sourceTree = "<group>"; };
+		5D3C1E842A334D4500CC080C /* ScoreCalculating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreCalculating.swift; sourceTree = "<group>"; };
 		5D423C552A176A8800C5773E /* PlayerLabelGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerLabelGameView.swift; sourceTree = "<group>"; };
 		5D4946CF29EEB96E00AEA11E /* Playground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = Playground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		5D4946D429EEBA0100AEA11E /* CarcassonneTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CarcassonneTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -62,6 +65,7 @@
 		5DC2A5782A125BEB007A2715 /* StartMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartMenuViewController.swift; sourceTree = "<group>"; };
 		5DC2A57A2A125CA0007A2715 /* StartNewGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartNewGameViewController.swift; sourceTree = "<group>"; };
 		5DD0B3632A1D0800006BD8F6 /* Coordinates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinates.swift; sourceTree = "<group>"; };
+		5DFD58CB2A332F6600AD9CDC /* RoutesCheck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutesCheck.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +98,8 @@
 			isa = PBXGroup;
 			children = (
 				5D9320022A078E260001FAAB /* GameCore.swift */,
+				5DFD58CB2A332F6600AD9CDC /* RoutesCheck.swift */,
+				5D3C1E842A334D4500CC080C /* ScoreCalculating.swift */,
 				5DD0B3632A1D0800006BD8F6 /* Coordinates.swift */,
 				5D36B94429EAE3BA00448219 /* Tile.swift */,
 				5D7A0A682A0107A200C1C609 /* Meeple.swift */,
@@ -280,6 +286,8 @@
 				5DD0B3642A1D0800006BD8F6 /* Coordinates.swift in Sources */,
 				5D36B94529EAE3BA00448219 /* Tile.swift in Sources */,
 				5D20304929F156BA00F0720B /* TilesToPlay.swift in Sources */,
+				5DFD58CC2A332F6600AD9CDC /* RoutesCheck.swift in Sources */,
+				5D3C1E852A334D4500CC080C /* ScoreCalculating.swift in Sources */,
 				5DC2A5772A12587A007A2715 /* Player.swift in Sources */,
 				5D36B93329EAE35400448219 /* SceneDelegate.swift in Sources */,
 				5D423C562A176A8800C5773E /* PlayerLabelGameView.swift in Sources */,

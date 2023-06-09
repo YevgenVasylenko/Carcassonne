@@ -67,16 +67,16 @@ extension LandType {
         }
     }
     
-    func isAnotherMeeplePlacable() -> Bool {
+    func isAnotherMeeplePlacable(landTypeToCheck: LandType) -> Bool {
         switch self {
         case .field:
             break
         case .cloister:
-            break
+            return self == .cloister
         case .road:
-            return self == .cloister || self == .city(separated: true)
+            return landTypeToCheck == .cloister || landTypeToCheck == .city(separated: false)
         case .city:
-            return self == .cloister || self == .road(endOfRoad: true)
+            return landTypeToCheck == .cloister || landTypeToCheck == .road(endOfRoad: false)
         case .crossroads:
             break
         }

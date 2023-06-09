@@ -55,37 +55,52 @@ struct Coordinates: Equatable {
         return copy
     }
     
-    func isUpNeighbour(_ other: Coordinates) -> Bool {
-        y - other.y == -1
+    func isHasBorderOnTopWith(_ other: Coordinates) -> Bool {
+        y - other.y == -1  && isOnSameXAxisWith(other)
     }
     
-    func isDownNeighbour(_ other: Coordinates) -> Bool {
-        y - other.y == 1
+    func isHasBorderOnDownWith(_ other: Coordinates) -> Bool {
+        y - other.y == 1 && isOnSameXAxisWith(other)
     }
     
-    func isLeftNeighbour(_ other: Coordinates) -> Bool {
-        x - other.x == 1
+    func isHasBorderOnLeftWith(_ other: Coordinates) -> Bool {
+        x - other.x == 1 && isOnSameYAxisWith(other)
     }
     
-    func isRightNeighbour(_ other: Coordinates) -> Bool {
-        x - other.x == -1
+    func isHasBorderOnRightWith(_ other: Coordinates) -> Bool {
+        x - other.x == -1 && isOnSameYAxisWith(other)
     }
     
-    func isOnSameXAxis(_ other: Coordinates) -> Bool {
+    func isOnSameXAxisWith(_ other: Coordinates) -> Bool {
          x == other.x
      }
  
-     func isOnSameYAxis(_ other: Coordinates) -> Bool {
+     func isOnSameYAxisWith(_ other: Coordinates) -> Bool {
          y == other.y
      }
     
-    func isXAxisNeighbour(_ other: Coordinates) -> Bool {
-          (isLeftNeighbour(other) || isRightNeighbour(other)) && isOnSameYAxis(other)
+    func isHasBordersOnLeftOrRightWith(_ other: Coordinates) -> Bool {
+        isHasBorderOnRightWith(other) || isHasBorderOnLeftWith(other)
       }
   
-    func isYAxisNeighbour(_ other: Coordinates) -> Bool {
-          (isUpNeighbour(other) || isDownNeighbour(other)) && isOnSameXAxis(other)
+    func isHasBordersOnTopOrDownWith(_ other: Coordinates) -> Bool {
+          isHasBorderOnTopWith(other) || isHasBorderOnDownWith(other)
       }
+    
+    func isHasNeighborOnSide(_ side: TileSides, _ other: Coordinates) -> Bool {
+        switch side {
+        case .upSide:
+            return isHasBorderOnTopWith(other)
+        case .rightSide:
+            return isHasBorderOnRightWith(other)
+        case .downSide:
+            return isHasBorderOnDownWith(other)
+        case .leftSide:
+            return isHasBorderOnLeftWith(other)
+        case .centre:
+            return false
+        }
+    }
     
     func coordinatesAroundTile() -> [Coordinates] {
         [

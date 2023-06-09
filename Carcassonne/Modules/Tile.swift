@@ -19,7 +19,7 @@ enum LandType {
     case field
     case cloister
     case road(endOfRoad: Bool)
-    case city
+    case city(separated: Bool)
     case crossroads
 }
 
@@ -29,7 +29,7 @@ extension LandType: Matchable {
         case (.field, .field): return true
         case (.cloister, .cloister): return true
         case (.road(_), .road(_)): return true
-        case (.city, .city): return true
+        case (.city(_), .city(_)): return true
         case (.crossroads, .crossroads): return true
         default: return false
         }
@@ -43,7 +43,8 @@ extension LandType: NotMatchable {
         case (.cloister, .cloister): return false
         case (.road(endOfRoad: true), .road(endOfRoad: true)): return false
         case (.road(endOfRoad: false), .road(endOfRoad: false)): return false
-        case (.city, .city): return false
+        case (.city(separated: true), .city(separated: true)): return false
+        case (.city(separated: false), .city(separated: false)): return false
         case (.crossroads, .crossroads): return false
         default: return true
         }
@@ -65,6 +66,22 @@ extension LandType {
             return .thief
         }
     }
+    
+    func isAnotherMeeplePlacable() -> Bool {
+        switch self {
+        case .field:
+            break
+        case .cloister:
+            break
+        case .road:
+            return self == .cloister || self == .city(separated: true)
+        case .city:
+            return self == .cloister || self == .road(endOfRoad: true)
+        case .crossroads:
+            break
+        }
+        return false
+    }
 }
 
 enum TileSides {
@@ -73,6 +90,23 @@ enum TileSides {
     case downSide
     case leftSide
     case centre
+}
+
+extension TileSides {
+    func getOppositeSide() -> Self {
+        switch self {
+        case .upSide:
+            return .downSide
+        case .rightSide:
+            return .leftSide
+        case .downSide:
+            return .upSide
+        case .leftSide:
+            return .rightSide
+        case .centre:
+            return .centre
+        }
+    }
 }
 
 struct Tile {
@@ -109,6 +143,21 @@ struct Tile {
             rotationCalculation = 4
         }
         rotationCalculation -= 1
+    }
+    
+    func getLandTypeForSide(_ side: TileSides) -> LandType {
+        switch side {
+        case .upSide:
+            return upSide
+        case .rightSide:
+            return rightSide
+        case .downSide:
+            return downSide
+        case .leftSide:
+            return leftSide
+        case .centre:
+            return centre
+        }
     }
 }
 

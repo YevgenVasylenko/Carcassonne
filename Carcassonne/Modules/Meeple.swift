@@ -34,13 +34,13 @@ struct Meeple {
         positionLandType.meepleTypeChoose()
     }
     var isMeeplePlaced = false
-    var isMeepleOnField: Bool {
-        if positionLandType == .field || positionLandType == .crossroads {
-            return false
-        } else {
-            return true
-        }
-    }
+//    var isMeepleOnField: Bool {
+//        if positionLandType == .field || positionLandType == .crossroads {
+//            return false
+//        } else {
+//            return true
+//        }
+//    }
     
     func updateLandType() -> LandType {
         switch coordinates {

@@ -78,10 +78,10 @@ class GameViewController: UIViewController {
     @IBAction func takeNewTile() {
         switch target {
         case .tile:
-            game.tileFromStack()
+            game.endOfTurnTakeNewTile()
         case .meeple:
             target = .tile
-            game.tileFromStack()
+            game.endOfTurnTakeNewTile()
             changeChangeControlButtonImage()
         }
     }

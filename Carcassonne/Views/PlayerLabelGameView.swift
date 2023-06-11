@@ -10,7 +10,7 @@ import UIKit
 class PlayerLabelGameView: UIStackView {
     private let meeplePictureWithPlayerColor = UIImageView()
     private let nameLabel = UILabel()
-    private let scoreLabel = UITextField()
+    private let scoreLabel = UILabel()
     
     init(player: Player) {
         super .init(frame: .zero)
@@ -38,7 +38,7 @@ class PlayerLabelGameView: UIStackView {
         let labelsOfNameAndScoreNumber = UIStackView()
         labelsOfNameAndScoreNumber.axis = .vertical
         nameLabel.text = player.name
-        scoreLabel.placeholder = "Score"
+        scoreLabel.text = "0"
         labelsOfNameAndScoreNumber.addArrangedSubview(nameLabel)
         labelsOfNameAndScoreNumber.addArrangedSubview(scoreLabel)
         

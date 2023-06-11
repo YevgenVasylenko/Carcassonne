@@ -4,25 +4,34 @@
 //
 //  Created by Yevgen Vasylenko on 09.06.2023.
 //
-
 import Foundation
+
+
+enum RouteCheckType {
+    case meeplePlacing
+    case endOfTurn
+    case endOfGame
+}
 
 struct RoutesChecking {
     
-    let startingTile: Tile
-    let listOfTiles: [Tile]
+    private let startingTile: Tile
+    private let listOfTiles: [Tile]
+    private let routeCheckType: RouteCheckType
     private var typeOfCheckingLand: LandType = .field
     private var exceptedSide: TileSides = .centre
-    var tilesOnRout: Int = 0
+    var tilesOnRouteWithMeeple: [Tile] = []
+    var tilesOnRout: Int = 1
     
-    init(startingTile: Tile, listOfTiles: [Tile]) {
+    init(startingTile: Tile, listOfTiles: [Tile], routeCheckType: RouteCheckType) {
         self.startingTile = startingTile
         self.listOfTiles = listOfTiles
+        self.routeCheckType = routeCheckType
     }
     
     mutating func isMeepleFreeToBePlaced() -> Bool {
+        tilesOnRouteWithMeeple.append(startingTile)
         if let meeple = startingTile.meeple {
-            
             switch meeple.positionLandType {
             case .road(endOfRoad: true):
                 typeOfCheckingLand = .road(endOfRoad: false)
@@ -101,7 +110,7 @@ struct RoutesChecking {
     }
     
     func tilesSidesOfRoadDirectionExceptLast(tile: Tile?) -> [TileSides] {
-        guard let tile = tile else { return [.centre]}
+        guard let tile = tile else { return [.centre] }
         var arrayOfSides = tilesSidesOfRouteDirections(tile: tile)
                 
         arrayOfSides.removeAll(where: {
@@ -164,5 +173,18 @@ struct RoutesChecking {
             continue
         }
         return (nil, true)
+    }
+    
+    func isTileLandOnBackSideSameWithCheckingLand(resultOfCheck: Bool, checkingTile: Tile) -> (tile: Tile?, isOk: Bool) {
+        if resultOfCheck {
+            switch routeCheckType {
+            case .meeplePlacing:
+                return (nil, true)
+            case .endOfTurn:
+                <#code#>
+            case .endOfGame:
+                <#code#>
+            }
+        }
     }
 }

@@ -225,7 +225,7 @@
                                         </subviews>
                                     </stackView>
                                 </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" systemColor="systemYellowColor"/>
                                 <constraints>
                                     <constraint firstItem="aZ3-hr-mnl" firstAttribute="top" secondItem="1w4-IL-el2" secondAttribute="top" constant="8" id="3so-4O-zPn"/>
                                     <constraint firstItem="aZ3-hr-mnl" firstAttribute="leading" secondItem="1w4-IL-el2" secondAttribute="leading" constant="8" id="5Md-MG-8Us"/>
@@ -298,6 +298,9 @@
         </systemColor>
         <systemColor name="systemOrangeColor">
             <color red="1" green="0.58431372549019611" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemYellowColor">
+            <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

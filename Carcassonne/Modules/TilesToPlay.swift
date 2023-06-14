@@ -40,11 +40,47 @@ private extension TileStorage {
         tiles += Array(repeating: tunnelCityTile, count: 1)
         tiles += Array(repeating: twoSidesCitySeparatedTile, count: 3)
         tiles += Array(repeating: twoSideConerCity, count: 2)
-
-
+        tiles += Array(repeating: cloisterTile, count: 4)
+        tiles += Array(repeating: cloisterWithRoadTile, count: 2)
+        tiles += Array(repeating: fourSidesCityTile, count: 1)
+        
         tiles.shuffle()
         return tiles
     }
+    
+    static func makeTilePoolTestCityBuild() -> [Tile] {
+        var tiles = [Tile]()
+        tiles += Array(repeating: citySideTile, count: 7)
+//        tiles += Array(repeating: fourSidesCityTile, count: 1)
+        tiles += Array(repeating: threeSideCityWithShieldTile, count: 5)
+        
+        return tiles
+    }
+    
+    static func makeTilePoolTestCloister() -> [Tile] {
+        var tiles = [Tile]()
+        tiles += Array(repeating: citySideTile, count: 10)
+        tiles += Array(repeating: cloisterTile, count: 2)
+        
+        return tiles
+    }
+    
+    static func makeTilePoolTestRoadsNoCrossroads() -> [Tile] {
+        var tiles = [Tile]()
+        tiles += Array(repeating: straightRoadTile, count: 5)
+        tiles += Array(repeating: conerRoadTile, count: 10)
+        
+        return tiles
+    }
+    
+    static func makeTilePoolTestRoadsWithCrossroads() -> [Tile] {
+        var tiles = [Tile]()
+        tiles += Array(repeating: straightRoadTile, count: 5)
+        tiles += Array(repeating: tTypeConerRoadTile, count: 5)
+        
+        return tiles
+    }
+    
     
     static let conerRoadToLeftCitySideTile = Tile(upSide: .road(endOfRoad: false), rightSide: .city(separated: true), downSide: .field, leftSide: .road(endOfRoad: false), centre: .road(endOfRoad: false), tilePictureName: "conerRoadToLeftCitySide")
 

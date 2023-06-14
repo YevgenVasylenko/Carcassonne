@@ -18,10 +18,11 @@ struct RoutesChecking {
     private let startingTile: Tile
     private let listOfTiles: [Tile]
     private let routeCheckType: RouteCheckType
-    private var typeOfCheckingLand: LandType = .field
+    var typeOfCheckingLand: LandType = .field
     private var exceptedSide: TileSides = .centre
     var tilesOnRouteWithMeeple: [Tile] = []
-    var tilesOnRout: Int = 1
+    var tilesOnRout: Set<Tile> = []
+    var playersMeeples: [Player] = []
     
     init(startingTile: Tile, listOfTiles: [Tile], routeCheckType: RouteCheckType) {
         self.startingTile = startingTile
@@ -30,25 +31,29 @@ struct RoutesChecking {
     }
     
     mutating func isMeepleFreeToBePlaced() -> Bool {
-        tilesOnRouteWithMeeple.append(startingTile)
+        var tileToChange = startingTile
+        tileToChange.meeple = nil
+        tilesOnRouteWithMeeple.append(tileToChange)
+        tilesOnRout.insert(startingTile)
         if let meeple = startingTile.meeple {
             switch meeple.positionLandType {
             case .road(endOfRoad: true):
                 typeOfCheckingLand = .road(endOfRoad: false)
-                return isRouteFreeForMeepleInOneDirections(startingTile: startingTile)
+                return isRouteFreeForMeepleInDirections(startingTile: startingTile)
             case .road(endOfRoad: false):
                 typeOfCheckingLand = .road(endOfRoad: false)
-                return isRouteFreeForMeepleInTwoDirections(startingTile: startingTile)
+                return isRouteFreeForMeepleInDirections(startingTile: startingTile)
             case .field:
                 return false
             case .cloister:
-                return true
+                typeOfCheckingLand = .cloister
+                return isCloisterSurrounded()
             case .city(separated: true):
                 typeOfCheckingLand = .city(separated: false)
-                return isRouteFreeForMeepleInOneDirections(startingTile: startingTile)
+                return isRouteFreeForMeepleInDirections(startingTile: startingTile)
             case .city(separated: false):
                 typeOfCheckingLand = .city(separated: false)
-                return isRouteFreeForMeepleInTwoDirections(startingTile: startingTile)
+                return isRouteFreeForMeepleInDirections(startingTile: startingTile)
             case .crossroads:
                 return false
             }
@@ -57,17 +62,13 @@ struct RoutesChecking {
     }
     
     
-    mutating func isRouteFreeForMeepleInTwoDirections(startingTile: Tile) -> Bool {
+    mutating func isRouteFreeForMeepleInDirections(startingTile: Tile) -> Bool {
         var directionsCheckResults: [Bool] = []
-        let directions = tilesSidesOfRouteDirections(tile: startingTile)
+        let directions = tilesSidesOfRoadDirectionExceptLast(tile: startingTile)
         for direction in directions {
             directionsCheckResults.append(isRouteFreeForMeeple(resultOfSideCheck: checkRouteInDirection(tileToCheck: startingTile, routeDirections: direction)))
         }
         return directionsCheckResults.allSatisfy({$0 == true})
-    }
-    
-    mutating func isRouteFreeForMeepleInOneDirections(startingTile: Tile) -> Bool {
-        return isRouteFreeForMeeple(resultOfSideCheck: checkRouteInDirection(tileToCheck: startingTile, routeDirections: startingTile.meeple!.positionTileSide))
     }
     
     mutating func isRouteFreeForMeeple(resultOfSideCheck: (tile: Tile?, isOk: Bool)) -> Bool {
@@ -76,13 +77,9 @@ struct RoutesChecking {
         } else if resultOfSideCheck.tile == nil && resultOfSideCheck.isOk == false {
             return false
         } else if resultOfSideCheck.tile != nil && resultOfSideCheck.isOk == true {
-            var directionsCheckResults: [Bool] = []
-            let routeDirection = tilesSidesOfRoadDirectionExceptLast(tile: resultOfSideCheck.tile)
-            for direction in routeDirection {
-                let checkRouteInDirection = checkRouteInDirection(tileToCheck: resultOfSideCheck.tile, routeDirections: direction)
-                directionsCheckResults.append(isRouteFreeForMeeple(resultOfSideCheck: checkRouteInDirection))
+            if let tile = resultOfSideCheck.tile {
+                return isRouteFreeForMeepleInDirections(startingTile: tile)
             }
-            return directionsCheckResults.allSatisfy({$0 == true})
         }
         return true
     }
@@ -90,21 +87,21 @@ struct RoutesChecking {
     mutating func checkRouteInDirection(tileToCheck: Tile?, routeDirections: TileSides) -> (tile: Tile?, isOk: Bool) {
         guard let tile = tileToCheck else { return (nil, false)}
         
-            switch routeDirections {
-            case .upSide:
-                updateExceptedSide(side: .upSide)
-                return checkTileOnDirection(side: .upSide, checkingTile: tile)
-            case .rightSide:
-                updateExceptedSide(side: .rightSide)
-                return checkTileOnDirection(side: .rightSide, checkingTile: tile)
-            case .downSide:
-                updateExceptedSide(side: .downSide)
-                return checkTileOnDirection(side: .downSide, checkingTile: tile)
-            case .leftSide:
-                updateExceptedSide(side: .leftSide)
-                return checkTileOnDirection(side: .leftSide, checkingTile: tile)
-            case .centre:
-                break
+        switch routeDirections {
+        case .upSide:
+            updateExceptedSide(side: .upSide)
+            return checkingTileOnDirectionNew(side: .upSide, checkingTile: tile)
+        case .rightSide:
+            updateExceptedSide(side: .rightSide)
+            return checkingTileOnDirectionNew(side: .rightSide, checkingTile: tile)
+        case .downSide:
+            updateExceptedSide(side: .downSide)
+            return checkingTileOnDirectionNew(side: .downSide, checkingTile: tile)
+        case .leftSide:
+            updateExceptedSide(side: .leftSide)
+            return checkingTileOnDirectionNew(side: .leftSide, checkingTile: tile)
+        case .centre:
+            break
         }
         return (nil, false)
     }
@@ -112,7 +109,7 @@ struct RoutesChecking {
     func tilesSidesOfRoadDirectionExceptLast(tile: Tile?) -> [TileSides] {
         guard let tile = tile else { return [.centre] }
         var arrayOfSides = tilesSidesOfRouteDirections(tile: tile)
-                
+        
         arrayOfSides.removeAll(where: {
             $0 == exceptedSide
         })
@@ -122,6 +119,13 @@ struct RoutesChecking {
     
     func tilesSidesOfRouteDirections(tile: Tile) -> [TileSides] {
         var tilesRoadsDirections: [TileSides] = []
+        
+        if let tileMeeple = tile.meeple {
+            if tileMeeple.positionLandType != typeOfCheckingLand && tileMeeple.positionLandType == typeOfCheckingLand {
+                tilesRoadsDirections.append(tileMeeple.positionTileSide)
+                return tilesRoadsDirections
+            }
+        }
         
         if tile.upSide == typeOfCheckingLand {
             tilesRoadsDirections.append(.upSide)
@@ -145,46 +149,99 @@ struct RoutesChecking {
     mutating func updateExceptedSide(side: TileSides) {
         exceptedSide = side.getOppositeSide()
     }
-
-    mutating func checkTileOnDirection(side: TileSides, checkingTile: Tile) -> (tile: Tile?, isOk: Bool) {
-        for tile in listOfTiles.dropLast() {
-            if checkingTile.coordinates.isHasNeighborOnSide(side, tile.coordinates) {
-                tilesOnRout += 1
+    
+    mutating func checkingTileOnDirectionNew(side: TileSides, checkingTile: Tile) -> (tile: Tile?, isOk: Bool) {
+        for tile in listOfTiles {
+            
+            if checkingTile.coordinates.isHasNeighborOnSide(side, tile.coordinates) && !tilesOnRout.contains(tile) {
+                
+                if !tilesOnRout.contains(tile) {
+                    tilesOnRout.insert(tile)
+                }
+                
+                if tile.getLandTypeForSide(exceptedSide) != typeOfCheckingLand {
+                    if tile.meeple?.positionTileSide == exceptedSide {
+                        switch routeCheckType {
+                        case .meeplePlacing:
+                            return (nil, false)
+                        case .endOfTurn:
+                            var tileToChange = tile
+                            tileToChange.meeple = nil
+                            tilesOnRouteWithMeeple.append(tileToChange)
+                            return (nil, true)
+                        case .endOfGame:
+                            return (nil, true)
+                        }
+                    }
+                    return (nil, true)
+                }
                 if let tileMeeple = tile.meeple {
                     if typeOfCheckingLand.isAnotherMeeplePlacable(landTypeToCheck: tileMeeple.positionLandType) {
-                        if tile.getLandTypeForSide(exceptedSide) != typeOfCheckingLand {
-                            return (nil, true)
-                        } else {
-                            return (tile, true)
-                        }
-                    } else if tileMeeple.positionLandType != typeOfCheckingLand {
-                        if tileMeeple.positionTileSide == exceptedSide {
-                            return (nil, false)
-                        }
-                        return (nil, true)
+                        return (tile, true)
                     }
-                    return (nil, false)
-                }
-                if tile.getLandTypeForSide(exceptedSide) != typeOfCheckingLand {
-                    return (nil, true)
+                    switch routeCheckType {
+                    case .meeplePlacing:
+                        return (nil, false)
+                    case .endOfTurn:
+                        var tileToChange = tile
+                        tileToChange.meeple = nil
+                        tilesOnRouteWithMeeple.append(tileToChange)
+                        return (tile, true)
+                    case .endOfGame:
+                        var tileToChange = tile
+                        tileToChange.meeple = nil
+                        tilesOnRouteWithMeeple.append(tileToChange)
+                        return (tile, true)
+                    }
                 }
                 return (tile, true)
             }
-            continue
-        }
-        return (nil, true)
-    }
-    
-    func isTileLandOnBackSideSameWithCheckingLand(resultOfCheck: Bool, checkingTile: Tile) -> (tile: Tile?, isOk: Bool) {
-        if resultOfCheck {
             switch routeCheckType {
             case .meeplePlacing:
-                return (nil, true)
+                continue
             case .endOfTurn:
-                <#code#>
+                if checkingTile.coordinates.isHasNeighborOnSide(side, tile.coordinates) && tilesOnRout.contains(tile)  {
+                    if startingTile.meeple?.positionLandType == .road(endOfRoad: true) {
+                        return (nil, true)
+                    }
+                    if startingTile.meeple?.positionLandType == .city(separated: true) {
+                        return (nil, true)
+                    }
+                }
             case .endOfGame:
-                <#code#>
+                continue
             }
+            //            continue
+        }
+        switch routeCheckType {
+        case .meeplePlacing:
+            return (nil, true)
+        case .endOfTurn:
+            return (nil, false)
+        case .endOfGame:
+            return (nil, true)
+        }
+    }
+    
+    mutating func isCloisterSurrounded() -> Bool {
+        switch routeCheckType {
+        case .meeplePlacing:
+            return true
+        case .endOfTurn:
+//            var tilesAroundCloister: [Tile] = []
+            for tile in listOfTiles {
+                if startingTile.coordinates.coordinatesAroundTile().contains(tile.coordinates) {
+                    tilesOnRout.insert(tile)
+                }
+            }
+            return tilesOnRout.count == 9
+        case .endOfGame:
+            for tile in listOfTiles {
+                if startingTile.coordinates.coordinatesAroundTile().contains(tile.coordinates) {
+                    tilesOnRout.insert(tile)
+                }
+            }
+            return true
         }
     }
 }

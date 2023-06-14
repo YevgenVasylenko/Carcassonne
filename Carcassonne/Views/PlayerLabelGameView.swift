@@ -38,7 +38,7 @@ class PlayerLabelGameView: UIStackView {
         let labelsOfNameAndScoreNumber = UIStackView()
         labelsOfNameAndScoreNumber.axis = .vertical
         nameLabel.text = player.name
-        scoreLabel.text = "0"
+        scoreLabel.text = "\(player.score)"
         labelsOfNameAndScoreNumber.addArrangedSubview(nameLabel)
         labelsOfNameAndScoreNumber.addArrangedSubview(scoreLabel)
         

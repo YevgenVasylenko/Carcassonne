@@ -18,7 +18,7 @@ class GameViewController: UIViewController {
         didSet {
             game.updateMovementDirectionsAvailability(target: target)
             changeButtonAvailability(gameState: game.gameState)
-            var rendering = GameViewRender(game: self.game, view: gameMapView, superView: self.view)
+            var rendering = GameViewRender(game: self.game, view: gameMapView, superView: self.view, playersList: playerList)
             rendering.render()
         }
     }
@@ -45,7 +45,7 @@ class GameViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        addPlayersLabels()
+//        addPlayersLabels()
     }
     
     
@@ -166,11 +166,11 @@ class GameViewController: UIViewController {
         }
     }
     
-    func addPlayersLabels() {
-        for player in game.players {
-            playerList.addArrangedSubview(
-                PlayerLabelGameView(player: player)
-            )
-        }
-    }
+//    func addPlayersLabels() {
+//        for player in game.players {
+//            playerList.addArrangedSubview(
+//                PlayerLabelGameView(player: player)
+//            )
+//        }
+//    }
 }

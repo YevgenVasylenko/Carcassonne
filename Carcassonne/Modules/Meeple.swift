@@ -7,26 +7,24 @@
 
 import Foundation
 
-enum MeepleType {
+enum MeepleType: Hashable {
     case thief
     case knight
     case monk
     case farmer
 }
 
-struct Meeple {
+struct Meeple: Hashable {
+    static func == (lhs: Meeple, rhs: Meeple) -> Bool {
+        return true
+    }
     
     var upSide: LandType
     var rightSide: LandType
     var downSide: LandType
     var leftSide: LandType
     var centre: LandType
-    var delegate: CoordinateDelegate?
-    var coordinates = Coordinates(x: 0, y: 0) {
-       didSet {
-           delegate?.coordinatesChanged(coordinates)
-       }
-   }
+    var coordinates = Coordinates(x: 0, y: 0)
     var positionLandType: LandType {
         updateLandType()
     }

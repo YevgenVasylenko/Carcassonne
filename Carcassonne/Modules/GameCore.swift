@@ -77,8 +77,18 @@ struct GameCore: CoordinateDelegate {
     }
     
     mutating func endOfTurnTakeNewTile() {
-        currentTile = tilesStack.removeLast()
-        changePlayerIndex()
+        var checkClosedRoutesAndScoreIt = ScoreCalculating(tileOnMap: tilesOnMap, players: players)
+        
+        if !tilesStack.isEmpty {
+            checkClosedRoutesAndScoreIt.calculateClosedRoutes(routeCheckType: .endOfTurn)
+            currentTile = tilesStack.removeLast()
+            changePlayerIndex()
+        } else {
+            checkClosedRoutesAndScoreIt.calculateClosedRoutes(routeCheckType: .endOfGame)
+        }
+        
+        tilesOnMap = checkClosedRoutesAndScoreIt.tilesOnMap
+        players = checkClosedRoutesAndScoreIt.players
     }
     
     mutating func placeTileOnMap() {
@@ -178,7 +188,6 @@ struct GameCore: CoordinateDelegate {
         var routeCheck = RoutesChecking(startingTile: unsafeLastTile, listOfTiles: tilesOnMap, routeCheckType: .meeplePlacing)
         let result = routeCheck.isMeepleFreeToBePlaced()
         cache.isMeepleFreeToBePlaced = result
-        print(routeCheck.tilesOnRout)
         return result
     }
 }

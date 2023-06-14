@@ -1,34 +1,16 @@
-enum TileSides {
-    case upSide
-    case rightSide
-    case downSide
-    case leftSide
-    case center
+let originalArray = [1, 2, 3, 2, 4, 4, 4, 4, 4, 5, 5, 5, 5]
+var elementCount = [Int: Int]()
+
+// Count the occurrences of each element
+for element in originalArray {
+    elementCount[element, default: 0] += 1
 }
 
-struct Tile {
-    var upSide = TileSides.upSide
-    var rightSide = TileSides.rightSide
-    var downSide = TileSides.downSide
-    var leftSide = TileSides.leftSide
-    var centerSide = TileSides.center
-    var sides: TileSides
-}
+// Find the maximum count
+let maxCount = elementCount.values.max() ?? 0
 
+// Filter elements with count greater than or equal to maxCount
+let resultArray = elementCount.filter { $0.value >= maxCount }.map { $0.key }
 
-//extension TileSides {
-//    init(upSide: LandType, rightSide: LandType, downSide: LandType, leftSide: LandType, center: LandType) {
-//        switch self {
-//        case .upSide:
-//            upSide
-//        case .rightSide:
-//            center
-//        case .downSide:
-//            downSide
-//        case .leftSide:
-//            leftSide
-//        case .center:
-//            center
-//        }
-//    }
-//}
+print(resultArray) // Output: [5]
+

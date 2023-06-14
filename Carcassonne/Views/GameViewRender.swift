@@ -12,16 +12,18 @@ struct GameViewRender {
     private let game: GameCore
     private let view: UIScrollView
     private let superView: UIView
+    private let playersList: UIStackView
     
     private var maxCoordinateX = 0
     private var minCoordinateX = 0
     private var maxCoordinateY = 0
     private var minCoordinateY = 0
 
-    init(game: GameCore, view: UIScrollView, superView: UIView) {
+    init(game: GameCore, view: UIScrollView, superView: UIView, playersList: UIStackView) {
         self.game = game
         self.view = view
         self.superView = superView
+        self.playersList = playersList
     }
     
 #warning("why mutating")
@@ -31,7 +33,7 @@ struct GameViewRender {
         for picture in view.subviews {
             picture.removeFromSuperview()
         }
-        
+                
         if let tile = game.currentTile {
             maxMinCoordinateSetUp(coordinates: tile.coordinates)
         }
@@ -60,6 +62,16 @@ struct GameViewRender {
                 object: picture.tileImageView,
                 isObjectPlaced: false,
                 isObjectCanBePlaced: game.isTileCanBePlace)
+        }
+        
+        for view in playersList.arrangedSubviews {
+            view.removeFromSuperview()
+        }
+        
+        for player in game.players {
+            playersList.addArrangedSubview(
+                PlayerLabelGameView(player: player)
+            )
         }
     }
 }

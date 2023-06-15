@@ -20,77 +20,91 @@ struct ScoreCalculating {
     
     mutating func calculateClosedRoutes(routeCheckType: RouteCheckType) {
         for index in tilesOnMap.indices {
-            if tilesOnMap[index].meeple != nil {
-                var routeCheck: RoutesChecking?
-                switch routeCheckType {
-                case .meeplePlacing:
-                    break
-                case .endOfTurn:
-                    routeCheck = RoutesChecking(startingTile: tilesOnMap[index], listOfTiles: tilesOnMap, routeCheckType: routeCheckType)
-                case .endOfGame:
-                    routeCheck = RoutesChecking(startingTile: tilesOnMap[index], listOfTiles: tilesOnMap, routeCheckType: routeCheckType)
+            
+            guard tilesOnMap[index].meeple != nil else {
+                continue
+            }
+            
+            var routeCheck = getRouteCheckDependsOnTypeOfCheck(startingTile: tilesOnMap[index], routeCheckType: routeCheckType)
+            
+            guard routeCheck.isMeepleFreeToBePlaced() else {
+                continue
+            }
+            
+            var playersOnRoute: [Player] = []
+            for tileOnRoute in routeCheck.tilesOnRouteWithMeeple {
+                for tileOnMapIndex in tilesOnMap.indices {
+                    if tilesOnMap[tileOnMapIndex] == tileOnRoute {
+                        tilesOnMap[tileOnMapIndex] = tileOnRoute
+                    }
                 }
-                
-                if routeCheck!.isMeepleFreeToBePlaced() {
-                    var playersOnRoute: [Player] = []
-                    for tileOnRoute in routeCheck!.tilesOnRouteWithMeeple {
-                        for tileOnMapIndex in tilesOnMap.indices {
-                            if tilesOnMap[tileOnMapIndex] == tileOnRoute {
-                                tilesOnMap[tileOnMapIndex] = tileOnRoute
-                            }
-                        }
-                        guard var player = tileOnRoute.belongToPlayer else { break }
-                        for playerIndex in players.indices {
-                            if players[playerIndex] == player {
-                                player = players[playerIndex]
-                            }
-                        }
-                        playersOnRoute.append(player)
+                guard var player = tileOnRoute.belongToPlayer else { break }
+                for playerIndex in players.indices {
+                    if players[playerIndex] == player {
+                        player = players[playerIndex]
+                        player.availableMeeples += 1
                     }
-                    for player in whomBelongsRoute(playersOnRoute: playersOnRoute) {
-                        switch routeCheck!.typeOfCheckingLand {
-                        case .field:
-                            break
-                        case .cloister:
-                            var playerTemp = player
-                            playerTemp.score += routeCheck!.tilesOnRout.count
-                            findAndReplacePlayer(playerToPlace: playerTemp)
-                        case .road:
-                            var playerTemp = player
-                            playerTemp.score += routeCheck!.tilesOnRout.count
-                            findAndReplacePlayer(playerToPlace: playerTemp)
-                        case .city:
-                            switch routeCheckType {
-                            case .meeplePlacing:
-                                break
-                            case .endOfTurn:
-                                var playerTemp = player
-                                playerTemp.score += routeCheck!.tilesOnRout.count * 2
-                                findAndReplacePlayer(playerToPlace: playerTemp)
-                            case .endOfGame:
-                                var playerTemp = player
-                                playerTemp.score += routeCheck!.tilesOnRout.count
-                                findAndReplacePlayer(playerToPlace: playerTemp)
-                            }
-                            case .crossroads:
-                            break
-                        }
+                }
+                playersOnRoute.append(player)
+            }
+            
+            for player in whomBelongsRoute(playersOnRoute: playersOnRoute) {
+                switch routeCheck.typeOfCheckingLand {
+                case .field:
+                    break
+                case .cloister:
+                    findAndReplacePlayer(
+                        playerToPlace: addScorePointsToPlayer(
+                            points: routeCheck.tilesOnRout.count,
+                            player: player))
+                case .road:
+                    findAndReplacePlayer(
+                        playerToPlace: addScorePointsToPlayer(
+                            points: routeCheck.tilesOnRout.count,
+                            player: player))
+                case .city:
+                    switch routeCheckType {
+                    case .meeplePlacing:
+                        break
+                    case .endOfTurn:
+                        findAndReplacePlayer(
+                            playerToPlace: addScorePointsToPlayer(
+                                points: routeCheck.tilesOnRout.count * 2,
+                                player: player))
+                    case .endOfGame:
+                        findAndReplacePlayer(
+                            playerToPlace: addScorePointsToPlayer(
+                                points: routeCheck.tilesOnRout.count,
+                                player: player))
                     }
-//                    print(routeCheck.tilesOnRout.count, routeCheck.tilesOnRouteWithMeeple.count)
+                case .crossroads:
+                    break
                 }
             }
         }
     }
+    
+    func getRouteCheckDependsOnTypeOfCheck(startingTile: Tile, routeCheckType: RouteCheckType) -> RoutesChecking {
+        switch routeCheckType {
+        case .meeplePlacing:
+            fatalError()
+        case .endOfTurn:
+            return RoutesChecking(startingTile: startingTile, listOfTiles: tilesOnMap, routeCheckType: routeCheckType)
+        case .endOfGame:
+            return RoutesChecking(startingTile: startingTile, listOfTiles: tilesOnMap, routeCheckType: routeCheckType)
+        }
+    }
+    
     func whomBelongsRoute(playersOnRoute: [Player]) -> [Player] {
-        var elementCount = [Player: Int]()
+        var playerCount = [Player: Int]()
 
         for player in playersOnRoute {
-            elementCount[player, default: 0] += 1
+            playerCount[player, default: 0] += 1
         }
 
-        let maxCount = elementCount.values.max() ?? 0
+        let maxCount = playerCount.values.max() ?? 0
 
-        let resultArray = elementCount.filter { $0.value >= maxCount }.map { $0.key }
+        let resultArray = playerCount.filter { $0.value >= maxCount }.map { $0.key }
 
         return resultArray
     }
@@ -101,5 +115,11 @@ struct ScoreCalculating {
                 players[playerIndex] = playerToPlace
             }
         }
+    }
+    
+    func addScorePointsToPlayer(points: Int, player: Player) -> Player {
+        var tempPlayer = player
+        tempPlayer.score += points
+        return tempPlayer
     }
 }

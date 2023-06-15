@@ -38,16 +38,11 @@ class GameViewController: UIViewController {
     @IBOutlet var placeTileButton: UIButton!
     @IBOutlet var takeTileBackButton: UIButton!
     @IBOutlet var changeControl: UIButton!
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
-    }
-    
+        
     override func viewWillAppear(_ animated: Bool) {
-//        addPlayersLabels()
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: false)
     }
-    
     
     @IBAction func changeControlButton() {
         switch target {

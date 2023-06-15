@@ -19,11 +19,7 @@ enum GameState {
     }
 }
 
-protocol CoordinateDelegate {
-    func coordinatesChanged(_ coordinates: Coordinates)
-}
-
-struct GameCore: CoordinateDelegate {
+struct GameCore {
     var tilesStack = [Tile]()
     var tilesOnMap = [Tile]()
     var currentTile: Tile? = nil {
@@ -34,7 +30,7 @@ struct GameCore: CoordinateDelegate {
         }
     }
     var players = [Player]()
-    private var playerIndex = 0
+    private var playerIndex = -1
     private let cache = Cache()
     
     var movementDirectionsAvailability: [MovingDirection] = [
@@ -72,10 +68,6 @@ struct GameCore: CoordinateDelegate {
         tilesOnMap.append(firstTile)
     }
     
-    
-    func coordinatesChanged(_ coordinates: Coordinates) {
-    }
-    
     mutating func endOfTurnTakeNewTile() {
         var checkClosedRoutesAndScoreIt = ScoreCalculating(tileOnMap: tilesOnMap, players: players)
         
@@ -105,12 +97,15 @@ struct GameCore: CoordinateDelegate {
     }
     
     mutating func createMeeple() {
+        guard !isNoMoreMeeples(player: players[playerIndex]) else { return }
         unsafeLastTile.meeple = Meeple(
             upSide: unsafeLastTile.upSide,
             rightSide: unsafeLastTile.rightSide,
             downSide: unsafeLastTile.downSide,
             leftSide: unsafeLastTile.leftSide,
             centre: unsafeLastTile.centre)
+        unsafeLastTile.belongToPlayer = players[playerIndex]
+        players[playerIndex].availableMeeples -= 1
             }
     
     mutating func placeMeeple() {
@@ -124,7 +119,11 @@ struct GameCore: CoordinateDelegate {
     }
     
     mutating func removeMeeple() {
-        unsafeLastTile.meeple = nil
+        if unsafeLastTile.meeple != nil {
+            unsafeLastTile.meeple = nil
+            unsafeLastTile.belongToPlayer = nil
+            players[playerIndex].availableMeeples += 1
+        }
     }
     
     func isTileCoordinatesOkToPlace(_ coordinates: Coordinates) -> Bool {
@@ -189,6 +188,10 @@ struct GameCore: CoordinateDelegate {
         let result = routeCheck.isMeepleFreeToBePlaced()
         cache.isMeepleFreeToBePlaced = result
         return result
+    }
+    
+    func isNoMoreMeeples(player: Player) -> Bool {
+        return player.availableMeeples == 0
     }
 }
 

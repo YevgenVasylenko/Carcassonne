@@ -211,7 +211,6 @@ struct RoutesChecking {
             case .endOfGame:
                 continue
             }
-            //            continue
         }
         switch routeCheckType {
         case .meeplePlacing:
@@ -228,7 +227,6 @@ struct RoutesChecking {
         case .meeplePlacing:
             return true
         case .endOfTurn:
-//            var tilesAroundCloister: [Tile] = []
             for tile in listOfTiles {
                 if startingTile.coordinates.coordinatesAroundTile().contains(tile.coordinates) {
                     tilesOnRout.insert(tile)

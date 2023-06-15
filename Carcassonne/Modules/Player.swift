@@ -17,5 +17,5 @@ struct Player: Hashable {
     var name: String = ""
     var score: Int = 0
     var color: UIColor?
-    
+    var availableMeeples = 7
 }

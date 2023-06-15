@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5D00A0082A3B1FB800F23112 /* UIViewPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D00A0072A3B1FB800F23112 /* UIViewPreview.swift */; };
 		5D17D7642A0E405C007B2265 /* GameState+ButtonsAvailability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D17D7632A0E405C007B2265 /* GameState+ButtonsAvailability.swift */; };
 		5D20304929F156BA00F0720B /* TilesToPlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D20304829F156BA00F0720B /* TilesToPlay.swift */; };
 		5D20304F29F2E00300F0720B /* TilePictureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D20304E29F2E00300F0720B /* TilePictureView.swift */; };
@@ -41,6 +42,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5D00A0072A3B1FB800F23112 /* UIViewPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewPreview.swift; sourceTree = "<group>"; };
 		5D17D7632A0E405C007B2265 /* GameState+ButtonsAvailability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameState+ButtonsAvailability.swift"; sourceTree = "<group>"; };
 		5D20304829F156BA00F0720B /* TilesToPlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TilesToPlay.swift; sourceTree = "<group>"; };
 		5D20304E29F2E00300F0720B /* TilePictureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TilePictureView.swift; sourceTree = "<group>"; };
@@ -90,6 +92,7 @@
 			isa = PBXGroup;
 			children = (
 				5D17D7632A0E405C007B2265 /* GameState+ButtonsAvailability.swift */,
+				5D00A0072A3B1FB800F23112 /* UIViewPreview.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -279,6 +282,7 @@
 				5D36B93129EAE35400448219 /* AppDelegate.swift in Sources */,
 				5D9320032A078E260001FAAB /* GameCore.swift in Sources */,
 				5DC2A57B2A125CA0007A2715 /* StartNewGameViewController.swift in Sources */,
+				5D00A0082A3B1FB800F23112 /* UIViewPreview.swift in Sources */,
 				5D7A0A692A0107A200C1C609 /* Meeple.swift in Sources */,
 				5DC2A5792A125BEB007A2715 /* StartMenuViewController.swift in Sources */,
 				5D29D1F92A196302009D90D4 /* GameViewRender.swift in Sources */,

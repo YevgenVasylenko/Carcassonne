@@ -69,9 +69,11 @@ struct GameViewRender {
         }
         
         for player in game.players {
-            playersList.addArrangedSubview(
-                PlayerLabelGameView(player: player)
-            )
+            let playerLabel = PlayerLabelGameView(player: player)
+            if game.currentPlayer == player {
+                playerLabel.makeShadow()
+            }
+            playersList.addArrangedSubview(playerLabel)
         }
     }
 }

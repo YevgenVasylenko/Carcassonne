@@ -91,7 +91,7 @@ extension GameState {
     func isMeepleTileControlEnabled() -> Bool {
         switch self {
         case .gameStart:
-            return true
+            return false
         case .currentTileOperate:
             return false
         case .currentTileNotOperate(let meepleOperate):

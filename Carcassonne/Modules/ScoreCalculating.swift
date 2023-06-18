@@ -32,6 +32,7 @@ struct ScoreCalculating {
             }
             
             var playersOnRoute: [Player] = []
+            
             for tileOnRoute in routeCheck.tilesOnRouteWithMeeple {
                 for tileOnMapIndex in tilesOnMap.indices {
                     if tilesOnMap[tileOnMapIndex] == tileOnRoute {
@@ -43,6 +44,17 @@ struct ScoreCalculating {
                     if players[playerIndex] == player {
                         player = players[playerIndex]
                         player.availableMeeples += 1
+                        players[playerIndex] = player
+                    }
+                }
+            }
+
+            for tileOnRoute in routeCheck.tilesOnRouteWithMeeple {
+                guard var player = tileOnRoute.belongToPlayer else { break }
+
+                for playerIndex in players.indices {
+                    if players[playerIndex] == player {
+                        player = players[playerIndex]
                     }
                 }
                 playersOnRoute.append(player)
@@ -69,12 +81,12 @@ struct ScoreCalculating {
                     case .endOfTurn:
                         findAndReplacePlayer(
                             playerToPlace: addScorePointsToPlayer(
-                                points: routeCheck.tilesOnRout.count * 2,
+                                points: routeCheck.tilesOnRout.count * 2 + getArmedTiles(tiles: routeCheck.tilesOnRout).count * 2,
                                 player: player))
                     case .endOfGame:
                         findAndReplacePlayer(
                             playerToPlace: addScorePointsToPlayer(
-                                points: routeCheck.tilesOnRout.count,
+                                points: routeCheck.tilesOnRout.count + getArmedTiles(tiles: routeCheck.tilesOnRout).count * 2,
                                 player: player))
                     }
                 case .crossroads:
@@ -121,5 +133,15 @@ struct ScoreCalculating {
         var tempPlayer = player
         tempPlayer.score += points
         return tempPlayer
+    }
+    
+    func getArmedTiles(tiles: Set<Tile>) -> [Tile] {
+        var armedTiles: [Tile] = []
+        for tile in tiles {
+            if tile.isTileArmed == true {
+                armedTiles.append(tile)
+            }
+        }
+        return armedTiles
     }
 }

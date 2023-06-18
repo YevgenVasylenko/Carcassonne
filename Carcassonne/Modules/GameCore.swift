@@ -30,7 +30,7 @@ struct GameCore {
         }
     }
     var players = [Player]()
-    private var playerIndex = -1
+    private var playerIndex = 0
     private let cache = Cache()
     
     var movementDirectionsAvailability: [MovingDirection] = [
@@ -70,11 +70,21 @@ struct GameCore {
     
     mutating func endOfTurnTakeNewTile() {
         var checkClosedRoutesAndScoreIt = ScoreCalculating(tileOnMap: tilesOnMap, players: players)
-        
+      
         if !tilesStack.isEmpty {
             checkClosedRoutesAndScoreIt.calculateClosedRoutes(routeCheckType: .endOfTurn)
+            
+            switch gameState {
+            case .gameStart:
+                playerIndex = 0
+            case .currentTileOperate:
+                changePlayerIndex()
+            case .currentTileNotOperate:
+                changePlayerIndex()
+            }
+            
             currentTile = tilesStack.removeLast()
-            changePlayerIndex()
+            
         } else {
             checkClosedRoutesAndScoreIt.calculateClosedRoutes(routeCheckType: .endOfGame)
         }
@@ -198,6 +208,9 @@ struct GameCore {
 private extension GameCore {
     
     func gameStateChange() -> GameState {
+        if tilesOnMap.count == 1 && currentTile == nil {
+            return .gameStart
+        }
         if currentTile != nil {
             return .currentTileOperate(isCanBePlace: isTileCanBePlace)
         } else {

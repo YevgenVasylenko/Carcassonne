@@ -62,7 +62,8 @@ private extension TilePicture {
             
             size: .init(width: imageSideSize, height: imageSideSize))
         
-        tileImageView.frame.origin.y -= imageSideSize
+        tileImageView.frame.origin.y -= imageSideSize / 2
+        tileImageView.frame.origin.x -= imageSideSize / 2
         
         imageRotationPosition(rotationCalculation: tile.rotationCalculation)
         

@@ -27,6 +27,8 @@ class GameViewController: UIViewController {
     
     @IBOutlet var gameMapView: UIScrollView!
     @IBOutlet var playerList: UIStackView!
+    @IBOutlet var rightPannel: UIView!
+
     
     @IBOutlet weak var rotateTileCounterclockwiseButton: UIButton!
     @IBOutlet weak var moveUpButton: UIButton!
@@ -42,6 +44,8 @@ class GameViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: false)
+        gameMapView.backgroundColor = .blue
+        rightPannel.backgroundColor = gameMapView.backgroundColor?.withAlphaComponent(0.5)
     }
     
     @IBAction func changeControlButton() {
@@ -160,12 +164,4 @@ class GameViewController: UIViewController {
             changeControl?.setImage(UIImage(systemName: "square"), for: .normal)
         }
     }
-    
-//    func addPlayersLabels() {
-//        for player in game.players {
-//            playerList.addArrangedSubview(
-//                PlayerLabelGameView(player: player)
-//            )
-//        }
-//    }
 }

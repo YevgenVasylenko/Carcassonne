@@ -125,6 +125,7 @@ struct Tile: Hashable {
     var rotationCalculation: Int = 0
     var meeple: Meeple? = nil
     var belongToPlayer: Player? = nil
+    let isTileArmed: Bool
 
     mutating func rotateClockwise() {
         let temp = upSide

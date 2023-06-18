@@ -71,11 +71,11 @@ class PlayerLabelGameView: UIStackView {
             }
         }
         let spacer = UIView()
-         spacer.isUserInteractionEnabled = false
-         spacer.setContentHuggingPriority(.fittingSizeLevel, for: .horizontal)
-         spacer.setContentCompressionResistancePriority(.fittingSizeLevel, for: .horizontal)
-
-         // stackView.addArrangedSubview.... any u need
+        spacer.isUserInteractionEnabled = false
+        spacer.setContentHuggingPriority(.fittingSizeLevel, for: .horizontal)
+        spacer.setContentCompressionResistancePriority(.fittingSizeLevel, for: .horizontal)
+        
+        // stackView.addArrangedSubview.... any u need
         picturesOfAvailableMeeples.addArrangedSubview(spacer)
         
         self.addArrangedSubview(meeplePictureAndNameScore)
@@ -84,10 +84,15 @@ class PlayerLabelGameView: UIStackView {
         NSLayoutConstraint.activate([
             meeplePictureWithPlayerColor.widthAnchor.constraint(equalToConstant: 50),
             meeplePictureWithPlayerColor.heightAnchor.constraint(equalToConstant: 50),
-            
-            
-//            picturesOfAvailableMeeples.widthAnchor.constraint(equalToConstant: 20),
         ])
+    }
+    func makeShadow() {
+        self.layer.shadowColor = .init(red: 0, green: 0, blue: 1, alpha: 1)
+        self.layer.shadowOffset = .zero
+        self.layer.shadowRadius = 10
+        self.layer.shadowOpacity = 1
+        self.clipsToBounds = false
+
     }
 }
 

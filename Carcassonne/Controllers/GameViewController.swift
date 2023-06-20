@@ -44,8 +44,15 @@ class GameViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: false)
-        gameMapView.backgroundColor = .blue
         rightPannel.backgroundColor = gameMapView.backgroundColor?.withAlphaComponent(0.5)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if (segue.identifier == "\(InGameMenuController.self)") {
+            if let InGameMenuController = segue.destination as? InGameMenuController {
+                InGameMenuController.game = game
+            }
+        }
     }
     
     @IBAction func changeControlButton() {

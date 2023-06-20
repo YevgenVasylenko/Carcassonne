@@ -106,3 +106,5 @@ private extension TilePicture {
             y: viewOfCenter.center.y - CGFloat(coordinatesOfObjectXY.y) * sizeOfObject)
     }
 }
+
+

@@ -98,13 +98,13 @@ class PlayerLabelGameView: UIStackView {
 
 #if DEBUG
 
-struct PlayerLabelGameView_Previews: PreviewProvider {
-    static var previews: some View {
-        UIViewPreview(
-            PlayerLabelGameView(player: Player())
-        )
-        .frame(width: 200, height: 75)
-    }
-}
+//struct PlayerLabelGameView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        UIViewPreview(
+//            PlayerLabelGameView(player: Player())
+//        )
+//        .frame(width: 200, height: 75)
+//    }
+//}
 
 #endif

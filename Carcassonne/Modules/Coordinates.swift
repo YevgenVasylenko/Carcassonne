@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Coordinates: Equatable, Hashable {
+struct Coordinates: Equatable, Hashable, Codable {
     var x: Int
     var y: Int
     
@@ -122,7 +122,7 @@ struct Coordinates: Equatable, Hashable {
     }
 }
 
-enum MovingDirection: Equatable {
+enum MovingDirection: Equatable, Codable {
     case up(_ availableToMove: Bool)
     case right(_ availableToMove: Bool)
     case down(_ availableToMove: Bool)

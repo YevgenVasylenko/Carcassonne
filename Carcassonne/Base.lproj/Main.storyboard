@@ -16,20 +16,56 @@
                         <rect key="frame" x="0.0" y="0.0" width="1194" height="834"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r8Z-Ju-5rJ">
-                                <rect key="frame" x="475" y="383" width="245" height="69"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Start New Game">
-                                    <fontDescription key="titleFontDescription" style="UICTFontTextStyleTitle1"/>
-                                </buttonConfiguration>
-                                <connections>
-                                    <segue destination="GoA-EA-YEz" kind="show" id="lNk-3T-OyT"/>
-                                </connections>
-                            </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Qrs-oQ-83N">
+                                <rect key="frame" x="486" y="298.5" width="222.5" height="237.5"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iTb-MU-rdW">
+                                        <rect key="frame" x="0.0" y="0.0" width="222.5" height="47.5"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Continue">
+                                            <fontDescription key="titleFontDescription" style="UICTFontTextStyleTitle1"/>
+                                        </buttonConfiguration>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r8Z-Ju-5rJ">
+                                        <rect key="frame" x="0.0" y="47.5" width="222.5" height="47.5"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Start New Game">
+                                            <fontDescription key="titleFontDescription" style="UICTFontTextStyleTitle1"/>
+                                        </buttonConfiguration>
+                                        <connections>
+                                            <segue destination="GoA-EA-YEz" kind="show" id="lNk-3T-OyT"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vWH-VR-KIH">
+                                        <rect key="frame" x="0.0" y="95" width="222.5" height="47.5"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Load game">
+                                            <fontDescription key="titleFontDescription" style="UICTFontTextStyleTitle1"/>
+                                        </buttonConfiguration>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qcg-EW-jBM">
+                                        <rect key="frame" x="0.0" y="142.5" width="222.5" height="47.5"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Settings">
+                                            <fontDescription key="titleFontDescription" style="UICTFontTextStyleTitle1"/>
+                                        </buttonConfiguration>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dX0-9k-CgG">
+                                        <rect key="frame" x="0.0" y="190" width="222.5" height="47.5"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Exit">
+                                            <fontDescription key="titleFontDescription" style="UICTFontTextStyleTitle1"/>
+                                        </buttonConfiguration>
+                                    </button>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="lcx-wx-oWa"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Qrs-oQ-83N" firstAttribute="centerY" secondItem="Hax-ck-z43" secondAttribute="centerY" id="BFm-tU-0D0"/>
+                            <constraint firstItem="Qrs-oQ-83N" firstAttribute="centerX" secondItem="Hax-ck-z43" secondAttribute="centerX" id="Sfm-qr-pJ0"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="37V-tL-cCa"/>
                 </viewController>
@@ -224,12 +260,22 @@
                                             </stackView>
                                         </subviews>
                                     </stackView>
+                                    <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bgy-FH-Uhb" userLabel="MenuButton">
+                                        <rect key="frame" x="124" y="0.0" width="52" height="34"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" image="gear" catalog="system"/>
+                                        <connections>
+                                            <segue destination="fBQ-rp-AtI" kind="showDetail" id="F9Z-Yo-tDS"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <accessibility key="accessibilityConfiguration">
                                     <accessibilityTraits key="traits" header="YES"/>
                                 </accessibility>
                                 <constraints>
                                     <constraint firstItem="H2D-mw-6mO" firstAttribute="top" secondItem="1w4-IL-el2" secondAttribute="top" constant="600" id="5TC-d6-vVv"/>
+                                    <constraint firstAttribute="trailing" secondItem="bgy-FH-Uhb" secondAttribute="trailing" id="AJS-YV-DTn"/>
+                                    <constraint firstItem="bgy-FH-Uhb" firstAttribute="top" secondItem="1w4-IL-el2" secondAttribute="top" id="ST0-hF-3Tt"/>
                                     <constraint firstAttribute="bottom" secondItem="H2D-mw-6mO" secondAttribute="bottom" constant="20" id="X4B-rd-M02"/>
                                     <constraint firstAttribute="trailing" secondItem="aZ3-hr-mnl" secondAttribute="trailing" constant="8" id="ZXn-4d-MZo"/>
                                     <constraint firstAttribute="trailing" secondItem="H2D-mw-6mO" secondAttribute="trailing" constant="8" id="ann-P5-oPR"/>
@@ -254,6 +300,7 @@
                             <constraint firstItem="1w4-IL-el2" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="20" id="xqM-ez-hTj"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="Omt-4v-DXp"/>
                     <connections>
                         <outlet property="changeControl" destination="VFW-Cd-AjH" id="NhD-CL-zh5"/>
                         <outlet property="endTurnAndTakeNewTileButton" destination="qVj-rf-iR1" id="YeK-PW-TW6"/>
@@ -292,6 +339,79 @@
             </objects>
             <point key="canvasLocation" x="-1491.4572864321608" y="-2.1582733812949644"/>
         </scene>
+        <!--In Game Menu Controller-->
+        <scene sceneID="Cuq-sp-Nyc">
+            <objects>
+                <viewController storyboardIdentifier="InGameMenuController" definesPresentationContext="YES" modalPresentationStyle="formSheet" useStoryboardIdentifierAsRestorationIdentifier="YES" id="fBQ-rp-AtI" customClass="InGameMenuController" customModule="Carcassonne" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="center" id="95d-XH-I1h">
+                        <rect key="frame" x="0.0" y="0.0" width="200" height="350"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="bottomRight" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="zbu-nj-k43">
+                                <rect key="frame" x="14" y="32.5" width="172.5" height="285"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yQV-2U-5Mq">
+                                        <rect key="frame" x="0.0" y="0.0" width="172.5" height="47.5"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Continue">
+                                            <fontDescription key="titleFontDescription" style="UICTFontTextStyleTitle1"/>
+                                        </buttonConfiguration>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tVj-mi-2wk">
+                                        <rect key="frame" x="0.0" y="47.5" width="172.5" height="47.5"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Restart">
+                                            <fontDescription key="titleFontDescription" style="UICTFontTextStyleTitle1"/>
+                                        </buttonConfiguration>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZhM-8h-6QA">
+                                        <rect key="frame" x="0.0" y="95" width="172.5" height="47.5"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Save game">
+                                            <fontDescription key="titleFontDescription" style="UICTFontTextStyleTitle1"/>
+                                        </buttonConfiguration>
+                                        <connections>
+                                            <action selector="SaveGameButton" destination="fBQ-rp-AtI" eventType="touchUpInside" id="uL2-UX-BT6"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iU5-s4-3dL">
+                                        <rect key="frame" x="0.0" y="142.5" width="172.5" height="47.5"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Load game">
+                                            <fontDescription key="titleFontDescription" style="UICTFontTextStyleTitle1"/>
+                                        </buttonConfiguration>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ixI-rs-CfV">
+                                        <rect key="frame" x="0.0" y="190" width="172.5" height="47.5"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Exit to menu">
+                                            <fontDescription key="titleFontDescription" style="UICTFontTextStyleTitle1"/>
+                                        </buttonConfiguration>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Woh-Hw-kuY">
+                                        <rect key="frame" x="0.0" y="237.5" width="172.5" height="47.5"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Close">
+                                            <fontDescription key="titleFontDescription" style="UICTFontTextStyleTitle1"/>
+                                        </buttonConfiguration>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="EDA-2K-Lfp"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="zbu-nj-k43" firstAttribute="centerY" secondItem="95d-XH-I1h" secondAttribute="centerY" id="cQ3-kJ-cjW"/>
+                            <constraint firstItem="zbu-nj-k43" firstAttribute="centerX" secondItem="95d-XH-I1h" secondAttribute="centerX" id="qSD-bi-woO"/>
+                        </constraints>
+                        <variation key="heightClass=compact-widthClass=compact" insetsLayoutMarginsFromSafeArea="NO"/>
+                    </view>
+                    <value key="contentSizeForViewInPopover" type="size" width="200" height="350"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="C9A-fR-75C" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1017" y="-681"/>
+        </scene>
     </scenes>
     <resources>
         <image name="arrow.uturn.backward" catalog="system" width="128" height="113"/>
@@ -302,6 +422,7 @@
         <image name="arrowtriangle.right" catalog="system" width="128" height="113"/>
         <image name="arrowtriangle.up" catalog="system" width="128" height="120"/>
         <image name="figure.mind.and.body" catalog="system" width="128" height="102"/>
+        <image name="gear" catalog="system" width="128" height="122"/>
         <image name="square.and.arrow.down.on.square" catalog="system" width="122" height="128"/>
         <image name="square.and.arrow.up.on.square" catalog="system" width="119" height="128"/>
         <systemColor name="systemBackgroundColor">

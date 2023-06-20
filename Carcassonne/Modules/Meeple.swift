@@ -14,7 +14,7 @@ enum MeepleType: Hashable {
     case farmer
 }
 
-struct Meeple: Hashable {
+struct Meeple: Hashable, Codable {
     static func == (lhs: Meeple, rhs: Meeple) -> Bool {
         return true
     }
@@ -37,13 +37,6 @@ struct Meeple: Hashable {
         positionLandType.meepleTypeChoose()
     }
     var isMeeplePlaced = false
-//    var isMeepleOnField: Bool {
-//        if positionLandType == .field || positionLandType == .crossroads {
-//            return false
-//        } else {
-//            return true
-//        }
-//    }
     
     func updateLandType() -> LandType {
         switch coordinates {

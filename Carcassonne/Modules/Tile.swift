@@ -15,7 +15,7 @@ protocol NotMatchable {
     static func != (lhs: Self, rhs: Self) -> Bool
 }
 
-enum LandType: Hashable {
+enum LandType: Hashable, Codable {
     case field
     case cloister
     case road(endOfRoad: Bool)
@@ -109,7 +109,7 @@ extension TileSides {
     }
 }
 
-struct Tile: Hashable {
+struct Tile: Hashable, Codable {
     
     static func == (lhs: Tile, rhs: Tile) -> Bool {
             return lhs.coordinates == rhs.coordinates

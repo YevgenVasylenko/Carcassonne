@@ -44,7 +44,7 @@ class StartNewGameViewController: UIViewController {
     func fillUpPlayersList() {
         for player in playersLabels {
             let name = player.getPlayerName ?? ""
-            let color = player.getColor
+            let color = player.getColor ?? .black
             players.append(Player(name: name, color: color))
         }
     }

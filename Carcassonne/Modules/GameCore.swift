@@ -6,20 +6,20 @@
 //
 
 import Foundation
+import SQLite
 
-
-enum GameState {
+enum GameState: Codable {
     case gameStart
     case currentTileOperate(isCanBePlace: Bool)
     case currentTileNotOperate(meepleOperate: MeepleOperate)
     
-    enum MeepleOperate {
+    enum MeepleOperate: Codable {
         case meepleOperate(Bool, Bool)
         case meepleNotOperate
     }
 }
 
-struct GameCore {
+struct GameCore: Codable {
     var tilesStack = [Tile]()
     var tilesOnMap = [Tile]()
     var currentTile: Tile? = nil {
@@ -31,7 +31,8 @@ struct GameCore {
     }
     var players = [Player]()
     private var playerIndex = 0
-    private let cache = Cache()
+#warning("cache not let")
+    private var cache = Cache()
     
     var movementDirectionsAvailability: [MovingDirection] = [
         .up(true),
@@ -136,32 +137,6 @@ struct GameCore {
         }
     }
     
-    func isTileCoordinatesOkToPlace(_ coordinates: Coordinates) -> Bool {
-        return tilesOnMap
-            .contains(where: { tile in
-                coordinates
-                    .coordinatesAroundTile()
-                    .contains(tile.coordinates)
-            })
-    }
-    
-    func isMoveTileOrMeepleCoordinatesOkToPlace(target: TargetControl, mapCoordinates: (Coordinates) -> Coordinates) -> Bool {
-        switch target {
-        case .tile:
-            guard var tileCoordinates = currentTile?.coordinates else {
-                return true
-            }
-            tileCoordinates = mapCoordinates(tileCoordinates)
-            return isTileCoordinatesOkToPlace(tileCoordinates)
-        case .meeple:
-            guard let meeple = unsafeLastTile.meeple else {
-                return false
-            }
-            let meepleCoordinates = mapCoordinates(meeple.coordinates)
-            return meeple.isMeepleCoordinatesOkToPlace(meepleCoordinates)
-        }
-    }
-    
     mutating func updateMovementDirectionsAvailability(target: TargetControl) {
         for index in movementDirectionsAvailability.indices {
             switch movementDirectionsAvailability[index] {
@@ -198,10 +173,6 @@ struct GameCore {
         let result = routeCheck.isMeepleFreeToBePlaced()
         cache.isMeepleFreeToBePlaced = result
         return result
-    }
-    
-    func isNoMoreMeeples(player: Player) -> Bool {
-        return player.availableMeeples == 0
     }
 }
 
@@ -287,10 +258,54 @@ private extension GameCore {
         }
         return isUpSideOk && isRightSideOk && isDownSideOk && isLeftSideOk
     }
+    
+    func isTileCoordinatesOkToPlace(_ coordinates: Coordinates) -> Bool {
+        return tilesOnMap
+            .contains(where: { tile in
+                coordinates
+                    .coordinatesAroundTile()
+                    .contains(tile.coordinates)
+            })
+    }
+    
+    func isMoveTileOrMeepleCoordinatesOkToPlace(target: TargetControl, mapCoordinates: (Coordinates) -> Coordinates) -> Bool {
+        switch target {
+        case .tile:
+            guard var tileCoordinates = currentTile?.coordinates else {
+                return true
+            }
+            tileCoordinates = mapCoordinates(tileCoordinates)
+            return isTileCoordinatesOkToPlace(tileCoordinates)
+        case .meeple:
+            guard let meeple = unsafeLastTile.meeple else {
+                return false
+            }
+            let meepleCoordinates = mapCoordinates(meeple.coordinates)
+            return meeple.isMeepleCoordinatesOkToPlace(meepleCoordinates)
+        }
+    }
+    
+    func isNoMoreMeeples(player: Player) -> Bool {
+        return player.availableMeeples == 0
+    }
 }
 
 private extension GameCore {
-    final class Cache {
+    final class Cache: Codable {
         var isMeepleFreeToBePlaced: Bool?
     }
+}
+
+extension GameCore: Value {
+    public static var declaredDatatype: String {
+        return Blob.declaredDatatype
+    }
+    public static func fromDatatypeValue(_ blobValue: Blob) -> GameCore {
+        return try! GameCore(from: Data.fromDatatypeValue(blobValue) as! Decoder)
+        
+    }
+    public var datatypeValue: Blob {
+        return self.datatypeValue
+    }
+
 }

@@ -300,12 +300,15 @@ extension GameCore: Value {
     public static var declaredDatatype: String {
         return Blob.declaredDatatype
     }
+    
     public static func fromDatatypeValue(_ blobValue: Blob) -> GameCore {
-        return try! GameCore(from: Data.fromDatatypeValue(blobValue) as! Decoder)
-        
+        let data = Data.fromDatatypeValue(blobValue)
+        return try! JSONDecoder().decode(GameCore.self, from: data)
     }
+    
     public var datatypeValue: Blob {
-        return self.datatypeValue
+        let data = (try? JSONEncoder().encode(self)) ?? Data()
+        return Blob(bytes: [UInt8](data))
     }
 
 }

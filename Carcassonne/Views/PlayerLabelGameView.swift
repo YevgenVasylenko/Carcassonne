@@ -26,7 +26,7 @@ class PlayerLabelGameView: UIStackView {
         self.axis = .vertical
         self.spacing = 4
         
-        meeplePictureWithPlayerColor.image = UIImage(named: "meeple")?.withTintColor(player.color ?? .black)
+        meeplePictureWithPlayerColor.image = UIImage(named: "meeple")?.withTintColor(player.color)
         
         let labelsOfPlayerAndScore = UIStackView()
         labelsOfPlayerAndScore.axis = .vertical
@@ -59,11 +59,12 @@ class PlayerLabelGameView: UIStackView {
         let picturesOfAvailableMeeples = UIStackView()
         picturesOfAvailableMeeples.axis = .horizontal
         picturesOfAvailableMeeples.distribution = .fill
+        
         if player.availableMeeples != 0 {
             for _ in 0...max(0, player.availableMeeples - 1) {
                 let smallMeeplePicture = UIImageView(
                     image: UIImage(named: "meeple")?
-                        .withTintColor(player.color ?? .black))
+                        .withTintColor(player.color))
                 smallMeeplePicture.contentMode = .scaleAspectFit
                 smallMeeplePicture.widthAnchor.constraint(equalToConstant: 20).isActive = true
                 smallMeeplePicture.heightAnchor.constraint(equalToConstant: 20).isActive = true
@@ -75,7 +76,6 @@ class PlayerLabelGameView: UIStackView {
         spacer.setContentHuggingPriority(.fittingSizeLevel, for: .horizontal)
         spacer.setContentCompressionResistancePriority(.fittingSizeLevel, for: .horizontal)
         
-        // stackView.addArrangedSubview.... any u need
         picturesOfAvailableMeeples.addArrangedSubview(spacer)
         
         self.addArrangedSubview(meeplePictureAndNameScore)
@@ -99,9 +99,11 @@ class PlayerLabelGameView: UIStackView {
 #if DEBUG
 
 //struct PlayerLabelGameView_Previews: PreviewProvider {
+//    
 //    static var previews: some View {
+//        let player = Player(color: .blue)
 //        UIViewPreview(
-//            PlayerLabelGameView(player: Player())
+//            PlayerLabelGameView(player: player)
 //        )
 //        .frame(width: 200, height: 75)
 //    }

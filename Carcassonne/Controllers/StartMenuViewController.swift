@@ -14,5 +14,10 @@ class StartMenuViewController: UIViewController {
 
         // Do any additional setup after loading the view.
     }
-    
+
+    @IBAction func LoadGameButton(_ sender: Any) {
+        let loadMenuViewController = LoadMenuViewController(collectionViewLayout: UICollectionViewFlowLayout())
+        loadMenuViewController.modalPresentationStyle = .formSheet
+        self.present(loadMenuViewController, animated: true)
+    }
 }

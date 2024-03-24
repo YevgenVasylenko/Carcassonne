@@ -74,11 +74,12 @@ struct GameCoreDAO {
         }
     }
     
-    static func delete(date: Date) {
+    static func delete(game: GameCore) {
         do {
-            let filteredGames = Scheme.games.filter(Scheme.date == date)
+            let filteredGames = Scheme.games.filter(Scheme.game == game)
             try DBManager.shared.connection.run(filteredGames.delete())
         } catch {
+            print("delete failed: \(error)")
         }
     }
 }

@@ -82,7 +82,7 @@ private extension TilePicture {
             imageSideSize / 3
         }
         
-        meepleImageView.image = (UIImage(named: "meeple")?.withTintColor(tile.belongToPlayer?.color ?? .black))
+        meepleImageView.image = (UIImage(named: "meeple")?.withTintColor(tile.belongToPlayer?.color.getColor() ?? .black))
         meepleImageView.frame = CGRect(
             origin: objectPositionInView(
                 coordinatesOfObjectXY: coordinatesOfMeepleXY,

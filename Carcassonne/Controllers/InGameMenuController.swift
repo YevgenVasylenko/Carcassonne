@@ -15,7 +15,25 @@ class InGameMenuController: UIViewController {
     }
     
     @IBAction func saveGameButton() {
-        guard let game = game else { return }
+        guard let game = game else {
+            return
+        }
         GameCoreDAO.saveGame(game: game)
+    }
+
+    @IBAction func loadGameButton() {
+        let loadMenuViewController = LoadMenuViewController(collectionViewLayout: UICollectionViewFlowLayout())
+        loadMenuViewController.modalPresentationStyle = .formSheet
+        self.present(loadMenuViewController, animated: true)
+    }
+
+    @IBAction func exitToMainMenuButton() {
+        saveGameButton()
+        
+        let navigationController = self.presentingViewController as? UINavigationController
+
+        self.dismiss(animated: true) {
+            navigationController?.popToRootViewController(animated: true)
+        }
     }
 }

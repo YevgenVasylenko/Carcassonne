@@ -1,16 +1,28 @@
-let originalArray = [1, 2, 3, 2, 4, 4, 4, 4, 4, 5, 5, 5, 5]
-var elementCount = [Int: Int]()
 
-// Count the occurrences of each element
-for element in originalArray {
-    elementCount[element, default: 0] += 1
+struct Student {
+    let name: String
+    var score: Int
 }
 
-// Find the maximum count
-let maxCount = elementCount.values.max() ?? 0
+let students: [Student] = [Student(name: "Jhon", score: 86),
+                           Student(name: "Mikr", score: 76),
+                           Student(name: "James", score: 65),
+                           Student(name: "Anton", score: 95),
+                           Student(name: "Roger", score: 73),
+                           Student(name: "Scot", score: 80),
+                           Student(name: "Obama", score: 90)]
 
-// Filter elements with count greater than or equal to maxCount
-let resultArray = elementCount.filter { $0.value >= maxCount }.map { $0.key }
+var topStudentsFilter: (Student) -> Bool = { student in
+    return student.score > 80
+}
 
-print(resultArray) // Output: [5]
+func topStudentsFilterF(student: Student) -> Bool {
+    return student.score > 70
+}
 
+let topStudents = students.filter { $0.score > 80 }
+let studentRanking = topStudents.sorted { $0.score > $1.score }
+
+for student in studentRanking {
+    print(student.name)
+}

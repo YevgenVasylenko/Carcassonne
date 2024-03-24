@@ -45,7 +45,6 @@ struct GameCore: Codable {
         players[playerIndex]
     }
     
-    
     var unsafeLastTile: Tile {
         get {
             return tilesOnMap[tilesOnMap.count - 1]
@@ -208,9 +207,11 @@ private extension GameCore {
         
         for tile in tilesOnMap {
 
-            isYOk = currentTileCoordinates.isHasBordersOnTopOrDownWith(tile.coordinates)
+            isYOk = currentTileCoordinates
+                .isHasBordersOnTopOrDownWith(tile.coordinates)
 
-            isXOk = currentTileCoordinates.isHasBordersOnLeftOrRightWith(tile.coordinates)
+            isXOk = currentTileCoordinates
+                .isHasBordersOnLeftOrRightWith(tile.coordinates)
             
             if isYOk != isXOk {
                 break

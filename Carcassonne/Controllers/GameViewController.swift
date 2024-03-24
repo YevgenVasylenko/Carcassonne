@@ -24,7 +24,7 @@ class GameViewController: UIViewController {
     }
     
     var target = TargetControl.tile
-    
+
     @IBOutlet var gameMapView: UIScrollView!
     @IBOutlet var playerList: UIStackView!
     @IBOutlet var rightPannel: UIView!
@@ -40,11 +40,11 @@ class GameViewController: UIViewController {
     @IBOutlet var placeTileButton: UIButton!
     @IBOutlet var takeTileBackButton: UIButton!
     @IBOutlet var changeControl: UIButton!
-        
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: false)
-        rightPannel.backgroundColor = gameMapView.backgroundColor?.withAlphaComponent(0.5)
+//        rightPannel.backgroundColor = gameMapView.backgroundColor?.withAlphaComponent(0.5)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

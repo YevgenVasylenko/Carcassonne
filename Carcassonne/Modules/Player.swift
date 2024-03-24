@@ -8,39 +8,45 @@
 import Foundation
 import UIKit
 
-struct Player: Hashable, Codable {
-    
-    static func == (lhs: Player, rhs: Player) -> Bool {
-        return lhs.name == rhs.name
+enum PlayerColor: Codable, CaseIterable {
+    case none
+    case red
+    case yellow
+    case green
+    case blue
+    case black
+
+    func getColor() -> UIColor {
+        switch self {
+        case .none:
+            return .gray
+        case .red:
+            return .red
+        case .yellow:
+            return .yellow
+        case .green:
+            return .green
+        case .blue:
+            return .blue
+        case .black:
+            return .black
         }
-    
+    }
+}
+
+struct Player: Hashable, Codable {
+    static func == (lhs: Player, rhs: Player) -> Bool {
+        return lhs.color == rhs.color
+    }
+    var id = UUID()
     var name: String = ""
     var score: Int = 0
-    @CodableColor var color: UIColor
+    var color: PlayerColor = .none
     var availableMeeples = 7
 }
 
-@propertyWrapper
-struct CodableColor {
-    var wrappedValue: UIColor
-}
-
-extension CodableColor: Codable, Hashable {
-    init(from decoder: Decoder) throws {
-        let container = try decoder.singleValueContainer()
-        let data = try container.decode(Data.self)
-        guard let color = try NSKeyedUnarchiver.unarchivedObject(ofClass: UIColor.self, from: data) else {
-            throw DecodingError.dataCorruptedError(
-                in: container,
-                debugDescription: "Invalid color"
-            )
-        }
-        wrappedValue = color
-    }
-
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.singleValueContainer()
-        let data = try NSKeyedArchiver.archivedData(withRootObject: wrappedValue, requiringSecureCoding: true)
-        try container.encode(data)
+extension Player {
+    func isReadyForStartGame() -> Bool {
+        !name.isEmpty && color != .none
     }
 }

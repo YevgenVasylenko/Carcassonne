@@ -8,7 +8,7 @@
 import UIKit
 import SwiftUI
 
-class PlayerLabelGameView: UIStackView {
+final class PlayerLabelGameView: UIStackView {
     private let meeplePictureWithPlayerColor = UIImageView()
     private let nameLabel = UILabel()
     private let scoreLabel = UILabel()
@@ -21,12 +21,23 @@ class PlayerLabelGameView: UIStackView {
     required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    func makeShadow() {
+        self.layer.shadowColor = .init(red: 0, green: 0, blue: 1, alpha: 1)
+        self.layer.shadowOffset = .zero
+        self.layer.shadowRadius = 10
+        self.layer.shadowOpacity = 1
+        self.clipsToBounds = false
+    }
+}
+
+private extension PlayerLabelGameView {
     
     func configure(player: Player) {
         self.axis = .vertical
         self.spacing = 4
         
-        meeplePictureWithPlayerColor.image = UIImage(named: "meeple")?.withTintColor(player.color)
+        meeplePictureWithPlayerColor.image = UIImage(named: "meeple")?.withTintColor(player.color.getColor())
         
         let labelsOfPlayerAndScore = UIStackView()
         labelsOfPlayerAndScore.axis = .vertical
@@ -64,7 +75,7 @@ class PlayerLabelGameView: UIStackView {
             for _ in 0...max(0, player.availableMeeples - 1) {
                 let smallMeeplePicture = UIImageView(
                     image: UIImage(named: "meeple")?
-                        .withTintColor(player.color))
+                        .withTintColor(player.color.getColor()))
                 smallMeeplePicture.contentMode = .scaleAspectFit
                 smallMeeplePicture.widthAnchor.constraint(equalToConstant: 20).isActive = true
                 smallMeeplePicture.heightAnchor.constraint(equalToConstant: 20).isActive = true
@@ -85,14 +96,6 @@ class PlayerLabelGameView: UIStackView {
             meeplePictureWithPlayerColor.widthAnchor.constraint(equalToConstant: 50),
             meeplePictureWithPlayerColor.heightAnchor.constraint(equalToConstant: 50),
         ])
-    }
-    func makeShadow() {
-        self.layer.shadowColor = .init(red: 0, green: 0, blue: 1, alpha: 1)
-        self.layer.shadowOffset = .zero
-        self.layer.shadowRadius = 10
-        self.layer.shadowOpacity = 1
-        self.clipsToBounds = false
-
     }
 }
 

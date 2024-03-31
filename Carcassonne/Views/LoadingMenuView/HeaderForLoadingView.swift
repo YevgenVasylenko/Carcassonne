@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class HeaderForLoadingView: UICollectionReusableView {
+final class HeaderForLoadingView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: .zero)
@@ -22,6 +22,8 @@ final class HeaderForLoadingView: UICollectionReusableView {
 private extension HeaderForLoadingView {
 
     func configure() {
+        backgroundColor = .white
+        
         let container = UIStackView()
         container.axis = .horizontal
 
@@ -39,7 +41,7 @@ private extension HeaderForLoadingView {
         score.text = "Score"
         date.text = "Date"
 
-        players.font = .systemFont(ofSize: 30)
+        players.font = .systemFont(ofSize: 20)
         score.font = .systemFont(ofSize: 20)
         date.font = .systemFont(ofSize: 20)
 
@@ -49,16 +51,15 @@ private extension HeaderForLoadingView {
         container.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            container.topAnchor.constraint(equalTo: topAnchor, constant: 10),
-            container.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
-            container.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
-            container.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
+            container.topAnchor.constraint(equalTo: topAnchor, constant: 8),
+            container.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
+            container.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
+            container.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8),
 
-            players.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+            players.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 18),
             score.widthAnchor.constraint(equalTo: container.widthAnchor, multiplier: 1/8),
-            score.trailingAnchor.constraint(equalTo: date.leadingAnchor),
             date.widthAnchor.constraint(equalTo: container.widthAnchor, multiplier: 1/4),
-            date.trailingAnchor.constraint(equalTo: container.trailingAnchor)
+            date.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -18)
         ])
     }
 }

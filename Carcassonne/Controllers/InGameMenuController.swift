@@ -24,7 +24,11 @@ class InGameMenuController: UIViewController {
     @IBAction func loadGameButton() {
         let loadMenuViewController = LoadMenuViewController(collectionViewLayout: UICollectionViewFlowLayout())
         loadMenuViewController.modalPresentationStyle = .formSheet
-        self.present(loadMenuViewController, animated: true)
+        let navigationController = self.presentingViewController as? UINavigationController
+        
+        self.dismiss(animated: true) {
+            navigationController?.present(loadMenuViewController, animated: true)
+        }
     }
 
     @IBAction func exitToMainMenuButton() {

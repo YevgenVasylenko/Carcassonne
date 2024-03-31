@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  GameForLoadingCell.swift
 //  Carcassonne
 //
 //  Created by Yevgen Vasylenko on 15.03.2024.
@@ -7,49 +7,49 @@
 
 import UIKit
 
-class GameLabelForLoadingMenuView: UIStackView {
+final class GameForLoadingCell: UICollectionViewCell {
+
     private let playersLabel = UIStackView()
     private let dateAndDelete = UIStackView()
     private let dateLabel = UILabel()
-    let deleteButton = UIButton()
+    private let deleteButton = UIButton()
 
-    init(players: [Player], date: Date) {
-        super .init(frame: .zero)
-        configure(players: players, date: date)
+    override init(frame: CGRect) {
+        super.init(frame: .zero)
+        setupViews()
     }
 
-    required init(coder: NSCoder) {
+    required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(players: [Player], date: Date) {
-        axis = .horizontal
+    func configure(data: (GameCore, Date), deleteAction: @escaping () -> ()) {
+        backgroundColor = .white
 
-        addArrangedSubview(playersLabel)
-        addArrangedSubview(dateAndDelete)
+        playersLabel.subviews.forEach { $0.removeFromSuperview() }
+        playersLabel.spacing = 4
 
-        dateAndDelete.distribution = .equalSpacing
-
-        playersLabel.axis = .vertical
-        dateAndDelete.axis = .horizontal
-
-        dateAndDelete.addArrangedSubview(dateLabel)
-        dateAndDelete.addArrangedSubview(deleteButton)
-
-        dateLabel.text = "\(date.formatted(date: .numeric, time: .omitted))"
+        dateLabel.text = "\(data.1.formatted(date: .numeric, time: .omitted))"
 
         deleteButton.setImage(UIImage(systemName: "trash"), for: .normal)
+        deleteButton.addAction(UIAction(handler: { _ in
+            deleteAction()
+        }), for: .touchUpInside)
 
         playersLabel.translatesAutoresizingMaskIntoConstraints = false
         dateAndDelete.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            playersLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
+            playersLabel.topAnchor.constraint(equalTo: topAnchor, constant: 10),
+            playersLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
             dateAndDelete.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 1/4),
-            dateAndDelete.trailingAnchor.constraint(equalTo: trailingAnchor)
+            dateAndDelete.leadingAnchor.constraint(equalTo: playersLabel.trailingAnchor),
+            dateAndDelete.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
+            dateAndDelete.centerYAnchor.constraint(equalTo: centerYAnchor),
+            playersLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
         ])
 
-        for player in players {
+        for player in data.0.players {
             let playerNameAndColor = UIStackView()
             let colorPlayerIndicator = UIImageView()
             let playerName = UILabel()
@@ -62,7 +62,7 @@ class GameLabelForLoadingMenuView: UIStackView {
             playerName.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
 
             playerNameAndColor.addArrangedSubview(score)
-            
+
             playersLabel.addArrangedSubview(playerNameAndColor)
 
             playerName.text = "\(player.name)"
@@ -70,6 +70,7 @@ class GameLabelForLoadingMenuView: UIStackView {
             colorPlayerIndicator.image = UIImage(systemName: "circle.fill")
             colorPlayerIndicator.tintColor = player.color.getColor()
             playerNameAndColor.axis = .horizontal
+            playerNameAndColor.setCustomSpacing(4, after: colorPlayerIndicator)
 
             colorPlayerIndicator.translatesAutoresizingMaskIntoConstraints = false
             playerName.translatesAutoresizingMaskIntoConstraints = false
@@ -77,10 +78,26 @@ class GameLabelForLoadingMenuView: UIStackView {
 
             NSLayoutConstraint.activate([
                 colorPlayerIndicator.leadingAnchor.constraint(equalTo: playersLabel.leadingAnchor),
-                playerName.leadingAnchor.constraint(equalTo: colorPlayerIndicator.trailingAnchor),
                 score.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 1/8),
+                score.leadingAnchor.constraint(equalTo: playerName.trailingAnchor),
                 score.trailingAnchor.constraint(equalTo: playersLabel.trailingAnchor)
             ])
         }
+    }
+}
+
+private extension GameForLoadingCell {
+
+    private func setupViews() {
+        addSubview(playersLabel)
+        addSubview(dateAndDelete)
+
+        dateAndDelete.distribution = .equalSpacing
+
+        playersLabel.axis = .vertical
+        dateAndDelete.axis = .horizontal
+
+        dateAndDelete.addArrangedSubview(dateLabel)
+        dateAndDelete.addArrangedSubview(deleteButton)
     }
 }

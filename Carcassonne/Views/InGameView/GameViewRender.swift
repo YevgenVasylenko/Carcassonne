@@ -24,10 +24,10 @@ struct GameViewRender {
         self.view = view
         self.superView = superView
         self.playersList = playersList
+
+        render()
     }
-    
-#warning("why mutating")
-    
+
     mutating func render() {
         
         for picture in view.subviews {

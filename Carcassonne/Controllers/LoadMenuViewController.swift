@@ -7,64 +7,97 @@
 
 import UIKit
 
-class LoadMenuViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+class LoadMenuViewController: UICollectionViewController {
     private var data = GameCoreDAO.getAllGamesAndDates()
 
     override init(collectionViewLayout layout: UICollectionViewLayout) {
-        super.init(collectionViewLayout: UICollectionViewFlowLayout())
+        super.init(collectionViewLayout: Self.createLayout())
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        collectionView.register(GameForLoadingView.self, forCellWithReuseIdentifier: "\(GameForLoadingView.self)")
-        collectionView.register(HeaderForLoadingView.self, forSupplementaryViewOfKind: "UICollectionElementKindSectionHeader", withReuseIdentifier: "\(HeaderForLoadingView.self)")
+        setupViews()
+        collectionView.register(GameForLoadingCell.self, forCellWithReuseIdentifier: "\(GameForLoadingCell.self)")
     }
-
+    
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return data.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(GameForLoadingView.self)", for: indexPath) as! GameForLoadingView
-        cell.data = data[indexPath.item]
-        cell.deleteButtonAction = { [weak self] in
-            self?.deleteCell(at: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(GameForLoadingCell.self)", for: indexPath) as! GameForLoadingCell
+        cell.configure(data: data[indexPath.item]) { [weak self] in
+            self?.showAlertForDeleting(at: indexPath)
         }
         return cell
     }
 
-    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "\(HeaderForLoadingView.self)", for: indexPath) as! HeaderForLoadingView
-        if let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-            layout.sectionHeadersPinToVisibleBounds = true
-        }
-        header.backgroundColor = .white
-        return header
-    }
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        CGSize(width: collectionView.frame.width, height: 45)
-    }
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        CGSize(width: collectionView.frame.width, height: 20.5 * CGFloat(data[indexPath.item].0.players.count))
-    }
-
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        showAlertForCell(at: indexPath)
+        showAlertForLoading(at: indexPath)
+    }
+}
+
+private extension LoadMenuViewController {
+
+    func setupViews() {
+        collectionView.backgroundColor = .systemGray6
+
+        let header = HeaderForLoadingView()
+
+        view.addSubview(header)
+
+        header.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            header.topAnchor.constraint(equalTo: view.topAnchor),
+            header.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            header.widthAnchor.constraint(equalTo: view.widthAnchor),
+            collectionView.topAnchor.constraint(equalTo: header.bottomAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+        ])
     }
 
-    private func deleteCell(at indexPath: IndexPath) {
-        GameCoreDAO.delete(game: data[indexPath.item].0)
-        data.remove(at: indexPath.item)
-        collectionView.deleteItems(at: [indexPath])
+    static func createLayout() -> UICollectionViewCompositionalLayout {
+        UICollectionViewCompositionalLayout { _,_ in
+            let layoutSize = NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1),
+                heightDimension: .estimated(300)
+            )
+            let group = NSCollectionLayoutGroup.horizontal(
+                layoutSize: layoutSize,
+                subitems: [NSCollectionLayoutItem(layoutSize: layoutSize)]
+            )
+
+            let layout = NSCollectionLayoutSection(group: group)
+            layout.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8)
+            layout.interGroupSpacing = 8
+
+            return layout
+        }
     }
 
-    private func showAlertForCell(at indexPath: IndexPath) {
+    func showAlertForDeleting(at indexPath: IndexPath) {
+        let alertController = UIAlertController(title: "Are you sure you want to delete save game", message: nil, preferredStyle: .alert)
+
+        alertController.addAction(UIAlertAction(title: "Yes", style: .default, handler: { [weak self] _ in
+            guard let self else { return }
+            GameCoreDAO.delete(game: self.data[indexPath.item].0)
+            self.data.remove(at: indexPath.item)
+            self.collectionView.deleteItems(at: [indexPath])
+        }))
+
+        alertController.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
+        present(alertController, animated: true, completion: nil)
+    }
+
+    func showAlertForLoading(at indexPath: IndexPath) {
         let alertController = UIAlertController(title: "Are you sure you want to load this game", message: nil, preferredStyle: .alert)
 
         alertController.addAction(UIAlertAction(title: "Yes", style: .default, handler: { [weak self] _ in
@@ -83,39 +116,3 @@ class LoadMenuViewController: UICollectionViewController, UICollectionViewDelega
     }
 }
 
-final class GameForLoadingView: UICollectionViewCell {
-
-    var deleteButtonAction: (() -> Void)?
-
-    var data: (GameCore, Date)? {
-        didSet {
-            guard let data = data else { return }
-            configure(data: data)
-        }
-    }
-}
-
-private extension GameForLoadingView {
-    
-    func configure(data: (GameCore, Date)) {
-        let gameDataLabel = ContainerListOfGamesForLoadingView(data: data)
-
-        gameDataLabel.deleteButtonAction = { [weak self] in
-            self?.deleteButtonTapped()
-        }
-
-        addSubview(gameDataLabel)
-
-        gameDataLabel.translatesAutoresizingMaskIntoConstraints = false
-
-        NSLayoutConstraint.activate([
-            gameDataLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 10),
-            gameDataLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -10),
-            gameDataLabel.bottomAnchor.constraint(equalTo: bottomAnchor),
-        ])
-    }
-
-    func deleteButtonTapped() {
-        deleteButtonAction?()
-    }
-}

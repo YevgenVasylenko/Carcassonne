@@ -22,7 +22,7 @@
 		5D3C1E852A334D4500CC080C /* ScoreCalculating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3C1E842A334D4500CC080C /* ScoreCalculating.swift */; };
 		5D423C562A176A8800C5773E /* PlayerLabelGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D423C552A176A8800C5773E /* PlayerLabelGameView.swift */; };
 		5D4946D729EEBA0100AEA11E /* CarcassonneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4946D629EEBA0100AEA11E /* CarcassonneTests.swift */; };
-		5D56DBF72BA44AEB007E8680 /* GameLabelForLoadingMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D56DBF62BA44AEB007E8680 /* GameLabelForLoadingMenuView.swift */; };
+		5D56DBF72BA44AEB007E8680 /* GameForLoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D56DBF62BA44AEB007E8680 /* GameForLoadingCell.swift */; };
 		5D56DC002BA9DAB0007E8680 /* StartButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D56DBFF2BA9DAB0007E8680 /* StartButtonView.swift */; };
 		5D56DC022BA9DAD8007E8680 /* PlayersEditingLabelsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D56DC012BA9DAD8007E8680 /* PlayersEditingLabelsList.swift */; };
 		5D56DC042BA9DAFC007E8680 /* NewPlayerEditingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D56DC032BA9DAFC007E8680 /* NewPlayerEditingLabel.swift */; };
@@ -31,8 +31,6 @@
 		5D7A0A692A0107A200C1C609 /* Meeple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7A0A682A0107A200C1C609 /* Meeple.swift */; };
 		5D9320032A078E260001FAAB /* GameCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9320022A078E260001FAAB /* GameCore.swift */; };
 		5D94CAE82BAAE36C005FEF39 /* HeaderForLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D94CAE72BAAE36C005FEF39 /* HeaderForLoadingView.swift */; };
-		5D94CAEA2BAAE396005FEF39 /* ScrollingListOfGamesForLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D94CAE92BAAE396005FEF39 /* ScrollingListOfGamesForLoadingView.swift */; };
-		5D94CAEC2BAAE3B8005FEF39 /* ContainerListOfGamesForLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D94CAEB2BAAE3B8005FEF39 /* ContainerListOfGamesForLoadingView.swift */; };
 		5D9542C32A3F0C2F00E20FC0 /* InGameMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9542C22A3F0C2F00E20FC0 /* InGameMenuController.swift */; };
 		5DC2A5772A12587A007A2715 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC2A5762A12587A007A2715 /* Player.swift */; };
 		5DC2A5792A125BEB007A2715 /* StartMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC2A5782A125BEB007A2715 /* StartMenuViewController.swift */; };
@@ -138,7 +136,7 @@
 		5D4946CF29EEB96E00AEA11E /* Playground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = Playground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		5D4946D429EEBA0100AEA11E /* CarcassonneTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CarcassonneTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D4946D629EEBA0100AEA11E /* CarcassonneTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarcassonneTests.swift; sourceTree = "<group>"; };
-		5D56DBF62BA44AEB007E8680 /* GameLabelForLoadingMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameLabelForLoadingMenuView.swift; sourceTree = "<group>"; };
+		5D56DBF62BA44AEB007E8680 /* GameForLoadingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameForLoadingCell.swift; sourceTree = "<group>"; };
 		5D56DBFF2BA9DAB0007E8680 /* StartButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartButtonView.swift; sourceTree = "<group>"; };
 		5D56DC012BA9DAD8007E8680 /* PlayersEditingLabelsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayersEditingLabelsList.swift; sourceTree = "<group>"; };
 		5D56DC032BA9DAFC007E8680 /* NewPlayerEditingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPlayerEditingLabel.swift; sourceTree = "<group>"; };
@@ -147,8 +145,6 @@
 		5D7A0A682A0107A200C1C609 /* Meeple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Meeple.swift; sourceTree = "<group>"; };
 		5D9320022A078E260001FAAB /* GameCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCore.swift; sourceTree = "<group>"; };
 		5D94CAE72BAAE36C005FEF39 /* HeaderForLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderForLoadingView.swift; sourceTree = "<group>"; };
-		5D94CAE92BAAE396005FEF39 /* ScrollingListOfGamesForLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollingListOfGamesForLoadingView.swift; sourceTree = "<group>"; };
-		5D94CAEB2BAAE3B8005FEF39 /* ContainerListOfGamesForLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerListOfGamesForLoadingView.swift; sourceTree = "<group>"; };
 		5D9542C22A3F0C2F00E20FC0 /* InGameMenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InGameMenuController.swift; sourceTree = "<group>"; };
 		5DC2A5762A12587A007A2715 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		5DC2A5782A125BEB007A2715 /* StartMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartMenuViewController.swift; sourceTree = "<group>"; };
@@ -278,9 +274,7 @@
 			isa = PBXGroup;
 			children = (
 				5D94CAE72BAAE36C005FEF39 /* HeaderForLoadingView.swift */,
-				5D94CAE92BAAE396005FEF39 /* ScrollingListOfGamesForLoadingView.swift */,
-				5D94CAEB2BAAE3B8005FEF39 /* ContainerListOfGamesForLoadingView.swift */,
-				5D56DBF62BA44AEB007E8680 /* GameLabelForLoadingMenuView.swift */,
+				5D56DBF62BA44AEB007E8680 /* GameForLoadingCell.swift */,
 			);
 			path = LoadingMenuView;
 			sourceTree = "<group>";
@@ -490,12 +484,10 @@
 				5D20304F29F2E00300F0720B /* TilePictureView.swift in Sources */,
 				5D36B93129EAE35400448219 /* AppDelegate.swift in Sources */,
 				5D9320032A078E260001FAAB /* GameCore.swift in Sources */,
-				5D94CAEC2BAAE3B8005FEF39 /* ContainerListOfGamesForLoadingView.swift in Sources */,
 				5D56DC082BA9DB64007E8680 /* Button+Wiggle.swift in Sources */,
-				5D94CAEA2BAAE396005FEF39 /* ScrollingListOfGamesForLoadingView.swift in Sources */,
 				5DC2A57B2A125CA0007A2715 /* StartNewGameViewController.swift in Sources */,
 				5D94CAE82BAAE36C005FEF39 /* HeaderForLoadingView.swift in Sources */,
-				5D56DBF72BA44AEB007E8680 /* GameLabelForLoadingMenuView.swift in Sources */,
+				5D56DBF72BA44AEB007E8680 /* GameForLoadingCell.swift in Sources */,
 				5D00A0082A3B1FB800F23112 /* UIViewPreview.swift in Sources */,
 				5D56DC002BA9DAB0007E8680 /* StartButtonView.swift in Sources */,
 				5D7A0A692A0107A200C1C609 /* Meeple.swift in Sources */,

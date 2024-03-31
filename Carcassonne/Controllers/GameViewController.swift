@@ -15,11 +15,15 @@ enum TargetControl {
 class GameViewController: UIViewController {
 
     var game = GameCore(tilesStack: TileStorage.tilePool, firstTile: TileStorage.startTile) {
-        didSet {
+        didSet { 
             game.updateMovementDirectionsAvailability(target: target)
             changeButtonAvailability(gameState: game.gameState)
-            var rendering = GameViewRender(game: self.game, view: gameMapView, superView: self.view, playersList: playerList)
-            rendering.render()
+            let rendering = GameViewRender(
+                game: self.game,
+                view: gameMapView,
+                superView: self.view,
+                playersList: playerList
+            )
         }
     }
     
@@ -45,6 +49,11 @@ class GameViewController: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: false)
 //        rightPannel.backgroundColor = gameMapView.backgroundColor?.withAlphaComponent(0.5)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.removeFromParent()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -109,6 +118,7 @@ class GameViewController: UIViewController {
             game.takeTileBack()
         case .meeple:
             game.pickUpMeeple()
+#warning("why return")
             return
         }
     }

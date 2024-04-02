@@ -20,6 +20,7 @@ enum GameState: Codable {
 }
 
 struct GameCore: Codable {
+    var id = UUID()
     var tilesStack = [Tile]()
     var tilesOnMap = [Tile]()
     var currentTile: Tile? = nil {

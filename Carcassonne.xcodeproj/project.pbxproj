@@ -36,6 +36,7 @@
 		5DC2A5792A125BEB007A2715 /* StartMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC2A5782A125BEB007A2715 /* StartMenuViewController.swift */; };
 		5DC2A57B2A125CA0007A2715 /* StartNewGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC2A57A2A125CA0007A2715 /* StartNewGameViewController.swift */; };
 		5DD0B3642A1D0800006BD8F6 /* Coordinates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD0B3632A1D0800006BD8F6 /* Coordinates.swift */; };
+		5DE724182BBB4A6F00A91C35 /* StartMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE724172BBB4A6E00A91C35 /* StartMenuView.swift */; };
 		5DFA67AC2A409BFF00E30AD0 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DFA679E2A409B5000E30AD0 /* SQLite.framework */; };
 		5DFA67AD2A409BFF00E30AD0 /* SQLite.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5DFA679E2A409B5000E30AD0 /* SQLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5DFA67B02A418DE600E30AD0 /* LoadMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DFA67AF2A418DE600E30AD0 /* LoadMenuViewController.swift */; };
@@ -150,6 +151,7 @@
 		5DC2A5782A125BEB007A2715 /* StartMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartMenuViewController.swift; sourceTree = "<group>"; };
 		5DC2A57A2A125CA0007A2715 /* StartNewGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartNewGameViewController.swift; sourceTree = "<group>"; };
 		5DD0B3632A1D0800006BD8F6 /* Coordinates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinates.swift; sourceTree = "<group>"; };
+		5DE724172BBB4A6E00A91C35 /* StartMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartMenuView.swift; sourceTree = "<group>"; };
 		5DFA67932A409B5000E30AD0 /* SQLite.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SQLite.xcodeproj; path = "../SQLite.swift-master/SQLite.xcodeproj"; sourceTree = "<group>"; };
 		5DFA67AF2A418DE600E30AD0 /* LoadMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadMenuViewController.swift; sourceTree = "<group>"; };
 		5DFA67B32A42ED4C00E30AD0 /* DbManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DbManager.swift; sourceTree = "<group>"; };
@@ -242,6 +244,7 @@
 		5D423C532A1764F100C5773E /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				5DE7240F2BBB4A5400A91C35 /* StartMenuView */,
 				5D94CADF2BAAE322005FEF39 /* LoadingMenuView */,
 				5D94CAED2BAAE3E3005FEF39 /* PrepareForGameView */,
 				5D94CAEE2BAAE43F005FEF39 /* InGameView */,
@@ -297,6 +300,14 @@
 				5D29D1F82A196302009D90D4 /* GameViewRender.swift */,
 			);
 			path = InGameView;
+			sourceTree = "<group>";
+		};
+		5DE7240F2BBB4A5400A91C35 /* StartMenuView */ = {
+			isa = PBXGroup;
+			children = (
+				5DE724172BBB4A6E00A91C35 /* StartMenuView.swift */,
+			);
+			path = StartMenuView;
 			sourceTree = "<group>";
 		};
 		5DFA67942A409B5000E30AD0 /* Products */ = {
@@ -487,6 +498,7 @@
 				5D56DC082BA9DB64007E8680 /* Button+Wiggle.swift in Sources */,
 				5DC2A57B2A125CA0007A2715 /* StartNewGameViewController.swift in Sources */,
 				5D94CAE82BAAE36C005FEF39 /* HeaderForLoadingView.swift in Sources */,
+				5DE724182BBB4A6F00A91C35 /* StartMenuView.swift in Sources */,
 				5D56DBF72BA44AEB007E8680 /* GameForLoadingCell.swift in Sources */,
 				5D00A0082A3B1FB800F23112 /* UIViewPreview.swift in Sources */,
 				5D56DC002BA9DAB0007E8680 /* StartButtonView.swift in Sources */,

@@ -32,8 +32,6 @@ class GameViewController: UIViewController {
     @IBOutlet var gameMapView: UIScrollView!
     @IBOutlet var playerList: UIStackView!
     @IBOutlet var rightPannel: UIView!
-
-    
     @IBOutlet weak var rotateTileCounterclockwiseButton: UIButton!
     @IBOutlet weak var moveUpButton: UIButton!
     @IBOutlet weak var rotateClockwiseButton: UIButton!
@@ -48,14 +46,9 @@ class GameViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: false)
-//        rightPannel.backgroundColor = gameMapView.backgroundColor?.withAlphaComponent(0.5)
+        rightPannel.backgroundColor = gameMapView.backgroundColor?.withAlphaComponent(0.5)
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        self.removeFromParent()
-    }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "\(InGameMenuController.self)") {
             if let InGameMenuController = segue.destination as? InGameMenuController {

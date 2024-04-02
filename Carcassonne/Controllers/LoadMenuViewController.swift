@@ -57,6 +57,7 @@ private extension LoadMenuViewController {
             header.topAnchor.constraint(equalTo: view.topAnchor),
             header.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             header.widthAnchor.constraint(equalTo: view.widthAnchor),
+            
             collectionView.topAnchor.constraint(equalTo: header.bottomAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -102,13 +103,16 @@ private extension LoadMenuViewController {
 
         alertController.addAction(UIAlertAction(title: "Yes", style: .default, handler: { [weak self] _ in
             guard let self else { return }
-            let storyBoard = UIStoryboard(name: "Main", bundle:nil)
-            let gameViewController = storyBoard.instantiateViewController(withIdentifier: "\(GameViewController.self)") as! GameViewController
+
+            let gameViewController: GameViewController =  UIStoryboard.makeViewController()
             gameViewController.loadViewIfNeeded()
             gameViewController.game = self.data[indexPath.item].0
+            
             let navigationController = self.presentingViewController as? UINavigationController
-            self.dismiss(animated: true)
-            navigationController?.pushViewController(gameViewController, animated: true)
+            self.dismiss(animated: true) {
+                let startMenuViewController: StartMenuViewController = UIStoryboard.makeViewController()
+                navigationController?.setViewControllers([startMenuViewController, gameViewController], animated: true)
+            }
         }))
 
         alertController.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
@@ -116,3 +120,9 @@ private extension LoadMenuViewController {
     }
 }
 
+extension UIStoryboard {
+    static func makeViewController<ViewController: UIViewController>() -> ViewController {
+        let storyBoard = UIStoryboard(name: "Main", bundle:nil)
+        return storyBoard.instantiateViewController(withIdentifier: "\(ViewController.self)") as! ViewController
+    }
+}

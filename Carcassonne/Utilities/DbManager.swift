@@ -35,26 +35,14 @@ final class DBManager {
 }
 
 struct GameCoreDAO {
-    
-    enum Error {
-        
-    }
-    
+
     enum Scheme {
         static let games = Table("games")
-        static let id = Expression<Int64>("id")
+        static let id = Expression<UUID>("id")
         static let game = Expression<GameCore>("game")
         static let date = Expression<Date>("date")
     }
-    
-    static func create() -> String {
-        return (Scheme.games.create(ifNotExists: true) { t in
-            t.column(Scheme.id, primaryKey: .autoincrement)
-            t.column(Scheme.game)
-            t.column(Scheme.date, unique: true)
-        })
-    }
-    
+
     static func getAllGamesAndDates() -> [(GameCore, Date)] {
         var allGamesAndDates: [(GameCore, Date)] = []
         do {
@@ -62,24 +50,43 @@ struct GameCoreDAO {
                 allGamesAndDates.append((row[Scheme.game], row[Scheme.date]))
             }
         } catch {
+            print("db failed: \(error)")
+        }
+        allGamesAndDates.sort {
+            $0.1 < $1.1
         }
         return allGamesAndDates
     }
-    
-    static func saveGame(game: GameCore) {
-        do {
-            try DBManager.shared.connection.run(Scheme.games.insert(Scheme.game <- game, Scheme.date <- .now))
-        } catch {
-            print("insertion failed: \(error)")
-        }
-    }
-    
+
     static func delete(game: GameCore) {
         do {
-            let filteredGames = Scheme.games.filter(Scheme.game == game)
+            let filteredGames = Scheme.games.filter(Scheme.id == game.id)
             try DBManager.shared.connection.run(filteredGames.delete())
         } catch {
             print("delete failed: \(error)")
         }
+    }
+
+    static func saveOrUpdateGame(game: GameCore) {
+        do {
+            try DBManager.shared.connection.run(Scheme.games.upsert(
+                Scheme.id <- game.id,
+                Scheme.game <- game,
+                Scheme.date <- .now,
+                onConflictOf: Scheme.id))
+        } catch {
+            print("upsert failed: \(error)")
+        }
+    }
+}
+
+private extension GameCoreDAO {
+
+    static func create() -> String {
+        return (Scheme.games.create(ifNotExists: true) { t in
+            t.column(Scheme.id, unique: true)
+            t.column(Scheme.game)
+            t.column(Scheme.date, unique: true)
+        })
     }
 }

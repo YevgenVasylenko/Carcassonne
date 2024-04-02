@@ -18,7 +18,7 @@ class InGameMenuController: UIViewController {
         guard let game = game else {
             return
         }
-        GameCoreDAO.saveGame(game: game)
+        GameCoreDAO.saveOrUpdateGame(game: game)
     }
 
     @IBAction func loadGameButton() {

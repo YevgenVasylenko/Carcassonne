@@ -37,6 +37,9 @@ private extension HeaderForLoadingView {
 
         addSubview(container)
 
+        container.isLayoutMarginsRelativeArrangement = true
+        container.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
+
         players.text = "Players"
         score.text = "Score"
         date.text = "Date"
@@ -56,10 +59,8 @@ private extension HeaderForLoadingView {
             container.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
             container.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8),
 
-            players.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 18),
             score.widthAnchor.constraint(equalTo: container.widthAnchor, multiplier: 1/8),
             date.widthAnchor.constraint(equalTo: container.widthAnchor, multiplier: 1/4),
-            date.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -18)
         ])
     }
 }

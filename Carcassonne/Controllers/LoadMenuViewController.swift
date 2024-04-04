@@ -110,7 +110,7 @@ private extension LoadMenuViewController {
             
             let navigationController = self.presentingViewController as? UINavigationController
             self.dismiss(animated: true) {
-                let startMenuViewController: StartMenuViewController = UIStoryboard.makeViewController()
+                let startMenuViewController: StartViewController = UIStoryboard.makeViewController()
                 navigationController?.setViewControllers([startMenuViewController, gameViewController], animated: true)
             }
         }))

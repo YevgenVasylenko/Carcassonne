@@ -22,32 +22,33 @@ final class StartNewGameViewController: UIViewController {
 private extension StartNewGameViewController {
 
     func configure() {
+        view.backgroundColor = .white
+
         for picture in view.subviews {
             picture.removeFromSuperview()
         }
 
-        let startCustomButton = StartButton(playersCount: readyPlayers().count) {
-            let storyBoard = UIStoryboard(name: "Main", bundle:nil)
-            let gameViewController = storyBoard.instantiateViewController(withIdentifier: "\(GameViewController.self)") as! GameViewController
+        let startCustomButton = StartButton(playersCount: readyPlayers().count) { [weak self] in
+            guard let self = self else { return }
+            let gameViewController: GameViewController =  UIStoryboard.makeViewController()
             gameViewController.loadViewIfNeeded()
             gameViewController.game.players = self.readyPlayers()
-            self.navigationController?.pushViewController(gameViewController, animated: true)
+            self.dismiss(animated: true) {
+                self.navigationController?.pushViewController(gameViewController, animated: true)
+            }
         }
 
         let playersList = PlayersEditingLabelsList(
             players: players,
             colors: availableColors(),
             changeName: { [weak self] player, playerName in
-                guard let self = self else { return }
-                self.changeNameForPlayer(id: player.id, name: playerName)
+                self?.changeNameForPlayer(id: player.id, name: playerName)
             },
             changeColor: { [weak self] player, playerColor in
-                guard let self = self else { return }
-                self.changeColorForPlayer(id: player.id, color: playerColor)
+                self?.changeColorForPlayer(id: player.id, color: playerColor)
             },
             presentPopover: {  [weak self] popover in
-                guard let self = self else { return }
-                self.present(popover, animated: true)
+                self?.present(popover, animated: true)
             })
 
         view.addSubview(startCustomButton)

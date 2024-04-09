@@ -7,7 +7,7 @@
 
 import UIKit
 
-enum StartMenuButton: CaseIterable {
+enum StartMenuAction: CaseIterable {
     case continueButton
     case startNewGameButton
     case loadGameButton
@@ -16,10 +16,9 @@ enum StartMenuButton: CaseIterable {
 
 final class StartMenuView: UIView {
 
-    let buttonAction: (StartMenuButton) -> ()
+    var buttonAction: ((StartMenuAction) -> ())?
     
-    init(buttonAction: @escaping (StartMenuButton) -> ()) {
-        self.buttonAction = buttonAction
+    init() {
         super.init(frame: .zero)
         configure()
     }
@@ -42,13 +41,12 @@ private extension StartMenuView {
         image.addSubview(container)
         container.axis = .vertical
 
-        for button in StartMenuButton.allCases {
+        for button in StartMenuAction.allCases {
             let menuButton = UIButton(configuration: makeButtonConfiguration(button: button))
 
             menuButton.addAction(UIAction(handler: { [weak self] _ in
-                self?.buttonAction(button)
+                self?.buttonAction?(button)
             }), for: .touchUpInside)
-
             container.addArrangedSubview(menuButton)
         }
 
@@ -65,7 +63,7 @@ private extension StartMenuView {
             container.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -image.frame.height * 0.045)
         ])
 
-        func makeButtonConfiguration(button: StartMenuButton) -> UIButton.Configuration {
+        func makeButtonConfiguration(button: StartMenuAction) -> UIButton.Configuration {
             var config = UIButton.Configuration.plain()
             config.attributedTitle = .init(buttonName(button: button), attributes: .init([
                 .foregroundColor: UIColor.black,
@@ -76,7 +74,7 @@ private extension StartMenuView {
             return config
         }
 
-        func buttonName(button: StartMenuButton) -> String {
+        func buttonName(button: StartMenuAction) -> String {
             switch button {
             case .continueButton:
                 return "Continue"

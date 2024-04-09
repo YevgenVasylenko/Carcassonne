@@ -61,14 +61,14 @@ private extension PlayersEditingLabelsList {
                 playerEditLabel.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 1/10),
             ])
 
-            playerEditLabel.meepleColorChoiceButton.addAction(UIAction(handler: { _ in
+            playerEditLabel.meepleColorChoiceButton.addAction(UIAction(handler: { [weak self] _ in
 
                 let popoverViewController = ColorsChoosingPopup(
                     availablePlayerColors: colors) { color in
                     changeColor(players[playerNumber], color)
                     }
                 popoverViewController.modalPresentationStyle = .popover
-                popoverViewController.preferredContentSize = CGSizeMake((self.superview?.frame.width ?? 1) / 5, (playerEditLabel.frame.height / 4) * CGFloat(colors.count))
+                popoverViewController.preferredContentSize = CGSizeMake((self?.superview?.frame.width ?? 1) / 5, (playerEditLabel.frame.height / 4) * CGFloat(colors.count))
 
                 let popover = popoverViewController.popoverPresentationController
                 popover?.permittedArrowDirections = .up

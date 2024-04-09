@@ -38,7 +38,6 @@
 		5DC2A57B2A125CA0007A2715 /* StartNewGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC2A57A2A125CA0007A2715 /* StartNewGameViewController.swift */; };
 		5DD0B3642A1D0800006BD8F6 /* Coordinates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD0B3632A1D0800006BD8F6 /* Coordinates.swift */; };
 		5DE724182BBB4A6F00A91C35 /* StartMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE724172BBB4A6E00A91C35 /* StartMenuView.swift */; };
-		5DE7241E2BBDAE4200A91C35 /* ScottsdaleTextNF.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5DE7241D2BBDAE4200A91C35 /* ScottsdaleTextNF.ttf */; };
 		5DFA67AC2A409BFF00E30AD0 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DFA679E2A409B5000E30AD0 /* SQLite.framework */; };
 		5DFA67AD2A409BFF00E30AD0 /* SQLite.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5DFA679E2A409B5000E30AD0 /* SQLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5DFA67B02A418DE600E30AD0 /* LoadMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DFA67AF2A418DE600E30AD0 /* LoadMenuViewController.swift */; };
@@ -155,7 +154,6 @@
 		5DC2A57A2A125CA0007A2715 /* StartNewGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartNewGameViewController.swift; sourceTree = "<group>"; };
 		5DD0B3632A1D0800006BD8F6 /* Coordinates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinates.swift; sourceTree = "<group>"; };
 		5DE724172BBB4A6E00A91C35 /* StartMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartMenuView.swift; sourceTree = "<group>"; };
-		5DE7241D2BBDAE4200A91C35 /* ScottsdaleTextNF.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = ScottsdaleTextNF.ttf; sourceTree = "<group>"; };
 		5DFA67932A409B5000E30AD0 /* SQLite.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SQLite.xcodeproj; path = "../SQLite.swift-master/SQLite.xcodeproj"; sourceTree = "<group>"; };
 		5DFA67AF2A418DE600E30AD0 /* LoadMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadMenuViewController.swift; sourceTree = "<group>"; };
 		5DFA67B32A42ED4C00E30AD0 /* DbManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DbManager.swift; sourceTree = "<group>"; };
@@ -326,7 +324,6 @@
 		5DE7241A2BBDADEC00A91C35 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
-				5DE7241D2BBDAE4200A91C35 /* ScottsdaleTextNF.ttf */,
 				5D964B4E2BBDECF200B6AD5C /* Moyenage.ttf */,
 			);
 			path = Fonts;
@@ -497,7 +494,6 @@
 				5D36B93D29EAE35800448219 /* LaunchScreen.storyboard in Resources */,
 				5D36B93A29EAE35800448219 /* Assets.xcassets in Resources */,
 				5D36B93829EAE35400448219 /* Main.storyboard in Resources */,
-				5DE7241E2BBDAE4200A91C35 /* ScottsdaleTextNF.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

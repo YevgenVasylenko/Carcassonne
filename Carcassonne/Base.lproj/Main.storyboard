@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="s9f-9N-wpP">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="ipad11_0rounded" orientation="landscape" layout="fullscreen" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
@@ -8,109 +8,6 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Navigation Controller-->
-        <scene sceneID="Tz3-xQ-bEx">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="s9f-9N-wpP" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationItem key="navigationItem" id="jAH-sE-lSX"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="BaP-6P-0VO">
-                        <rect key="frame" x="0.0" y="24" width="1194" height="50"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="MFz-0b-jRQ" kind="relationship" relationship="rootViewController" id="Fw9-Uc-L5c"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="PcW-wo-Wy9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1491.4572864321608" y="-2.1582733812949644"/>
-        </scene>
-        <!--Start Menu View Controller-->
-        <scene sceneID="t2O-j3-Sk0">
-            <objects>
-                <viewController storyboardIdentifier="StartMenuViewController" modalPresentationStyle="fullScreen" id="MFz-0b-jRQ" customClass="StartMenuViewController" customModule="Carcassonne" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="Hax-ck-z43">
-                        <rect key="frame" x="0.0" y="0.0" width="1194" height="834"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Qrs-oQ-83N">
-                                <rect key="frame" x="486" y="298.5" width="222.5" height="237.5"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iTb-MU-rdW">
-                                        <rect key="frame" x="0.0" y="0.0" width="222.5" height="47.5"/>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" title="Continue">
-                                            <fontDescription key="titleFontDescription" style="UICTFontTextStyleTitle1"/>
-                                        </buttonConfiguration>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r8Z-Ju-5rJ">
-                                        <rect key="frame" x="0.0" y="47.5" width="222.5" height="47.5"/>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" title="Start New Game">
-                                            <fontDescription key="titleFontDescription" style="UICTFontTextStyleTitle1"/>
-                                        </buttonConfiguration>
-                                        <connections>
-                                            <segue destination="GoA-EA-YEz" kind="show" id="lNk-3T-OyT"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vWH-VR-KIH">
-                                        <rect key="frame" x="0.0" y="95" width="222.5" height="47.5"/>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" title="Load game">
-                                            <fontDescription key="titleFontDescription" style="UICTFontTextStyleTitle1"/>
-                                        </buttonConfiguration>
-                                        <connections>
-                                            <action selector="LoadGameButton:" destination="MFz-0b-jRQ" eventType="touchUpInside" id="3hR-zL-9t1"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qcg-EW-jBM">
-                                        <rect key="frame" x="0.0" y="142.5" width="222.5" height="47.5"/>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" title="Settings">
-                                            <fontDescription key="titleFontDescription" style="UICTFontTextStyleTitle1"/>
-                                        </buttonConfiguration>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dX0-9k-CgG">
-                                        <rect key="frame" x="0.0" y="190" width="222.5" height="47.5"/>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" title="Exit">
-                                            <fontDescription key="titleFontDescription" style="UICTFontTextStyleTitle1"/>
-                                        </buttonConfiguration>
-                                    </button>
-                                </subviews>
-                            </stackView>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="lcx-wx-oWa"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="Qrs-oQ-83N" firstAttribute="centerY" secondItem="Hax-ck-z43" secondAttribute="centerY" id="BFm-tU-0D0"/>
-                            <constraint firstItem="Qrs-oQ-83N" firstAttribute="centerX" secondItem="Hax-ck-z43" secondAttribute="centerX" id="Sfm-qr-pJ0"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" id="37V-tL-cCa"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="f3H-uE-wBz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-783.91959798994981" y="-2.1582733812949644"/>
-        </scene>
-        <!--Start New Game-->
-        <scene sceneID="7de-Z0-EVs">
-            <objects>
-                <viewController storyboardIdentifier="StartNewGameViewController" modalTransitionStyle="crossDissolve" modalPresentationStyle="fullScreen" useStoryboardIdentifierAsRestorationIdentifier="YES" id="GoA-EA-YEz" customClass="StartNewGameViewController" customModule="Carcassonne" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="iQO-jl-Eab">
-                        <rect key="frame" x="0.0" y="0.0" width="1194" height="834"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="oFm-Qc-RkG"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="Start New Game" id="tOX-qv-W7t"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="KAQ-LQ-bsf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-32.663316582914575" y="-2.1582733812949644"/>
-        </scene>
         <!--Game View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
@@ -371,7 +268,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C9A-fR-75C" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-33" y="-760"/>
+            <point key="canvasLocation" x="1394" y="-2"/>
         </scene>
     </scenes>
     <resources>

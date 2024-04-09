@@ -13,9 +13,17 @@ final class NewPlayerEditingLabel: UIStackView {
     private let playerName = UITextField()
     let meepleColorChoiceButton = UIButton()
 
-    init(playerNumber: Int, player: Player, completion: @escaping (String) -> Void) {
+    init(
+        playerNumber: Int,
+        player: Player,
+        completion: @escaping (String) -> Void
+    ) {
         super.init(frame: .zero)
-        configure(playerNumber: playerNumber, player: player, completion: completion)
+        configure(
+            playerNumber: playerNumber,
+            player: player,
+            completion: completion
+        )
     }
 
     required init(coder: NSCoder) {
@@ -25,7 +33,11 @@ final class NewPlayerEditingLabel: UIStackView {
 
 private extension NewPlayerEditingLabel {
 
-    func configure(playerNumber: Int, player: Player, completion: @escaping (String) -> Void) {
+    func configure(
+        playerNumber: Int,
+        player: Player,
+        completion: @escaping (String) -> Void
+    ) {
         axis = .vertical
 
         addArrangedSubview(playerWithNumber)
@@ -39,8 +51,7 @@ private extension NewPlayerEditingLabel {
         playerName.placeholder = "Player name"
         playerName.text = player.name
         playerName.addAction(UIAction(handler: { [weak self] _ in
-            guard let self = self else { return }
-            completion(self.playerName.text ?? "")
+            completion(self?.playerName.text ?? "")
         }), for: .editingDidEnd)
 
         meepleColorChoiceButton.setImage(UIImage(named: "meeple")?.withTintColor(player.color.getColor()), for: .normal)

@@ -9,6 +9,13 @@ import UIKit
 
 class StartViewController: UIViewController {
 
+    let menuView = StartMenuView()
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        menuAppearanceAnimation()
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
@@ -20,7 +27,7 @@ class StartViewController: UIViewController {
         backgroundView.isUserInteractionEnabled = true
         backgroundView.contentMode = .scaleToFill
 
-        let menuView = StartMenuView { [weak self] button in
+        menuView.buttonAction = { [weak self] button in
             self?.actionsForButtons(button: button)
         }
 
@@ -45,14 +52,19 @@ class StartViewController: UIViewController {
 
 private extension StartViewController {
 
-    func actionsForButtons(button: StartMenuButton) {
+    func menuAppearanceAnimation() {
+        menuView.transform = CGAffineTransform.identity.translatedBy(x: 0, y: -view.frame.height)
+        UIView.animate(withDuration: 1.5, delay: 0.5, usingSpringWithDamping: 0.6, initialSpringVelocity: 5, options: .curveEaseIn) { [weak self] in
+            self?.menuView.transform = CGAffineTransform.identity
+        }
+    }
+
+    func actionsForButtons(button: StartMenuAction) {
         switch button {
         case .continueButton:
             break
         case .startNewGameButton:
-            let startNewGameViewController: StartNewGameViewController =  UIStoryboard.makeViewController()
-            let navigationController = self.presentingViewController as? UINavigationController
-            navigationController?.setViewControllers([self, startNewGameViewController], animated: true)
+            self.navigationController?.pushViewController(StartNewGameViewController(), animated: true)
         case .loadGameButton:
             let loadMenuViewController = LoadMenuViewController(collectionViewLayout: UICollectionViewFlowLayout())
             loadMenuViewController.modalPresentationStyle = .formSheet

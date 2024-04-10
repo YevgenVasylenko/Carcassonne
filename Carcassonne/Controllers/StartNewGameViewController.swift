@@ -38,7 +38,7 @@ private extension StartNewGameViewController {
             }
         }
 
-        let playersList = PlayersEditingLabelsList(
+        let playersList = PlayersEditingLabelsListView(
             players: players,
             colors: availableColors(),
             changeName: { [weak self] player, playerName in

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class InGameMenuController: UIViewController {
+final class InGameMenuController: UIViewController {
     var game: GameCore?
     
     override func viewDidLoad() {

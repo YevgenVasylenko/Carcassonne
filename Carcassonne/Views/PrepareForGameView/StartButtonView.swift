@@ -7,7 +7,7 @@
 
 import UIKit
 
-class StartButton: UIButton {
+final class StartButton: UIButton {
 
     private let minNumberOfPlayers = 2
 

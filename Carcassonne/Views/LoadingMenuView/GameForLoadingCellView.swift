@@ -1,5 +1,5 @@
 //
-//  GameForLoadingCell.swift
+//  GameForLoadingCellView.swift
 //  Carcassonne
 //
 //  Created by Yevgen Vasylenko on 15.03.2024.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class GameForLoadingCell: UICollectionViewCell {
+final class GameForLoadingCellView: UICollectionViewCell {
 
     private let playersLabel = UIStackView()
     private let dateAndDelete = UIStackView()
@@ -86,7 +86,7 @@ final class GameForLoadingCell: UICollectionViewCell {
     }
 }
 
-private extension GameForLoadingCell {
+private extension GameForLoadingCellView {
 
     private func setupViews() {
         addSubview(playersLabel)

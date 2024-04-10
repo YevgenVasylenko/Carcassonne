@@ -7,6 +7,11 @@
 
 import UIKit
 
+//FIXME: NewPlayerEditingLabel is keep in memory
+//FIXME: No navigationBar GameViewController -> InGameMenuController -> StartViewController -> StartNewGameViewController
+//FIXME: uitexteffectswindow appear in hiearachy
+//FIXME: MainMenu button press animation
+
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 

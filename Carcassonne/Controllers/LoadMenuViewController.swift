@@ -7,7 +7,7 @@
 
 import UIKit
 
-class LoadMenuViewController: UICollectionViewController {
+final class LoadMenuViewController: UICollectionViewController {
     private var data = GameCoreDAO.getAllGamesAndDates()
 
     override init(collectionViewLayout layout: UICollectionViewLayout) {
@@ -21,7 +21,7 @@ class LoadMenuViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
-        collectionView.register(GameForLoadingCell.self, forCellWithReuseIdentifier: "\(GameForLoadingCell.self)")
+        collectionView.register(GameForLoadingCellView.self, forCellWithReuseIdentifier: "\(GameForLoadingCellView.self)")
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -29,7 +29,7 @@ class LoadMenuViewController: UICollectionViewController {
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(GameForLoadingCell.self)", for: indexPath) as! GameForLoadingCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(GameForLoadingCellView.self)", for: indexPath) as! GameForLoadingCellView
         cell.configure(data: data[indexPath.item]) { [weak self] in
             self?.showAlertForDeleting(at: indexPath)
         }
@@ -37,7 +37,13 @@ class LoadMenuViewController: UICollectionViewController {
     }
 
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        showAlertForLoading(at: indexPath)
+        let game = self.data[indexPath.item].0
+        UIAlertController.showAlertForLoading(
+            from: self,
+            title: "Are you sure you want to load this game",
+            game: game,
+            isFromLoadingMenu: true
+        )
     }
 }
 
@@ -97,32 +103,49 @@ private extension LoadMenuViewController {
         alertController.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
         present(alertController, animated: true, completion: nil)
     }
+}
 
-    func showAlertForLoading(at indexPath: IndexPath) {
-        let alertController = UIAlertController(title: "Are you sure you want to load this game", message: nil, preferredStyle: .alert)
+extension UIStoryboard {
+    
+    static func makeViewController<ViewController: UIViewController>() -> ViewController {
+        let storyBoard = UIStoryboard(name: "Main", bundle:nil)
+        return storyBoard.instantiateViewController(withIdentifier: "\(ViewController.self)") as! ViewController
+    }
+}
 
-        alertController.addAction(UIAlertAction(title: "Yes", style: .default, handler: { [weak self] _ in
-            guard let self else { return }
+extension UIAlertController {
+
+    static func showAlertForLoading(
+        from controller: UIViewController,
+        title: String,
+        game: GameCore,
+        isFromLoadingMenu: Bool
+    ) {
+        let alertController = UIAlertController(title: title, message: nil, preferredStyle: .alert)
+
+        alertController.addAction(UIAlertAction(
+            title: "Yes",
+            style: .default,
+            handler: { [weak controller] _ in
+            guard let controller else { return }
 
             let gameViewController: GameViewController =  UIStoryboard.makeViewController()
             gameViewController.loadViewIfNeeded()
-            gameViewController.game = self.data[indexPath.item].0
-            
-            let navigationController = self.presentingViewController as? UINavigationController
-            self.dismiss(animated: true) {
-                let startMenuViewController = StartViewController()
+            gameViewController.game = game
+
+            let navigationController: UINavigationController?
+            if isFromLoadingMenu {
+                navigationController = controller.presentingViewController as? UINavigationController
+            } else {
+                navigationController = controller.navigationController
+            }
+            controller.dismiss(animated: true) {
+                let startMenuViewController = MainMenuViewController()
                 navigationController?.setViewControllers([startMenuViewController, gameViewController], animated: true)
             }
         }))
 
         alertController.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
-        present(alertController, animated: true, completion: nil)
-    }
-}
-
-extension UIStoryboard {
-    static func makeViewController<ViewController: UIViewController>() -> ViewController {
-        let storyBoard = UIStoryboard(name: "Main", bundle:nil)
-        return storyBoard.instantiateViewController(withIdentifier: "\(ViewController.self)") as! ViewController
+        controller.present(alertController, animated: true, completion: nil)
     }
 }

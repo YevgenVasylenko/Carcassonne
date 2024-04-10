@@ -1,5 +1,5 @@
 //
-//  PlayersEditingLabelsList.swift
+//  PlayersEditingLabelsListView.swift
 //  Carcassonne
 //
 //  Created by Yevgen Vasylenko on 19.03.2024.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class PlayersEditingLabelsList: UIStackView {
+final class PlayersEditingLabelsListView: UIStackView {
 
     init(
         players: [Player],
@@ -31,7 +31,7 @@ final class PlayersEditingLabelsList: UIStackView {
     }
 }
 
-private extension PlayersEditingLabelsList {
+private extension PlayersEditingLabelsListView {
 
     func configure(
         players: [Player],
@@ -48,7 +48,7 @@ private extension PlayersEditingLabelsList {
         addArrangedSubview(leftSpacer)
 
         for playerNumber in players.indices {
-            let playerEditLabel = NewPlayerEditingLabel(
+            let playerEditLabel = NewPlayerEditingLabelView(
                 playerNumber: playerNumber,
                 player: players[playerNumber]) { name in
                     changeName(players[playerNumber], name)

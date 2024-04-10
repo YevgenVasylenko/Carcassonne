@@ -78,6 +78,19 @@ struct GameCoreDAO {
             print("upsert failed: \(error)")
         }
     }
+
+    static func getLastGame() -> GameCore? {
+        var lastGame: GameCore?
+        do {
+            let lastGameDate = Scheme.games.order(Scheme.date.desc).limit(1)
+            for game in try DBManager.shared.connection.prepare(lastGameDate) {
+                lastGame = game[Scheme.game]
+            }
+        } catch {
+            print("db failed: \(error)")
+        }
+        return lastGame
+    }
 }
 
 private extension GameCoreDAO {

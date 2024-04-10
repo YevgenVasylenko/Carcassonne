@@ -12,7 +12,7 @@ enum TargetControl {
     case meeple
 }
 
-class GameViewController: UIViewController {
+final class GameViewController: UIViewController {
 
     var game = GameCore(tilesStack: TileStorage.tilePool, firstTile: TileStorage.startTile) {
         didSet { 

@@ -1,5 +1,5 @@
 //
-//  NewPlayerEditingLabel.swift
+//  NewPlayerEditingLabelView.swift
 //  Carcassonne
 //
 //  Created by Yevgen Vasylenko on 19.03.2024.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class NewPlayerEditingLabel: UIStackView {
+final class NewPlayerEditingLabelView: UIStackView {
 
     private let playerWithNumber = UILabel()
     private let playerName = UITextField()
@@ -31,7 +31,7 @@ final class NewPlayerEditingLabel: UIStackView {
     }
 }
 
-private extension NewPlayerEditingLabel {
+private extension NewPlayerEditingLabelView {
 
     func configure(
         playerNumber: Int,

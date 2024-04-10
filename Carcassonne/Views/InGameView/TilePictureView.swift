@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TilePicture: UIView {
+final class TilePicture: UIView {
     
     private var view: UIView
     private let tile: Tile

@@ -1,5 +1,5 @@
 //
-//  StartMenuViewController.swift
+//  MainMenuViewController.swift
 //  Carcassonne
 //
 //  Created by Yevgen Vasylenko on 15.05.2023.
@@ -7,9 +7,9 @@
 
 import UIKit
 
-class StartViewController: UIViewController {
+final class MainMenuViewController: UIViewController {
 
-    let menuView = StartMenuView()
+    let menuView = MainMenuView()
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -50,7 +50,7 @@ class StartViewController: UIViewController {
     }
 }
 
-private extension StartViewController {
+private extension MainMenuViewController {
 
     func menuAppearanceAnimation() {
         menuView.transform = CGAffineTransform.identity.translatedBy(x: 0, y: -view.frame.height)
@@ -62,7 +62,7 @@ private extension StartViewController {
     func actionsForButtons(button: StartMenuAction) {
         switch button {
         case .continueButton:
-            break
+            loadLastGameIfExist()
         case .startNewGameButton:
             self.navigationController?.pushViewController(StartNewGameViewController(), animated: true)
         case .loadGameButton:
@@ -72,5 +72,29 @@ private extension StartViewController {
         case .settingsButton:
             break
         }
+    }
+
+    func loadLastGameIfExist() {
+        if let lastGame = GameCoreDAO.getLastGame() {
+            UIAlertController.showAlertForLoading(
+                from: self,
+                title: "Are you sure you want to load last game",
+                game: lastGame,
+                isFromLoadingMenu: false
+            )
+        } else {
+            showAlertForNoSavedGames()
+        }
+    }
+
+    func showAlertForNoSavedGames() {
+        let alertController = UIAlertController(
+            title: "There are no saved games",
+            message: nil,
+            preferredStyle: .alert
+        )
+
+        alertController.addAction(UIAlertAction(title: "Okay", style: .default, handler: nil))
+        present(alertController, animated: true, completion: nil)
     }
 }

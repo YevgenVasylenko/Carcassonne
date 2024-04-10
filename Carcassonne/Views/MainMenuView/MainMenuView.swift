@@ -1,5 +1,5 @@
 //
-//  StartMenuView.swift
+//  MainMenuView.swift
 //  Carcassonne
 //
 //  Created by Yevgen Vasylenko on 01.04.2024.
@@ -14,7 +14,7 @@ enum StartMenuAction: CaseIterable {
     case settingsButton
 }
 
-final class StartMenuView: UIView {
+final class MainMenuView: UIView {
 
     var buttonAction: ((StartMenuAction) -> ())?
     
@@ -28,7 +28,7 @@ final class StartMenuView: UIView {
     }
 }
 
-private extension StartMenuView {
+private extension MainMenuView {
 
     func configure() {
 

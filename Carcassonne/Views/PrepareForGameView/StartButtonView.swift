@@ -9,11 +9,11 @@ import UIKit
 
 final class StartButton: UIButton {
 
-    private let minNumberOfPlayers = 2
+    var startGame: (() -> Void)?
 
-    init(playersCount: Int, completion: @escaping () -> ()) {
+    init() {
         super.init(frame: .zero)
-        configure(playersCount: playersCount, completion: completion)
+        configure()
     }
 
     required init?(coder: NSCoder) {
@@ -23,22 +23,17 @@ final class StartButton: UIButton {
 
 private extension StartButton {
 
-    func configure(playersCount: Int, completion: @escaping () -> ()) {
+    func configure() {
 
         titleLabel?.font = UIFont.systemFont(ofSize: 25, weight: .heavy)
         setTitle("Start Game", for: .normal)
         setTitleColor(.white, for: .normal)
-        backgroundColor = .blue
+        backgroundColor = .systemBlue
         layer.cornerRadius = 8
         configuration?.cornerStyle = .dynamic
 
         addAction(UIAction(handler: { [weak self] _ in
-            guard let self else { return }
-            if playersCount >= self.minNumberOfPlayers {
-                completion()
-            } else {
-                self.wiggle()
-            }
+            self?.startGame?()
         }), for: .touchUpInside)
     }
 }

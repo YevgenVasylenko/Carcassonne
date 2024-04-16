@@ -7,10 +7,9 @@
 
 import UIKit
 
-//FIXME: NewPlayerEditingLabel is keep in memory
-//FIXME: No navigationBar GameViewController -> InGameMenuController -> StartViewController -> StartNewGameViewController
-//FIXME: uitexteffectswindow appear in hiearachy
 //FIXME: MainMenu button press animation
+//FIXME: MainMenu animation on disappear
+//FIXME: StartNewGame height of meeples depend on keyboard
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {

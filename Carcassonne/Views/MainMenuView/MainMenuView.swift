@@ -12,6 +12,19 @@ enum StartMenuAction: CaseIterable {
     case startNewGameButton
     case loadGameButton
     case settingsButton
+
+    func isActionAvailableWithoutSaveGame() -> Bool {
+        switch self {
+        case .continueButton:
+            return GameCoreDAO.getLastGame() != nil
+        case .startNewGameButton:
+            return true
+        case .loadGameButton:
+            return GameCoreDAO.getLastGame() != nil
+        case .settingsButton:
+            return true
+        }
+    }
 }
 
 final class MainMenuView: UIView {
@@ -20,15 +33,11 @@ final class MainMenuView: UIView {
     
     init() {
         super.init(frame: .zero)
-        configure()
     }
 
     required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-}
-
-private extension MainMenuView {
 
     func configure() {
 
@@ -47,6 +56,8 @@ private extension MainMenuView {
             menuButton.addAction(UIAction(handler: { [weak self] _ in
                 self?.buttonAction?(button)
             }), for: .touchUpInside)
+
+            menuButton.isEnabled = button.isActionAvailableWithoutSaveGame()
             container.addArrangedSubview(menuButton)
         }
 
@@ -69,8 +80,14 @@ private extension MainMenuView {
                 .foregroundColor: UIColor.black,
                 .font: UIFont(name: "Moyenage", size: 20)!
             ]))
-            config.background.image = UIImage(named: "sign")
+            let backgroundImage = UIImage(named: "sign")
+            config.background.image = backgroundImage
             config.buttonSize = .large
+
+            if !button.isActionAvailableWithoutSaveGame() {
+                config.attributedTitle?.foregroundColor = .gray.withAlphaComponent(0.7)
+            }
+
             return config
         }
 

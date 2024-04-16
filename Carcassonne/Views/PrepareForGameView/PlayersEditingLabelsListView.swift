@@ -9,6 +9,8 @@ import UIKit
 
 final class PlayersEditingLabelsListView: UIStackView {
 
+    let addNewPlayerButton = UIButton()
+
     init(
         players: [Player],
         colors: [PlayerColor],
@@ -41,15 +43,11 @@ private extension PlayersEditingLabelsListView {
         presentPopover: @escaping (ColorsChoosingPopup) -> ()
     ) {
 
-        self.distribution = .equalCentering
-        self.alignment = .center
-
-        let leftSpacer = UIView()
-        addArrangedSubview(leftSpacer)
+        alignment = .center
+        spacing = UIScreen.main.bounds.width / 12
 
         for playerNumber in players.indices {
             let playerEditLabel = NewPlayerEditingLabelView(
-                playerNumber: playerNumber,
                 player: players[playerNumber]) { name in
                     changeName(players[playerNumber], name)
                 }
@@ -58,17 +56,18 @@ private extension PlayersEditingLabelsListView {
             playerEditLabel.translatesAutoresizingMaskIntoConstraints = false
 
             NSLayoutConstraint.activate([
-                playerEditLabel.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 1/10),
+                playerEditLabel.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width / 10)
             ])
+            playerEditLabel.meepleColorChoiceButton.addAction(UIAction(handler: { [weak self, weak playerEditLabel] _ in
 
-            playerEditLabel.meepleColorChoiceButton.addAction(UIAction(handler: { [weak self] _ in
+                guard let self, let playerEditLabel else { return }
 
                 let popoverViewController = ColorsChoosingPopup(
                     availablePlayerColors: colors) { color in
                     changeColor(players[playerNumber], color)
                     }
                 popoverViewController.modalPresentationStyle = .popover
-                popoverViewController.preferredContentSize = CGSizeMake((self?.superview?.frame.width ?? 1) / 5, (playerEditLabel.frame.height / 4) * CGFloat(colors.count))
+                popoverViewController.preferredContentSize = CGSizeMake((self.superview?.frame.width ?? 1) / 5, (playerEditLabel.frame.height / 4) * CGFloat(colors.count))
 
                 let popover = popoverViewController.popoverPresentationController
                 popover?.permittedArrowDirections = .up
@@ -76,8 +75,19 @@ private extension PlayersEditingLabelsListView {
                 presentPopover(popoverViewController)
             }), for: .touchUpInside)
         }
+        addNewPlayerButton(players: players)
+    }
 
-        let rightSpacer = UIView()
-        addArrangedSubview(rightSpacer)
+    func addNewPlayerButton(players: [Player]) {
+        if players.count < 5 {
+            addNewPlayerButton.setImage(UIImage(systemName: "plus.rectangle.portrait"), for: .normal)
+            addArrangedSubview(addNewPlayerButton)
+            addNewPlayerButton.translatesAutoresizingMaskIntoConstraints = false
+
+            NSLayoutConstraint.activate([
+                addNewPlayerButton.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 1/10),
+            ])
+        }
     }
 }
+

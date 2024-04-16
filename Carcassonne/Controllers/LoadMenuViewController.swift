@@ -9,6 +9,7 @@ import UIKit
 
 final class LoadMenuViewController: UICollectionViewController {
     private var data = GameCoreDAO.getAllGamesAndDates()
+    var actionOnDisappear: (() -> Void)?
 
     override init(collectionViewLayout layout: UICollectionViewLayout) {
         super.init(collectionViewLayout: Self.createLayout())
@@ -22,6 +23,11 @@ final class LoadMenuViewController: UICollectionViewController {
         super.viewDidLoad()
         setupViews()
         collectionView.register(GameForLoadingCellView.self, forCellWithReuseIdentifier: "\(GameForLoadingCellView.self)")
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        actionOnDisappear?()
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

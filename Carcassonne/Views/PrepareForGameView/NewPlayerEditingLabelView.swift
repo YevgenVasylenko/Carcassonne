@@ -9,21 +9,19 @@ import UIKit
 
 final class NewPlayerEditingLabelView: UIStackView {
 
-    private let playerWithNumber = UILabel()
-    private let playerName = UITextField()
+    private let playerNameTextField = UITextField()
     let meepleColorChoiceButton = UIButton()
 
     init(
-        playerNumber: Int,
         player: Player,
         completion: @escaping (String) -> Void
     ) {
         super.init(frame: .zero)
         configure(
-            playerNumber: playerNumber,
             player: player,
             completion: completion
         )
+        playerNameTextField.delegate = self
     }
 
     required init(coder: NSCoder) {
@@ -34,40 +32,36 @@ final class NewPlayerEditingLabelView: UIStackView {
 private extension NewPlayerEditingLabelView {
 
     func configure(
-        playerNumber: Int,
         player: Player,
         completion: @escaping (String) -> Void
     ) {
         axis = .vertical
 
-        addArrangedSubview(playerWithNumber)
-        addArrangedSubview(playerName)
+        addArrangedSubview(playerNameTextField)
         addArrangedSubview(meepleColorChoiceButton)
 
-        playerWithNumber.text = "Player \(playerNumber)"
-        playerWithNumber.textAlignment = .center
-        playerWithNumber.adjustsFontSizeToFitWidth = true
-
-        playerName.placeholder = "Player name"
-        playerName.text = player.name
-        playerName.addAction(UIAction(handler: { [weak self] _ in
-            completion(self?.playerName.text ?? "")
+        playerNameTextField.placeholder = "Player name"
+        playerNameTextField.text = player.name
+        playerNameTextField.addAction(UIAction(handler: { [weak self] _ in
+            completion(self?.playerNameTextField.text ?? "")
         }), for: .editingDidEnd)
 
         meepleColorChoiceButton.setImage(UIImage(named: "meeple")?.withTintColor(player.color.getColor()), for: .normal)
         meepleColorChoiceButton.imageView?.contentMode = .scaleAspectFit
 
-        playerWithNumber.translatesAutoresizingMaskIntoConstraints = false
-        playerName.translatesAutoresizingMaskIntoConstraints = false
+        playerNameTextField.translatesAutoresizingMaskIntoConstraints = false
         meepleColorChoiceButton.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            playerWithNumber.topAnchor.constraint(equalTo: topAnchor),
-            playerName.topAnchor.constraint(equalTo: playerWithNumber.bottomAnchor),
-            playerName.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 1/4),
-            meepleColorChoiceButton.topAnchor.constraint(equalTo: playerName.bottomAnchor),
+            playerNameTextField.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 1/2),
             meepleColorChoiceButton.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 1/2),
-            meepleColorChoiceButton.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
+    }
+}
+
+extension NewPlayerEditingLabelView: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return false
     }
 }

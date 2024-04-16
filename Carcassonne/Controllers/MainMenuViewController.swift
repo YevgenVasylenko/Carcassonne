@@ -9,7 +9,7 @@ import UIKit
 
 final class MainMenuViewController: UIViewController {
 
-    let menuView = MainMenuView()
+    private var menuView = MainMenuView()
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -19,6 +19,11 @@ final class MainMenuViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        menuDisappearAnimation()
     }
 
     func configure() {
@@ -32,6 +37,9 @@ final class MainMenuViewController: UIViewController {
         }
 
         view.addSubview(backgroundView)
+
+        backgroundView.subviews.forEach { $0.removeFromSuperview() }
+        menuView.configure()
         backgroundView.addSubview(menuView)
 
         backgroundView.translatesAutoresizingMaskIntoConstraints = false
@@ -47,6 +55,8 @@ final class MainMenuViewController: UIViewController {
             menuView.heightAnchor.constraint(equalTo: view.heightAnchor),
             menuView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
         ])
+
+        menuView.setNeedsDisplay()
     }
 }
 
@@ -54,19 +64,36 @@ private extension MainMenuViewController {
 
     func menuAppearanceAnimation() {
         menuView.transform = CGAffineTransform.identity.translatedBy(x: 0, y: -view.frame.height)
-        UIView.animate(withDuration: 1.5, delay: 0.5, usingSpringWithDamping: 0.6, initialSpringVelocity: 5, options: .curveEaseIn) { [weak self] in
-            self?.menuView.transform = CGAffineTransform.identity
+        UIView.animate(
+            withDuration: 1.5,
+            delay: 0.5,
+            usingSpringWithDamping: 0.6,
+            initialSpringVelocity: 5,
+            options: .curveEaseIn,
+            animations: { [weak self] in
+                self?.menuView.transform = CGAffineTransform.identity
+            })
+    }
+
+    func menuDisappearAnimation() {
+        UIView.animate(withDuration: 1.5) { [weak self] in
+            guard let self else { return }
+            self.menuView.transform = CGAffineTransform.identity.translatedBy(x: 0, y: -self.view.frame.height)
         }
     }
 
     func actionsForButtons(button: StartMenuAction) {
         switch button {
         case .continueButton:
-            loadLastGameIfExist()
+            loadLastGame()
         case .startNewGameButton:
+            self.navigationController?.view.layer.add(transitionForNewGameScreen(), forKey: kCATransition)
             self.navigationController?.pushViewController(StartNewGameViewController(), animated: true)
         case .loadGameButton:
             let loadMenuViewController = LoadMenuViewController(collectionViewLayout: UICollectionViewFlowLayout())
+            loadMenuViewController.actionOnDisappear = { [weak self] in
+                self?.configure()
+            }
             loadMenuViewController.modalPresentationStyle = .formSheet
             self.present(loadMenuViewController, animated: true)
         case .settingsButton:
@@ -74,27 +101,27 @@ private extension MainMenuViewController {
         }
     }
 
-    func loadLastGameIfExist() {
+    func loadLastGame() {
         if let lastGame = GameCoreDAO.getLastGame() {
-            UIAlertController.showAlertForLoading(
-                from: self,
-                title: "Are you sure you want to load last game",
-                game: lastGame,
-                isFromLoadingMenu: false
-            )
-        } else {
-            showAlertForNoSavedGames()
+            let gameViewController: GameViewController =  UIStoryboard.makeViewController()
+            gameViewController.loadViewIfNeeded()
+            gameViewController.game = lastGame
+
+            self.dismiss(animated: true) {
+                let startMenuViewController = MainMenuViewController()
+                self.navigationController?.setViewControllers([startMenuViewController, gameViewController], animated: true)
+            }
         }
     }
 
-    func showAlertForNoSavedGames() {
-        let alertController = UIAlertController(
-            title: "There are no saved games",
-            message: nil,
-            preferredStyle: .alert
-        )
-
-        alertController.addAction(UIAlertAction(title: "Okay", style: .default, handler: nil))
-        present(alertController, animated: true, completion: nil)
+    func transitionForNewGameScreen() -> CATransition {
+        let transition = CATransition()
+        transition.beginTime = CACurrentMediaTime() + 2
+        transition.duration = 0.5
+        transition.fillMode = .both
+        transition.timingFunction = CAMediaTimingFunction(name: .easeOut)
+        transition.type = CATransitionType.push
+        transition.subtype = CATransitionSubtype.fromRight
+        return transition
     }
 }

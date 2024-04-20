@@ -30,7 +30,7 @@ enum StartMenuAction: CaseIterable {
 final class MainMenuView: UIView {
 
     var buttonAction: ((StartMenuAction) -> ())?
-    
+
     init() {
         super.init(frame: .zero)
     }
@@ -51,13 +51,16 @@ final class MainMenuView: UIView {
         container.axis = .vertical
 
         for button in StartMenuAction.allCases {
+
             let menuButton = UIButton(configuration: makeButtonConfiguration(button: button))
+            menuButton.isEnabled = button.isActionAvailableWithoutSaveGame()
 
             menuButton.addAction(UIAction(handler: { [weak self] _ in
                 self?.buttonAction?(button)
             }), for: .touchUpInside)
 
-            menuButton.isEnabled = button.isActionAvailableWithoutSaveGame()
+            menuButtonUpdateHandler(button: menuButton)
+            
             container.addArrangedSubview(menuButton)
         }
 
@@ -73,34 +76,45 @@ final class MainMenuView: UIView {
             container.centerXAnchor.constraint(equalTo: image.centerXAnchor),
             container.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -image.frame.height * 0.045)
         ])
+    }
 
-        func makeButtonConfiguration(button: StartMenuAction) -> UIButton.Configuration {
-            var config = UIButton.Configuration.plain()
-            config.attributedTitle = .init(buttonName(button: button), attributes: .init([
-                .foregroundColor: UIColor.black,
-                .font: UIFont(name: "Moyenage", size: 20)!
-            ]))
-            let backgroundImage = UIImage(named: "sign")
-            config.background.image = backgroundImage
-            config.buttonSize = .large
+    func makeButtonConfiguration(button: StartMenuAction) -> UIButton.Configuration {
+        var config = UIButton.Configuration.plain()
+        config.attributedTitle = .init(buttonName(button: button), attributes: .init([
+            .font: UIFont(name: "Moyenage", size: 20)!
+        ]))
+        let backgroundImage = UIImageView(image: UIImage(named: "sign"))
+        config.background.customView = backgroundImage
+        config.buttonSize = .large
 
-            if !button.isActionAvailableWithoutSaveGame() {
-                config.attributedTitle?.foregroundColor = .gray.withAlphaComponent(0.7)
-            }
+        return config
+    }
 
-            return config
+    func buttonName(button: StartMenuAction) -> String {
+        switch button {
+        case .continueButton:
+            return "Continue"
+        case .startNewGameButton:
+            return "Start New Game"
+        case .loadGameButton:
+            return "Load Game"
+        case .settingsButton:
+            return "Settings"
         }
+    }
 
-        func buttonName(button: StartMenuAction) -> String {
-            switch button {
-            case .continueButton:
-                return "Continue"
-            case .startNewGameButton:
-                return "Start New Game"
-            case .loadGameButton:
-                return "Load Game"
-            case .settingsButton:
-                return "Settings"
+    func menuButtonUpdateHandler(button: UIButton) {
+        button.configurationUpdateHandler = { button in
+            switch button.state {
+            case .highlighted:
+                UIView.animate(withDuration: 0.25) {
+                    button.configuration?.background.customView?.transform = .init(scaleX: 1.1, y: 1.1)
+                }
+            case .disabled:
+                button.configuration?.attributedTitle?.foregroundColor = .gray.withAlphaComponent(0.7)
+            default:
+                button.configuration?.background.customView?.transform = .identity
+                button.configuration?.attributedTitle?.foregroundColor = UIColor.black
             }
         }
     }

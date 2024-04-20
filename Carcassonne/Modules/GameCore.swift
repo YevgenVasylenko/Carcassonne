@@ -92,6 +92,7 @@ struct GameCore: Codable {
         
         tilesOnMap = checkClosedRoutesAndScoreIt.tilesOnMap
         players = checkClosedRoutesAndScoreIt.players
+        GameCoreDAO.saveOrUpdateGame(game: self)
     }
     
     mutating func placeTileOnMap() {

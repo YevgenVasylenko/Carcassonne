@@ -13,13 +13,6 @@ final class InGameMenuController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-    
-    @IBAction func saveGameButton() {
-        guard let game = game else {
-            return
-        }
-        GameCoreDAO.saveOrUpdateGame(game: game)
-    }
 
     @IBAction func loadGameButton() {
         let loadMenuViewController = LoadMenuViewController(collectionViewLayout: UICollectionViewFlowLayout())
@@ -32,7 +25,10 @@ final class InGameMenuController: UIViewController {
     }
 
     @IBAction func exitToMainMenuButton() {
-        saveGameButton()
+        guard let game = game else {
+            return
+        }
+        GameCoreDAO.saveOrUpdateGame(game: game)
         
         let navigationController = self.presentingViewController as? UINavigationController
 

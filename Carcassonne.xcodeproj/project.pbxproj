@@ -33,6 +33,7 @@
 		5D94CAE82BAAE36C005FEF39 /* HeaderForLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D94CAE72BAAE36C005FEF39 /* HeaderForLoadingView.swift */; };
 		5D9542C32A3F0C2F00E20FC0 /* InGameMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9542C22A3F0C2F00E20FC0 /* InGameMenuController.swift */; };
 		5D964B562BBDECF200B6AD5C /* Moyenage.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D964B4E2BBDECF200B6AD5C /* Moyenage.ttf */; };
+		5DA8A0622BD7B138000049A7 /* TransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA8A0612BD7B137000049A7 /* TransitionAnimator.swift */; };
 		5DC2A5772A12587A007A2715 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC2A5762A12587A007A2715 /* Player.swift */; };
 		5DC2A5792A125BEB007A2715 /* MainMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC2A5782A125BEB007A2715 /* MainMenuViewController.swift */; };
 		5DC2A57B2A125CA0007A2715 /* StartNewGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC2A57A2A125CA0007A2715 /* StartNewGameViewController.swift */; };
@@ -149,6 +150,7 @@
 		5D94CAE72BAAE36C005FEF39 /* HeaderForLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderForLoadingView.swift; sourceTree = "<group>"; };
 		5D9542C22A3F0C2F00E20FC0 /* InGameMenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InGameMenuController.swift; sourceTree = "<group>"; };
 		5D964B4E2BBDECF200B6AD5C /* Moyenage.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Moyenage.ttf; sourceTree = "<group>"; };
+		5DA8A0612BD7B137000049A7 /* TransitionAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionAnimator.swift; sourceTree = "<group>"; };
 		5DC2A5762A12587A007A2715 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		5DC2A5782A125BEB007A2715 /* MainMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuViewController.swift; sourceTree = "<group>"; };
 		5DC2A57A2A125CA0007A2715 /* StartNewGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartNewGameViewController.swift; sourceTree = "<group>"; };
@@ -186,6 +188,7 @@
 				5D00A0072A3B1FB800F23112 /* UIViewPreview.swift */,
 				5DFA67B32A42ED4C00E30AD0 /* DbManager.swift */,
 				5D56DC072BA9DB64007E8680 /* Button+Wiggle.swift */,
+				5DA8A0612BD7B137000049A7 /* TransitionAnimator.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -528,6 +531,7 @@
 				5DFA67B42A42ED4C00E30AD0 /* DbManager.swift in Sources */,
 				5D9542C32A3F0C2F00E20FC0 /* InGameMenuController.swift in Sources */,
 				5D56DC022BA9DAD8007E8680 /* PlayersEditingLabelsListView.swift in Sources */,
+				5DA8A0622BD7B138000049A7 /* TransitionAnimator.swift in Sources */,
 				5D17D7642A0E405C007B2265 /* GameState+ButtonsAvailability.swift in Sources */,
 				5DD0B3642A1D0800006BD8F6 /* Coordinates.swift in Sources */,
 				5D36B94529EAE3BA00448219 /* Tile.swift in Sources */,

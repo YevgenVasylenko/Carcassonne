@@ -7,7 +7,6 @@
 
 import UIKit
 
-//FIXME: MainMenu button press animation
 //FIXME: MainMenu animation on disappear
 //FIXME: StartNewGame height of meeples depend on keyboard
 

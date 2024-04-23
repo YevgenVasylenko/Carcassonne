@@ -77,6 +77,9 @@ final class MainMenuView: UIView {
             container.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -image.frame.height * 0.045)
         ])
     }
+}
+
+private extension MainMenuView {
 
     func makeButtonConfiguration(button: StartMenuAction) -> UIButton.Configuration {
         var config = UIButton.Configuration.plain()

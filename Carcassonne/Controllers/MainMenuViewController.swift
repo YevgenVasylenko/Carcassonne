@@ -12,18 +12,19 @@ final class MainMenuViewController: UIViewController {
     private var menuView = MainMenuView()
 
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         menuAppearanceAnimation()
+        super.viewWillAppear(animated)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
+        self.navigationController?.delegate = self
     }
 
     override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
         menuDisappearAnimation()
+        super.viewWillDisappear(animated)
     }
 
     func configure() {
@@ -66,7 +67,7 @@ private extension MainMenuViewController {
         menuView.transform = CGAffineTransform.identity.translatedBy(x: 0, y: -view.frame.height)
         UIView.animate(
             withDuration: 1.5,
-            delay: 0.5,
+            delay: 1,
             usingSpringWithDamping: 0.6,
             initialSpringVelocity: 5,
             options: .curveEaseIn,
@@ -76,9 +77,9 @@ private extension MainMenuViewController {
     }
 
     func menuDisappearAnimation() {
-        UIView.animate(withDuration: 1.5) { [weak self] in
+        UIView.animate(withDuration: 1) { [weak self] in
             guard let self else { return }
-            self.menuView.transform = CGAffineTransform.identity.translatedBy(x: 0, y: -self.view.frame.height)
+            self.menuView.transform = .init(translationX: 0, y: -self.view.frame.height)
         }
     }
 
@@ -87,7 +88,6 @@ private extension MainMenuViewController {
         case .continueButton:
             loadLastGame()
         case .startNewGameButton:
-            self.navigationController?.view.layer.add(transitionForNewGameScreen(), forKey: kCATransition)
             self.navigationController?.pushViewController(StartNewGameViewController(), animated: true)
         case .loadGameButton:
             let loadMenuViewController = LoadMenuViewController(collectionViewLayout: UICollectionViewFlowLayout())
@@ -113,15 +113,10 @@ private extension MainMenuViewController {
             }
         }
     }
+}
 
-    func transitionForNewGameScreen() -> CATransition {
-        let transition = CATransition()
-        transition.beginTime = CACurrentMediaTime() + 2
-        transition.duration = 0.5
-        transition.fillMode = .both
-        transition.timingFunction = CAMediaTimingFunction(name: .easeOut)
-        transition.type = CATransitionType.push
-        transition.subtype = CATransitionSubtype.fromRight
-        return transition
+extension MainMenuViewController: UINavigationControllerDelegate {
+    func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        TransitionAnimator(presentingType: operation)
     }
 }

@@ -1,5 +1,5 @@
 //
-//  TransitionAnimator.swift
+//  NavigationTransitionAnimator.swift
 //  Carcassonne
 //
 //  Created by Yevgen Vasylenko on 23.04.2024.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class TransitionAnimator: NSObject {
+final class NavigationTransitionAnimator: NSObject {
     private let duration: TimeInterval = 1
     private let presentingType: UINavigationController.Operation
 
@@ -16,7 +16,7 @@ final class TransitionAnimator: NSObject {
     }
 }
 
-extension TransitionAnimator: UIViewControllerAnimatedTransitioning {
+extension NavigationTransitionAnimator: UIViewControllerAnimatedTransitioning {
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         duration
     }
@@ -43,7 +43,7 @@ extension TransitionAnimator: UIViewControllerAnimatedTransitioning {
             guard let snapshotFromVC = fromVC.view.snapshotView(afterScreenUpdates: false) else {
                 return
             }
-
+            
             transitionContext.containerView.addSubview(toVC.view)
             transitionContext.containerView.addSubview(snapshotFromVC)
             fromVC.view.isHidden = true

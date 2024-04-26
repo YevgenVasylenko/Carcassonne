@@ -22,8 +22,7 @@ final class HeaderForLoadingView: UIView {
 private extension HeaderForLoadingView {
 
     func configure() {
-        backgroundColor = .white
-        
+
         let container = UIStackView()
         container.axis = .horizontal
 
@@ -38,15 +37,15 @@ private extension HeaderForLoadingView {
         addSubview(container)
 
         container.isLayoutMarginsRelativeArrangement = true
-        container.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
+        container.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 0, leading: 40, bottom: 0, trailing: 40)
 
         players.text = "Players"
         score.text = "Score"
         date.text = "Date"
 
-        players.font = .systemFont(ofSize: 20)
-        score.font = .systemFont(ofSize: 20)
-        date.font = .systemFont(ofSize: 20)
+        players.font = UIFont(name: "BetterBrush", size: 18)
+        score.font = UIFont(name: "BetterBrush", size: 18)
+        date.font = UIFont(name: "BetterBrush", size: 18)
 
         players.translatesAutoresizingMaskIntoConstraints = false
         score.translatesAutoresizingMaskIntoConstraints = false
@@ -54,10 +53,10 @@ private extension HeaderForLoadingView {
         container.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            container.topAnchor.constraint(equalTo: topAnchor, constant: 8),
+            container.topAnchor.constraint(equalTo: topAnchor),
             container.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
             container.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
-            container.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8),
+            container.bottomAnchor.constraint(equalTo: bottomAnchor),
 
             score.widthAnchor.constraint(equalTo: container.widthAnchor, multiplier: 1/8),
             date.widthAnchor.constraint(equalTo: container.widthAnchor, multiplier: 1/4),

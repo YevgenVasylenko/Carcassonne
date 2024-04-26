@@ -90,11 +90,13 @@ private extension MainMenuViewController {
         case .startNewGameButton:
             self.navigationController?.pushViewController(StartNewGameViewController(), animated: true)
         case .loadGameButton:
-            let loadMenuViewController = LoadMenuViewController(collectionViewLayout: UICollectionViewFlowLayout())
-            loadMenuViewController.actionOnDisappear = { [weak self] in
-                self?.configure()
-            }
-            loadMenuViewController.modalPresentationStyle = .formSheet
+            let loadMenuViewController = LoadingViewController(collectionViewLayout: UICollectionViewFlowLayout())
+#warning("memory leak. need to update main menu buttons if no games for loading")
+//            loadMenuViewController.actionOnDisappear = { [weak self] in
+//                self?.configure()
+//            }
+            loadMenuViewController.modalPresentationStyle = .custom
+            loadMenuViewController.transitioningDelegate = loadMenuViewController
             self.present(loadMenuViewController, animated: true)
         case .settingsButton:
             break
@@ -117,6 +119,6 @@ private extension MainMenuViewController {
 
 extension MainMenuViewController: UINavigationControllerDelegate {
     func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        TransitionAnimator(presentingType: operation)
+        NavigationTransitionAnimator(presentingType: operation)
     }
 }

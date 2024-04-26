@@ -23,15 +23,23 @@ final class GameForLoadingCellView: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override var isSelected: Bool {
+        didSet {
+            selectedEffect(isSelected: isSelected)
+        }
+    }
+
     func configure(data: (GameCore, Date), deleteAction: @escaping () -> ()) {
-        backgroundColor = .white
+        backgroundView = backgroundView()
 
         playersLabel.subviews.forEach { $0.removeFromSuperview() }
         playersLabel.spacing = 4
 
         dateLabel.text = "\(data.1.formatted(date: .numeric, time: .omitted))"
+        dateLabel.font = UIFont(name: "GoudyThirty-Light", size: 20)!
 
-        deleteButton.setImage(UIImage(systemName: "trash"), for: .normal)
+        deleteButton.configuration = deleteButtonConfiguration()
+        
         deleteButton.addAction(UIAction(handler: { _ in
             deleteAction()
         }), for: .touchUpInside)
@@ -40,13 +48,13 @@ final class GameForLoadingCellView: UICollectionViewCell {
         dateAndDelete.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            playersLabel.topAnchor.constraint(equalTo: topAnchor, constant: 10),
-            playersLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
+            playersLabel.topAnchor.constraint(equalTo: topAnchor, constant: 20),
+            playersLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 40),
             dateAndDelete.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 1/4),
             dateAndDelete.leadingAnchor.constraint(equalTo: playersLabel.trailingAnchor),
-            dateAndDelete.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
+            dateAndDelete.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -40),
             dateAndDelete.centerYAnchor.constraint(equalTo: centerYAnchor),
-            playersLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
+            playersLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -15),
         ])
 
         for player in data.0.players {
@@ -55,32 +63,37 @@ final class GameForLoadingCellView: UICollectionViewCell {
             let playerName = UILabel()
             let score = UILabel()
 
-            playerNameAndColor.addArrangedSubview(colorPlayerIndicator)
-            colorPlayerIndicator.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-
-            playerNameAndColor.addArrangedSubview(playerName)
-            playerName.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-
-            playerNameAndColor.addArrangedSubview(score)
-
             playersLabel.addArrangedSubview(playerNameAndColor)
 
+            colorPlayerIndicator.image = UIImage(named: "splash")?
+                .withTintColor(player.color.getColor(), renderingMode: .alwaysOriginal)
+            colorPlayerIndicator.setContentHuggingPriority(.defaultLow, for: .horizontal)
+            playerName.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+
             playerName.text = "\(player.name)"
+            playerName.font = UIFont(name: "GoudyThirty-Light", size: 20)!
+
             score.text = "\(player.score)"
-            colorPlayerIndicator.image = UIImage(systemName: "circle.fill")
-            colorPlayerIndicator.tintColor = player.color.getColor()
+            score.font = UIFont(name: "GoudyThirty-Light", size: 20)!
+
             playerNameAndColor.axis = .horizontal
             playerNameAndColor.setCustomSpacing(4, after: colorPlayerIndicator)
+
+            playerNameAndColor.addArrangedSubview(colorPlayerIndicator)
+            playerNameAndColor.addArrangedSubview(playerName)
+            playerNameAndColor.addArrangedSubview(score)
 
             colorPlayerIndicator.translatesAutoresizingMaskIntoConstraints = false
             playerName.translatesAutoresizingMaskIntoConstraints = false
             score.translatesAutoresizingMaskIntoConstraints = false
 
+            let colorPlayerIndicatorHeightConstraint = colorPlayerIndicator.heightAnchor.constraint(equalToConstant: 20)
+            colorPlayerIndicatorHeightConstraint.priority = UILayoutPriority(999)
+
             NSLayoutConstraint.activate([
-                colorPlayerIndicator.leadingAnchor.constraint(equalTo: playersLabel.leadingAnchor),
+                colorPlayerIndicatorHeightConstraint,
+                colorPlayerIndicator.widthAnchor.constraint(equalToConstant: 20),
                 score.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 1/8),
-                score.leadingAnchor.constraint(equalTo: playerName.trailingAnchor),
-                score.trailingAnchor.constraint(equalTo: playersLabel.trailingAnchor)
             ])
         }
     }
@@ -88,7 +101,7 @@ final class GameForLoadingCellView: UICollectionViewCell {
 
 private extension GameForLoadingCellView {
 
-    private func setupViews() {
+    func setupViews() {
         addSubview(playersLabel)
         addSubview(dateAndDelete)
 
@@ -99,5 +112,30 @@ private extension GameForLoadingCellView {
 
         dateAndDelete.addArrangedSubview(dateLabel)
         dateAndDelete.addArrangedSubview(deleteButton)
+    }
+
+    func selectedEffect(isSelected: Bool) {
+        let shadowOpacity: Float = isSelected ? 0 : 1
+        backgroundView?.layer.shadowOpacity = shadowOpacity
+    }
+
+    func backgroundView() -> UIImageView {
+        let backgroundView = UIImageView(image: UIImage(named: "readyScroll"))
+        backgroundView.layer.shadowColor = UIColor.black.cgColor
+        backgroundView.layer.shadowOffset = .zero
+        backgroundView.layer.shadowRadius = 5
+        backgroundView.layer.shadowOpacity = 1
+
+        return backgroundView
+    }
+
+    func deleteButtonConfiguration() -> UIButton.Configuration {
+        var config = UIButton.Configuration.plain()
+        config.attributedTitle = .init("X", attributes: .init([
+            .font: UIFont(name: "BetterBrush", size: 20)!,
+            .foregroundColor: UIColor.red
+        ]))
+
+        return config
     }
 }

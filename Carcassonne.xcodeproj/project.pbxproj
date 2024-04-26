@@ -33,7 +33,12 @@
 		5D94CAE82BAAE36C005FEF39 /* HeaderForLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D94CAE72BAAE36C005FEF39 /* HeaderForLoadingView.swift */; };
 		5D9542C32A3F0C2F00E20FC0 /* InGameMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9542C22A3F0C2F00E20FC0 /* InGameMenuController.swift */; };
 		5D964B562BBDECF200B6AD5C /* Moyenage.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D964B4E2BBDECF200B6AD5C /* Moyenage.ttf */; };
-		5DA8A0622BD7B138000049A7 /* TransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA8A0612BD7B137000049A7 /* TransitionAnimator.swift */; };
+		5D9BAD812BD93EE00047ACC6 /* GoudyThirty-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D9BAD802BD93EE00047ACC6 /* GoudyThirty-Light.ttf */; };
+		5DA8A0622BD7B138000049A7 /* NavigationTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA8A0612BD7B137000049A7 /* NavigationTransitionAnimator.swift */; };
+		5DA8A0642BD7C6F4000049A7 /* LoadingViewPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA8A0632BD7C6F4000049A7 /* LoadingViewPresentationController.swift */; };
+		5DA8A0662BD80644000049A7 /* BetterBrush.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5DA8A0652BD804CB000049A7 /* BetterBrush.ttf */; };
+		5DAC4EB52BDBF02E0047D7C7 /* LoadingViewTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DAC4EB42BDBF02E0047D7C7 /* LoadingViewTransitionAnimator.swift */; };
+		5DAC4EB72BDBF3610047D7C7 /* UIStoryboard+makeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DAC4EB62BDBF3610047D7C7 /* UIStoryboard+makeViewController.swift */; };
 		5DC2A5772A12587A007A2715 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC2A5762A12587A007A2715 /* Player.swift */; };
 		5DC2A5792A125BEB007A2715 /* MainMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC2A5782A125BEB007A2715 /* MainMenuViewController.swift */; };
 		5DC2A57B2A125CA0007A2715 /* StartNewGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC2A57A2A125CA0007A2715 /* StartNewGameViewController.swift */; };
@@ -41,7 +46,7 @@
 		5DE724182BBB4A6F00A91C35 /* MainMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE724172BBB4A6E00A91C35 /* MainMenuView.swift */; };
 		5DFA67AC2A409BFF00E30AD0 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DFA679E2A409B5000E30AD0 /* SQLite.framework */; };
 		5DFA67AD2A409BFF00E30AD0 /* SQLite.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5DFA679E2A409B5000E30AD0 /* SQLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		5DFA67B02A418DE600E30AD0 /* LoadMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DFA67AF2A418DE600E30AD0 /* LoadMenuViewController.swift */; };
+		5DFA67B02A418DE600E30AD0 /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DFA67AF2A418DE600E30AD0 /* LoadingViewController.swift */; };
 		5DFA67B42A42ED4C00E30AD0 /* DbManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DFA67B32A42ED4C00E30AD0 /* DbManager.swift */; };
 		5DFD58CC2A332F6600AD9CDC /* RoutesCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DFD58CB2A332F6600AD9CDC /* RoutesCheck.swift */; };
 /* End PBXBuildFile section */
@@ -150,14 +155,19 @@
 		5D94CAE72BAAE36C005FEF39 /* HeaderForLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderForLoadingView.swift; sourceTree = "<group>"; };
 		5D9542C22A3F0C2F00E20FC0 /* InGameMenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InGameMenuController.swift; sourceTree = "<group>"; };
 		5D964B4E2BBDECF200B6AD5C /* Moyenage.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Moyenage.ttf; sourceTree = "<group>"; };
-		5DA8A0612BD7B137000049A7 /* TransitionAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionAnimator.swift; sourceTree = "<group>"; };
+		5D9BAD802BD93EE00047ACC6 /* GoudyThirty-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GoudyThirty-Light.ttf"; sourceTree = "<group>"; };
+		5DA8A0612BD7B137000049A7 /* NavigationTransitionAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationTransitionAnimator.swift; sourceTree = "<group>"; };
+		5DA8A0632BD7C6F4000049A7 /* LoadingViewPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewPresentationController.swift; sourceTree = "<group>"; };
+		5DA8A0652BD804CB000049A7 /* BetterBrush.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = BetterBrush.ttf; sourceTree = "<group>"; };
+		5DAC4EB42BDBF02E0047D7C7 /* LoadingViewTransitionAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewTransitionAnimator.swift; sourceTree = "<group>"; };
+		5DAC4EB62BDBF3610047D7C7 /* UIStoryboard+makeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStoryboard+makeViewController.swift"; sourceTree = "<group>"; };
 		5DC2A5762A12587A007A2715 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		5DC2A5782A125BEB007A2715 /* MainMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuViewController.swift; sourceTree = "<group>"; };
 		5DC2A57A2A125CA0007A2715 /* StartNewGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartNewGameViewController.swift; sourceTree = "<group>"; };
 		5DD0B3632A1D0800006BD8F6 /* Coordinates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinates.swift; sourceTree = "<group>"; };
 		5DE724172BBB4A6E00A91C35 /* MainMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuView.swift; sourceTree = "<group>"; };
 		5DFA67932A409B5000E30AD0 /* SQLite.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SQLite.xcodeproj; path = "../SQLite.swift-master/SQLite.xcodeproj"; sourceTree = "<group>"; };
-		5DFA67AF2A418DE600E30AD0 /* LoadMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadMenuViewController.swift; sourceTree = "<group>"; };
+		5DFA67AF2A418DE600E30AD0 /* LoadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
 		5DFA67B32A42ED4C00E30AD0 /* DbManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DbManager.swift; sourceTree = "<group>"; };
 		5DFD58CB2A332F6600AD9CDC /* RoutesCheck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutesCheck.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -188,7 +198,10 @@
 				5D00A0072A3B1FB800F23112 /* UIViewPreview.swift */,
 				5DFA67B32A42ED4C00E30AD0 /* DbManager.swift */,
 				5D56DC072BA9DB64007E8680 /* Button+Wiggle.swift */,
-				5DA8A0612BD7B137000049A7 /* TransitionAnimator.swift */,
+				5DA8A0612BD7B137000049A7 /* NavigationTransitionAnimator.swift */,
+				5DA8A0632BD7C6F4000049A7 /* LoadingViewPresentationController.swift */,
+				5DAC4EB42BDBF02E0047D7C7 /* LoadingViewTransitionAnimator.swift */,
+				5DAC4EB62BDBF3610047D7C7 /* UIStoryboard+makeViewController.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -262,7 +275,7 @@
 			isa = PBXGroup;
 			children = (
 				5DC2A5782A125BEB007A2715 /* MainMenuViewController.swift */,
-				5DFA67AF2A418DE600E30AD0 /* LoadMenuViewController.swift */,
+				5DFA67AF2A418DE600E30AD0 /* LoadingViewController.swift */,
 				5DC2A57A2A125CA0007A2715 /* StartNewGameViewController.swift */,
 				5D36B93429EAE35400448219 /* GameViewController.swift */,
 				5D9542C22A3F0C2F00E20FC0 /* InGameMenuController.swift */,
@@ -327,6 +340,8 @@
 		5DE7241A2BBDADEC00A91C35 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				5D9BAD802BD93EE00047ACC6 /* GoudyThirty-Light.ttf */,
+				5DA8A0652BD804CB000049A7 /* BetterBrush.ttf */,
 				5D964B4E2BBDECF200B6AD5C /* Moyenage.ttf */,
 			);
 			path = Fonts;
@@ -495,8 +510,10 @@
 			files = (
 				5D964B562BBDECF200B6AD5C /* Moyenage.ttf in Resources */,
 				5D36B93D29EAE35800448219 /* LaunchScreen.storyboard in Resources */,
+				5D9BAD812BD93EE00047ACC6 /* GoudyThirty-Light.ttf in Resources */,
 				5D36B93A29EAE35800448219 /* Assets.xcassets in Resources */,
 				5D36B93829EAE35400448219 /* Main.storyboard in Resources */,
+				5DA8A0662BD80644000049A7 /* BetterBrush.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -519,9 +536,11 @@
 				5D36B93129EAE35400448219 /* AppDelegate.swift in Sources */,
 				5D9320032A078E260001FAAB /* GameCore.swift in Sources */,
 				5D56DC082BA9DB64007E8680 /* Button+Wiggle.swift in Sources */,
+				5DAC4EB52BDBF02E0047D7C7 /* LoadingViewTransitionAnimator.swift in Sources */,
 				5DC2A57B2A125CA0007A2715 /* StartNewGameViewController.swift in Sources */,
 				5D94CAE82BAAE36C005FEF39 /* HeaderForLoadingView.swift in Sources */,
 				5DE724182BBB4A6F00A91C35 /* MainMenuView.swift in Sources */,
+				5DA8A0642BD7C6F4000049A7 /* LoadingViewPresentationController.swift in Sources */,
 				5D56DBF72BA44AEB007E8680 /* GameForLoadingCellView.swift in Sources */,
 				5D00A0082A3B1FB800F23112 /* UIViewPreview.swift in Sources */,
 				5D56DC002BA9DAB0007E8680 /* StartButtonView.swift in Sources */,
@@ -531,7 +550,7 @@
 				5DFA67B42A42ED4C00E30AD0 /* DbManager.swift in Sources */,
 				5D9542C32A3F0C2F00E20FC0 /* InGameMenuController.swift in Sources */,
 				5D56DC022BA9DAD8007E8680 /* PlayersEditingLabelsListView.swift in Sources */,
-				5DA8A0622BD7B138000049A7 /* TransitionAnimator.swift in Sources */,
+				5DA8A0622BD7B138000049A7 /* NavigationTransitionAnimator.swift in Sources */,
 				5D17D7642A0E405C007B2265 /* GameState+ButtonsAvailability.swift in Sources */,
 				5DD0B3642A1D0800006BD8F6 /* Coordinates.swift in Sources */,
 				5D36B94529EAE3BA00448219 /* Tile.swift in Sources */,
@@ -540,10 +559,11 @@
 				5DFD58CC2A332F6600AD9CDC /* RoutesCheck.swift in Sources */,
 				5D56DC042BA9DAFC007E8680 /* NewPlayerEditingLabelView.swift in Sources */,
 				5D3C1E852A334D4500CC080C /* ScoreCalculating.swift in Sources */,
+				5DAC4EB72BDBF3610047D7C7 /* UIStoryboard+makeViewController.swift in Sources */,
 				5DC2A5772A12587A007A2715 /* Player.swift in Sources */,
 				5D36B93329EAE35400448219 /* SceneDelegate.swift in Sources */,
 				5D423C562A176A8800C5773E /* PlayerLabelGameView.swift in Sources */,
-				5DFA67B02A418DE600E30AD0 /* LoadMenuViewController.swift in Sources */,
+				5DFA67B02A418DE600E30AD0 /* LoadingViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

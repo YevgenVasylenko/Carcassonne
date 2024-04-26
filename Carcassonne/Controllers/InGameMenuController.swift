@@ -15,7 +15,7 @@ final class InGameMenuController: UIViewController {
     }
 
     @IBAction func loadGameButton() {
-        let loadMenuViewController = LoadMenuViewController(collectionViewLayout: UICollectionViewFlowLayout())
+        let loadMenuViewController = LoadingViewController(collectionViewLayout: UICollectionViewFlowLayout())
         loadMenuViewController.modalPresentationStyle = .formSheet
         let navigationController = self.presentingViewController as? UINavigationController
         

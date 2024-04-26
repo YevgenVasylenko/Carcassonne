@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class LoadMenuViewController: UICollectionViewController {
+final class LoadingViewController: UICollectionViewController {
     private var data = GameCoreDAO.getAllGamesAndDates()
     var actionOnDisappear: (() -> Void)?
 
@@ -44,36 +44,40 @@ final class LoadMenuViewController: UICollectionViewController {
 
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let game = self.data[indexPath.item].0
-        UIAlertController.showAlertForLoading(
-            from: self,
-            title: "Are you sure you want to load this game",
-            game: game,
-            isFromLoadingMenu: true
-        )
+
+        showAlertForLoading(game: game) {
+            collectionView.deselectItem(at: indexPath, animated: true)
+        }
     }
 }
 
-private extension LoadMenuViewController {
+private extension LoadingViewController {
 
     func setupViews() {
-        collectionView.backgroundColor = .systemGray6
 
+        view = UIImageView(image: UIImage(named: "LoadMenuBackground"))
+        view.isUserInteractionEnabled = true
+        
         let header = HeaderForLoadingView()
 
+        collectionView.backgroundColor = .clear
+        header.backgroundColor = .clear
+
         view.addSubview(header)
+        view.addSubview(collectionView)
 
         header.translatesAutoresizingMaskIntoConstraints = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            header.topAnchor.constraint(equalTo: view.topAnchor),
+            header.topAnchor.constraint(equalTo: view.topAnchor, constant: 22),
             header.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             header.widthAnchor.constraint(equalTo: view.widthAnchor),
             
             collectionView.topAnchor.constraint(equalTo: header.bottomAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -view.frame.height * 0.4),
         ])
     }
 
@@ -96,8 +100,45 @@ private extension LoadMenuViewController {
         }
     }
 
+    func showAlertForLoading(
+        game: GameCore,
+        deselectCell: @escaping () -> Void
+    ) {
+        let alertController = UIAlertController(
+            title: "Are you sure you want to load this game",
+            message: nil,
+            preferredStyle: .alert)
+
+        alertController.addAction(UIAlertAction(
+            title: "Yes",
+            style: .default,
+            handler: { [weak self] _ in
+            guard let self else { return }
+
+            let gameViewController: GameViewController =  UIStoryboard.makeViewController()
+            gameViewController.loadViewIfNeeded()
+            gameViewController.game = game
+
+            let navigationController = self.presentingViewController as? UINavigationController
+
+            self.dismiss(animated: true) {
+                let startMenuViewController = MainMenuViewController()
+                navigationController?.setViewControllers([startMenuViewController, gameViewController], animated: true)
+            }
+        }))
+
+        alertController.addAction(UIAlertAction(title: "No", style: .default, handler: { _ in
+            deselectCell()
+        }))
+
+        self.present(alertController, animated: true, completion: nil)
+    }
+
     func showAlertForDeleting(at indexPath: IndexPath) {
-        let alertController = UIAlertController(title: "Are you sure you want to delete save game", message: nil, preferredStyle: .alert)
+        let alertController = UIAlertController(
+            title: "Are you sure you want to delete save game",
+            message: nil,
+            preferredStyle: .alert)
 
         alertController.addAction(UIAlertAction(title: "Yes", style: .default, handler: { [weak self] _ in
             guard let self else { return }
@@ -111,47 +152,17 @@ private extension LoadMenuViewController {
     }
 }
 
-extension UIStoryboard {
-    
-    static func makeViewController<ViewController: UIViewController>() -> ViewController {
-        let storyBoard = UIStoryboard(name: "Main", bundle:nil)
-        return storyBoard.instantiateViewController(withIdentifier: "\(ViewController.self)") as! ViewController
+extension LoadingViewController: UIViewControllerTransitioningDelegate {
+
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        LoadingViewPresentationController(presentedViewController: presented, presenting: presenting)
     }
-}
 
-extension UIAlertController {
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        LoadingViewTransitionAnimator()
+    }
 
-    static func showAlertForLoading(
-        from controller: UIViewController,
-        title: String,
-        game: GameCore,
-        isFromLoadingMenu: Bool
-    ) {
-        let alertController = UIAlertController(title: title, message: nil, preferredStyle: .alert)
-
-        alertController.addAction(UIAlertAction(
-            title: "Yes",
-            style: .default,
-            handler: { [weak controller] _ in
-            guard let controller else { return }
-
-            let gameViewController: GameViewController =  UIStoryboard.makeViewController()
-            gameViewController.loadViewIfNeeded()
-            gameViewController.game = game
-
-            let navigationController: UINavigationController?
-            if isFromLoadingMenu {
-                navigationController = controller.presentingViewController as? UINavigationController
-            } else {
-                navigationController = controller.navigationController
-            }
-            controller.dismiss(animated: true) {
-                let startMenuViewController = MainMenuViewController()
-                navigationController?.setViewControllers([startMenuViewController, gameViewController], animated: true)
-            }
-        }))
-
-        alertController.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
-        controller.present(alertController, animated: true, completion: nil)
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        LoadingViewTransitionAnimator()
     }
 }

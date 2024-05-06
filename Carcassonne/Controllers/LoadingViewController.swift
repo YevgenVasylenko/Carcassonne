@@ -37,17 +37,20 @@ final class LoadingViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(GameForLoadingCellView.self)", for: indexPath) as! GameForLoadingCellView
         cell.configure(data: data[indexPath.item]) { [weak self] in
-            self?.showAlertForDeleting(at: indexPath)
+#warning("wrong index")
+            //            self?.showAlertForDeleting(at: indexPath)
+
+            guard let self else { return }
+            let alertForDeleting = self.alertForDeleting(indexPath: indexPath)
+            self.present(alertForDeleting, animated: true)
         }
         return cell
     }
 
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let game = self.data[indexPath.item].0
-
-        showAlertForLoading(game: game) {
-            collectionView.deselectItem(at: indexPath, animated: true)
-        }
+        let alertForLoading = alertForLoading(game: game, indexPath: indexPath)
+        self.present(alertForLoading, animated: true)
     }
 }
 
@@ -100,55 +103,52 @@ private extension LoadingViewController {
         }
     }
 
-    func showAlertForLoading(
-        game: GameCore,
-        deselectCell: @escaping () -> Void
-    ) {
-        let alertController = UIAlertController(
-            title: "Are you sure you want to load this game",
-            message: nil,
-            preferredStyle: .alert)
+    func alertForLoading(game: GameCore, indexPath: IndexPath) -> UIViewController {
 
-        alertController.addAction(UIAlertAction(
-            title: "Yes",
-            style: .default,
-            handler: { [weak self] _ in
-            guard let self else { return }
+        let gameViewController: GameViewController =  UIStoryboard.makeViewController()
+        gameViewController.loadViewIfNeeded()
+        gameViewController.game = game
 
-            let gameViewController: GameViewController =  UIStoryboard.makeViewController()
-            gameViewController.loadViewIfNeeded()
-            gameViewController.game = game
+        let navigationController = self.presentingViewController as? UINavigationController
 
-            let navigationController = self.presentingViewController as? UINavigationController
-
-            self.dismiss(animated: true) {
-                let startMenuViewController = MainMenuViewController()
-                navigationController?.setViewControllers([startMenuViewController, gameViewController], animated: true)
+        let alertForLoading = AlertMessageViewController(
+            message: "Are you sure you want to load this game") {
+                self.dismiss(animated: true) {
+                    let startMenuViewController = MainMenuViewController()
+                    navigationController?.setViewControllers([startMenuViewController, gameViewController], animated: true)
+                }
+            } actionOnNo: { [weak self] in
+                self?.collectionView.deselectItem(at: indexPath, animated: true)
             }
-        }))
 
-        alertController.addAction(UIAlertAction(title: "No", style: .default, handler: { _ in
-            deselectCell()
-        }))
+        alertForLoading.modalPresentationStyle = .custom
+        alertForLoading.transitioningDelegate = alertForLoading
 
-        self.present(alertController, animated: true, completion: nil)
+        return alertForLoading
     }
 
-    func showAlertForDeleting(at indexPath: IndexPath) {
-        let alertController = UIAlertController(
-            title: "Are you sure you want to delete save game",
-            message: nil,
-            preferredStyle: .alert)
+    func alertForDeleting(indexPath: IndexPath) -> UIViewController {
+        let alertForDeleting = AlertMessageViewController(
+            message: "Are you sure you want to delete save game") { [weak self] in
+                guard let self else { return }
 
-        alertController.addAction(UIAlertAction(title: "Yes", style: .default, handler: { [weak self] _ in
-            guard let self else { return }
-            GameCoreDAO.delete(game: self.data[indexPath.item].0)
-            self.data.remove(at: indexPath.item)
-            self.collectionView.deleteItems(at: [indexPath])
-        }))
+                GameCoreDAO.delete(game: self.data[indexPath.item].0)
+                self.data.remove(at: indexPath.item)
 
-        alertController.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
-        present(alertController, animated: true, completion: nil)
+                self.collectionView.performBatchUpdates {
+                    self.collectionView.deleteItems(at: [indexPath])
+                } completion: { _ in
+                    DispatchQueue.main.async {
+                        self.collectionView.reloadData()
+                    }
+                }
+            } actionOnNo: {
+            }
+
+        alertForDeleting.modalPresentationStyle = .custom
+        alertForDeleting.transitioningDelegate = alertForDeleting
+
+        return alertForDeleting
     }
 }
 

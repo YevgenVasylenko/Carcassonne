@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class ColorsChoosingPopup: UIViewController {
+final class ColorsChoosingPopupViewController: UIViewController {
 
     private var availablePlayerColors: [PlayerColor]
     private let completion: (PlayerColor) -> Void
@@ -28,7 +28,7 @@ final class ColorsChoosingPopup: UIViewController {
     }
 }
 
-private extension ColorsChoosingPopup {
+private extension ColorsChoosingPopupViewController {
 
     func configure() {
         let colorsList = UIStackView()

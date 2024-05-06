@@ -6,7 +6,6 @@
 //
 import Foundation
 
-
 enum RouteCheckType {
     case meeplePlacing
     case endOfTurn

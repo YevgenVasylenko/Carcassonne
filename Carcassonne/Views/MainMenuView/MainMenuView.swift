@@ -30,6 +30,7 @@ enum StartMenuAction: CaseIterable {
 final class MainMenuView: UIView {
 
     var buttonAction: ((StartMenuAction) -> ())?
+    private let container = UIStackView()
 
     init() {
         super.init(frame: .zero)
@@ -46,23 +47,10 @@ final class MainMenuView: UIView {
         image.isUserInteractionEnabled = true
         addSubview(image)
 
-        let container = UIStackView()
         image.addSubview(container)
         container.axis = .vertical
 
-        for button in StartMenuAction.allCases {
-
-            let menuButton = UIButton(configuration: makeButtonConfiguration(button: button))
-            menuButton.isEnabled = button.isActionAvailableWithoutSaveGame()
-
-            menuButton.addAction(UIAction(handler: { [weak self] _ in
-                self?.buttonAction?(button)
-            }), for: .touchUpInside)
-
-            menuButtonUpdateHandler(button: menuButton)
-            
-            container.addArrangedSubview(menuButton)
-        }
+        makeButtons()
 
         image.translatesAutoresizingMaskIntoConstraints = false
         container.translatesAutoresizingMaskIntoConstraints = false
@@ -76,6 +64,23 @@ final class MainMenuView: UIView {
             container.centerXAnchor.constraint(equalTo: image.centerXAnchor),
             container.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -image.frame.height * 0.045)
         ])
+    }
+
+    func makeButtons() {
+        container.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        
+        for button in StartMenuAction.allCases {
+
+            let menuButton = UIButton(configuration: makeButtonConfiguration(button: button))
+            menuButton.isEnabled = button.isActionAvailableWithoutSaveGame()
+
+            menuButton.addAction(UIAction(handler: { [weak self] _ in
+                self?.buttonAction?(button)
+            }), for: .touchUpInside)
+            menuButtonUpdateHandler(button: menuButton)
+
+            container.addArrangedSubview(menuButton)
+        }
     }
 }
 

@@ -39,8 +39,8 @@ final class MainMenuViewController: UIViewController {
 
         view.addSubview(backgroundView)
 
-        backgroundView.subviews.forEach { $0.removeFromSuperview() }
         menuView.configure()
+
         backgroundView.addSubview(menuView)
 
         backgroundView.translatesAutoresizingMaskIntoConstraints = false
@@ -91,10 +91,9 @@ private extension MainMenuViewController {
             self.navigationController?.pushViewController(StartNewGameViewController(), animated: true)
         case .loadGameButton:
             let loadMenuViewController = LoadingViewController(collectionViewLayout: UICollectionViewFlowLayout())
-#warning("memory leak. need to update main menu buttons if no games for loading")
-//            loadMenuViewController.actionOnDisappear = { [weak self] in
-//                self?.configure()
-//            }
+            loadMenuViewController.actionOnDisappear = { [weak self] in
+                self?.menuView.makeButtons()
+            }
             loadMenuViewController.modalPresentationStyle = .custom
             loadMenuViewController.transitioningDelegate = loadMenuViewController
             self.present(loadMenuViewController, animated: true)

@@ -16,7 +16,7 @@ final class PlayersEditingLabelsListView: UIStackView {
         colors: [PlayerColor],
         changeName: @escaping (Player, String) -> (),
         changeColor: @escaping (Player, PlayerColor) -> (),
-        presentPopover: @escaping (ColorsChoosingPopup) -> ()
+        presentPopover: @escaping (ColorsChoosingPopupViewController) -> ()
     ) {
         super.init(frame: .zero)
         configure(
@@ -40,7 +40,7 @@ private extension PlayersEditingLabelsListView {
         colors: [PlayerColor],
         changeName: @escaping (Player, String) -> (),
         changeColor: @escaping (Player, PlayerColor) -> (),
-        presentPopover: @escaping (ColorsChoosingPopup) -> ()
+        presentPopover: @escaping (ColorsChoosingPopupViewController) -> ()
     ) {
 
         alignment = .center
@@ -62,7 +62,7 @@ private extension PlayersEditingLabelsListView {
 
                 guard let self, let playerEditLabel else { return }
 
-                let popoverViewController = ColorsChoosingPopup(
+                let popoverViewController = ColorsChoosingPopupViewController(
                     availablePlayerColors: colors) { color in
                     changeColor(players[playerNumber], color)
                     }
